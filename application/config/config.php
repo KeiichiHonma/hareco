@@ -445,8 +445,8 @@ $config['zend_log_filename'] = APPPATH . 'logs/log-' . date( 'Y-m-d' ) . EXT;
 |
 */
 
-//$config['jma_weather_start_year'] = 1967;//1967から天気がある
-$config['jma_weather_start_year'] = 1993;//1993からを有効年とする
+$config['jma_weather_start_year'] = 1967;//1967から天気がある
+//$config['jma_weather_start_year'] = 1993;//1993からを有効年とする
 
 /*
 |--------------------------------------------------------------------------
@@ -843,6 +843,5 @@ $config['search_tokyo_area'] = array
     array('新島村','58'),
     array('神津島村','58')
 );
-
 /* End of file config.php */
 /* Location: ./application/config/config.php */

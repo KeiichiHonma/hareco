@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ページが見つかりませんでした。
-一時的にアクセスでいないか、削除された可能性があります。 [タイ・バンコク発のフリーペーパー「Wise」のクーポンサイト「Balloooooon!」]</title>
+一時的にアクセスでいないか、削除された可能性があります。 [出かけるなら晴れがいい-ハレコ]</title>
 <link href="/images/favicon.ico" rel="shortcut icon" type="image/x-icon" /><link href="/css/base.css" rel="stylesheet" type="text/css" />
 <link href="/css/jquery.ad-gallery.css" rel="stylesheet" type="text/css" />
 <link href="/css/component.css" rel="stylesheet" type="text/css" />

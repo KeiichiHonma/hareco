@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>タイ・バンコク発のフリーペーパー「Wise」のクーポンサイト「Balloooooon!」</title>
+<title>出かけるなら晴れがいい-ハレコ</title>
 <meta name="keywords" content="タイ,バンコク,チケット,購入,割引券,割引,クーポン,クーポンサイト,バウチャー" />
 <meta name="description" content="タイ・バンコクのチケットをサイト名で購入！タイ・バンコクのクーポンがとても安い！お得なクーポン/バウチャーサイトです。" />
 <script src="http://mangahack.apollon.corp.813.co.jp/js/jquery-1.7.2.min.js" language="javascript" type="text/javascript" /></script>

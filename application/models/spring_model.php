@@ -28,15 +28,14 @@ class Spring_model extends CI_Model
         return array();
     }
 
-    function getSpringByJmaId($jma_block_no)
+    function getSpringsByAreaId($area_id)
     {
         $query = $this->db->query("SELECT *
                                     FROM {$this->table_name}
-                                    WHERE {$this->table_name}.jma_block_no = ?"
-        , array(intval($jma_block_no))
+                                    WHERE {$this->table_name}.area_id = ?"
+        , array($area_id)
         );
-
-        if ($query->num_rows() == 1) return $query->row();
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 
@@ -73,6 +72,34 @@ class Spring_model extends CI_Model
 
         //if ($query->num_rows() != 0) return $query->result();
         if ($query->num_rows() != 0) return $query->result('flip');
+        return array();
+    }
+
+    function getAllSpringsOrderTodoufukenId()
+    {
+        $query = $this->db->query("SELECT *,{$this->table_name}.id AS id
+                                    FROM {$this->table_name}
+                                    INNER JOIN spring_areas ON {$this->table_name}.spring_area_id = spring_areas.id
+                                    ORDER BY {$this->table_name}.todoufuken_id ASC"
+        );
+
+        //if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $query->result();
+        return array();
+    }
+
+    function getSpringsOrderTodoufukenIdByAreaId($area_id)
+    {
+        $query = $this->db->query("SELECT *,{$this->table_name}.id AS id
+                                    FROM {$this->table_name}
+                                    INNER JOIN spring_areas ON {$this->table_name}.spring_area_id = spring_areas.id
+                                    WHERE {$this->table_name}.area_id = ?
+                                    ORDER BY {$this->table_name}.todoufuken_id ASC"
+        , array($area_id)
+        );
+
+        //if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 

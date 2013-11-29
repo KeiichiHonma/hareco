@@ -228,28 +228,35 @@ class Devtools extends CI_Controller {
         下記を更新
         ・晴れの定義を変えた
         ・昨日のデータも取り入れる
+        yesterday_night
+        
         is_daytime_shine
         is_night_shine
-        is_night_snow
-        yesterday_night
+        is_yesterday_rain
+        is_yesterday_snow
+        
         is_yesterday_night_shine
         is_yesterday_night_snow
         */
         foreach ($areas as $area){
-            if($area->id == 8){
+            if($area->id >= 50){
                 print date("y/n/d/H:i:s")."\n";
                 $weathers = $this->Weather_model->getWeathersOrderByAreaId($area->id);
-                $yesterday_weather = array('yesterday_night'=>'','is_yesterday_night_shine'=>9,'is_yesterday_snow'=>9);
+                $yesterday_weather = array('yesterday_night'=>'','is_yesterday_night_shine'=>9,'is_yesterday_rain'=>'9','is_yesterday_snow'=>9);
                 //1967/1/1からのループ
                 foreach ($weathers as $weather){
                     $data = array();
+                    $data['yesterday_night'] = $yesterday_weather['yesterday_night'];
                     $data['is_daytime_shine'] = $this->weather_lib->isShine($weather->daytime,$weather->precipitation_one_hour) ? 0 : 1;
                     $data['is_night_shine'] = $this->weather_lib->isShine($weather->night,$weather->precipitation_one_hour) ? 0 : 1;
-                    $data['is_snow'] = $this->weather_lib->isSnow($weather->snowfall) ? 0 : 1;
-                    $data['yesterday_night'] = $yesterday_weather['yesterday_night'];
                     $data['is_yesterday_night_shine'] = $yesterday_weather['is_yesterday_night_shine'];
+                    $data['is_rain'] = $this->weather_lib->isRain($weather->precipitation_one_hour) ? 0 : 1;
+                    $data['is_snow'] = $this->weather_lib->isSnow($weather->snowfall) ? 0 : 1;
+                    
+                    $data['is_yesterday_rain'] = $yesterday_weather['is_yesterday_rain'];
                     $data['is_yesterday_snow'] = $yesterday_weather['is_yesterday_snow'];
-                    $yesterday_weather = array('yesterday_night'=>$weather->night,'is_yesterday_night_shine'=>$data['is_night_shine'],'is_yesterday_snow'=>$data['is_snow']);
+                    $yesterday_weather = array('yesterday_night'=>$weather->night,'is_yesterday_night_shine'=>$data['is_night_shine'],'is_yesterday_rain'=>$data['is_rain'],'is_yesterday_snow'=>$data['is_snow']);
+                    //$yesterday_weather = array('is_yesterday_rain'=>$data['is_rain'],'is_yesterday_snow'=>$data['is_snow']);
                     //update
                     $this->db->where('id', $weather->id);
                     $this->db->update('weathers', $data);
@@ -272,7 +279,8 @@ class Devtools extends CI_Controller {
         //全area,指定日を実行
         $year = 2014;
         $target_month = 11;
-        $sampling_year = 1993;
+        $end_day = 27;
+        $sampling_year = $this->CI->config->item('jma_weather_start_year');//1993 or 1967
         
         $holidays = $this->weather_lib->get_holidays_this_month($year);
         print date("y/n/d/H:i:s")."\n";
@@ -283,7 +291,7 @@ class Devtools extends CI_Controller {
                 $lastday = date("t", mktime(0,0,0,$month,1,$year));
                 $month_string = $month < 10 ? '0'.$month : $month;
                 for($day=1;$day <= $lastday;$day++){
-                    if($year == 2014 && $month == 11 && $day == 14 ) break;
+                    if($year == 2014 && $month == 11 && $day == $end_day ) break;
                     $day_string = $day < 10 ? '0'.$day : $day;
                     $today_day = $day;
                     
@@ -308,10 +316,10 @@ class Devtools extends CI_Controller {
                     
                     //先頭の天気文字で始まる過去データを使用する
                     $head = $this->weather_lib->changeWeatherHeadString($real_yesterday_night);
-                    $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadtByMonthByDay($area->id,$head,$today_month,$today_day,$sampling_year);
+                    $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadByMonthByDay($area->id,$head,$today_month,$today_day,$sampling_year);
 
                     //空の場合、サンプリングの数が5つに満たない場合は全体の統計予測で
-                    if(empty($month_day_weathers) || count($month_day_weathers) < 5){
+                    if(empty($month_day_weathers) || count($month_day_weathers) < 3){
                         $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByMonthByDay($area->id,$today_month,$today_day);
                     }
                     //未来データ生成
@@ -400,14 +408,14 @@ class Devtools extends CI_Controller {
         
         $year = 2013;
         $target_month = 11;
-        
+        $end_day = 27;
         foreach ($areas as $area){
             for($month=1;$month<=$target_month;$month++){
                 $today_month = $month;
                 $lastday = date("t", mktime(0,0,0,$month,1,$year));
                 
                 for($day=1;$day <= $lastday;$day++){
-                    if($year == 2013 && $month == 11 && $day == 14 ) break;
+                    if($year == 2013 && $month == 11 && $day == $end_day ) break;
                     $today_day = $day;
                     //指定年月日の過去データ取得
                     $year_month_day_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$year,$today_month,$today_day);
@@ -605,12 +613,12 @@ class Devtools extends CI_Controller {
         
         $year = 2013;
         $target_month = 11;
-
+        $end_day = 27;
         //全レコード
         for($month=1;$month<=$target_month;$month++){
             $lastday = date("t", mktime(0,0,0,$month,1,$year));
             for($day=1;$day <= $lastday;$day++){
-                if($year == 2013 && $month == 11 && $day == 14) break;
+                if($year == 2013 && $month == 11 && $day == $end_day) break;
                 $record_count = $this->Future_model->getFutureCountByLesserDate($year.'-'.$month.'-'.$day);
                 $correct_count = $this->Future_model->getFutureCountByCorrectByLesserDate($year.'-'.$month.'-'.$day);
                 if($record_count->count != 0){
@@ -623,7 +631,6 @@ class Devtools extends CI_Controller {
         $this->Odds_model->insertBatchOddsesOdds($oddsData);
 
         print 'odds end'."\n";
-
         $regionsOddsData = array();
 
         foreach ($regions as $region_id => $region){

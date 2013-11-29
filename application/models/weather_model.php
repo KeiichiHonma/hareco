@@ -19,12 +19,22 @@ class Weather_model extends CI_Model
     
     function getWeatherByAreaIdByMonthByDay($area_id,$month,$day)
     {
-        $query = $this->db->query("SELECT {$this->columns}
+        $query = $this->db->query("SELECT *
                                     FROM {$this->table_name}
                                     WHERE {$this->table_name}.area_id = ? AND {$this->table_name}.month = ? AND {$this->table_name}.day = ?"
         , array(intval($area_id),intval($month),intval($day))
         );
+        if ($query->num_rows() != 0) return $query->result();
+        return array();
+    }
 
+    function getWeatherByAreaIdByMonthByDayByYear($area_id,$month,$day,$from_year)
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE {$this->table_name}.area_id = ? AND {$this->table_name}.month = ? AND {$this->table_name}.day = ? AND {$this->table_name}.year >= ?"
+        , array(intval($area_id),intval($month),intval($day),$from_year)
+        );
         if ($query->num_rows() != 0) return $query->result();
         return array();
     }
@@ -55,7 +65,7 @@ class Weather_model extends CI_Model
     }
 
     //前日の天気の先頭文字と日付でデータ取得
-    function getWeatherByAreaIdByHeadtByMonthByDay($area_id,$head,$month,$day,$from_year = 1993)
+    function getWeatherByAreaIdByHeadByMonthByDay($area_id,$head,$month,$day,$from_year = 1993)
     {
         $query = $this->db->query("SELECT {$this->columns}
                                     FROM {$this->table_name}

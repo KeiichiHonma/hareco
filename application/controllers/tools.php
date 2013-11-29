@@ -93,6 +93,7 @@ class Tools extends CI_Controller {
     
     function doDaily($back_day = 1){
         $this->importWeatherBackDay($back_day);
+        $this->updateWeatherYesterdayWeather($back_day);//昨日のデータ更新
         $this->createFutureForNextYearDaily($back_day);
         $this->updateCorrectBackDay($back_day);
         $this->updateSequenceBackDay($back_day);
@@ -106,7 +107,7 @@ class Tools extends CI_Controller {
         $this->load->model('Future_model');
         $areas = $this->Area_model->getAllAreasFlipJmaId();
         
-        include('application/libraries/simple_html_dom.php');
+        require_once('application/libraries/simple_html_dom.php');
         
         $ret = FALSE;
         unset($this->html);
@@ -118,6 +119,7 @@ class Tools extends CI_Controller {
             $back_day_string = strval("-".$i." day");
             $back_day_year_month_day = date("Y/n/d",strtotime($back_day_string));//??日前
             $back_day_ymd = explode('/',$back_day_year_month_day);
+
             //yesterday
             $i_p = $i+1;
             $back_day_yesterday_string = strval("-".$i_p." day");
@@ -156,7 +158,7 @@ class Tools extends CI_Controller {
                     $this->csv_data['data'] = array();
                     $array_key = $jma_block_no.$back_day_ymd[0].$back_day_ymd[1].$back_day_ymd[2];
                     
-                    $yesterday_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($areas[$jma_block_no]->id,$back_day_yesterday_ymd[0],$back_day_yesterday_ymd[1],$back_day_yesterday_ymd[2]);
+                    //$yesterday_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($areas[$jma_block_no]->id,$back_day_yesterday_ymd[0],$back_day_yesterday_ymd[1],$back_day_yesterday_ymd[2]);
 
                     $weatherData[$array_key]['code'] = $areas[$jma_block_no]->region_id.'_'.$areas[$jma_block_no]->todoufuken_id.'_'.$areas[$jma_block_no]->id.'_'.$jma_block_no.'_'.$back_day_ymd[0].'_'.$back_day_ymd[1].'_'.$back_day_ymd[2];
                     $weatherData[$array_key]['date'] = $back_day_ymd[0].'-'.$back_day_ymd[1].'-'.$back_day_ymd[2];
@@ -175,14 +177,17 @@ class Tools extends CI_Controller {
                     //雨（1時間に1ミリ以上）じゃなくて、最初に出現する天気が「晴」又は「快晴」がある又は「後晴れ」があり且つ、「後雨」「後霧雨」がないこと且つ、「みぞれ」「雪」「あられ」「雹」「雷」がないこと
                     $weatherData[$array_key]['is_daytime_shine'] = $this->weather_lib->isShine($back_day_jma_data[18],$back_day_jma_data[3]) ? 0 : 1;
                     $weatherData[$array_key]['is_night_shine'] = $this->weather_lib->isShine($back_day_jma_data[19],$back_day_jma_data[3]) ? 0 : 1;
-                    $weatherData[$array_key]['is_yesterday_night_shine'] = $yesterday_weather->is_night_shine;
-                    $weatherData[$array_key]['is_yesterday_snow'] = $yesterday_weather->is_snow;
+                    //$weatherData[$array_key]['is_yesterday_night_shine'] = $yesterday_weather->is_night_shine;
+                    //$weatherData[$array_key]['is_yesterday_snow'] = $yesterday_weather->is_snow;
                     
                     //どれだけの確率で雨（1時間に1ミリ以上）が降ったかを算出した物が降水確率です。
-                    $weatherData[$array_key]['is_rain'] = $yesterday_weather->is_night_shine;
-
+                    $weatherData[$array_key]['is_rain'] = $this->weather_lib->isRain($back_day_jma_data[3]) ? 0 : 1;
+                    //$weatherData[$array_key]['is_yesterday_rain'] = $yesterday_weather->is_rain;
+                    
                     //雪が1cm降雪したら
                     $weatherData[$array_key]['is_snow'] = $this->weather_lib->isSnow($back_day_jma_data[16]) ? 0 : 1;
+                    //$weatherData[$array_key]['is_yesterday_snow'] = $yesterday_weather->is_snow;
+
                     /////////////////////////////////////////////////////////////////////////////////////////////////////////
                     
                     $weatherData[$array_key]['atmosphere_spot'] = $this->weather_lib->checkCsvRowForNumeric($back_day_jma_data[0]);
@@ -205,7 +210,7 @@ class Tools extends CI_Controller {
                     $weatherData[$array_key]['snow_deepest'] = $this->weather_lib->checkCsvRowForNumeric($back_day_jma_data[17]);
                     $weatherData[$array_key]['daytime'] = $back_day_jma_data[18];
                     $weatherData[$array_key]['night'] = $back_day_jma_data[19];
-                    $weatherData[$array_key]['yesterday_night'] = $yesterday_weather->night;
+                    //$weatherData[$array_key]['yesterday_night'] = $yesterday_weather->night;
                     $weatherData[$array_key]['created'] = date("Y-m-d H:i:s", time());
                     print $back_day_year_month_day.'-'.$jma_block_no."\n";
                 }
@@ -213,7 +218,57 @@ class Tools extends CI_Controller {
         }
         $this->Weather_model->insertBatchWeather($weatherData);
     }
-    
+
+    //昨日の天気結果を取得
+    function updateWeatherYesterdayWeather($back_day = 1){
+        $this->load->model('Area_model');
+        $this->load->model('Weather_model');
+        $this->load->model('Future_model');
+        $areas = $this->Area_model->getAllAreasFlipJmaId();
+
+        $ret = FALSE;
+        unset($this->html);
+        $this->html = '';
+        $time = time();
+        $weatherData = array();
+        //指定日分
+        for ($i = $back_day; $i > 0; $i--){
+            $back_day_string = strval("-".$i." day");
+            $back_day_year_month_day = date("Y/n/d",strtotime($back_day_string));//??日前
+            $back_day_ymd = explode('/',$back_day_year_month_day);
+            //yesterday
+            $i_p = $i+1;
+            $back_day_yesterday_string = strval("-".$i_p." day");
+            $back_day_yesterday_year_month_day = date("Y/n/d",strtotime($back_day_yesterday_string));//??日前
+            $back_day_yesterday_ymd = explode('/',$back_day_yesterday_year_month_day);
+            
+            foreach ($this->jma_block_no_data as $jma_prec_no => $jma_block_nos){
+                foreach ($jma_block_nos as $jma_block_no){
+                    $array_key = $jma_block_no.$back_day_ymd[0].$back_day_ymd[1].$back_day_ymd[2];
+                    
+                    $yesterday_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($areas[$jma_block_no]->id,$back_day_yesterday_ymd[0],$back_day_yesterday_ymd[1],$back_day_yesterday_ymd[2]);
+                    $weatherData['yesterday_night'] = $yesterday_weather->night;
+                    $weatherData['is_yesterday_night_shine'] = $yesterday_weather->is_night_shine;
+                    
+                    //どれだけの確率で雨（1時間に1ミリ以上）が降ったかを算出した物が降水確率です。
+                    $weatherData['is_yesterday_rain'] = $yesterday_weather->is_rain;
+                    
+                    //雪が1cm降雪したら
+                    $weatherData['is_yesterday_snow'] = $yesterday_weather->is_snow;
+                    
+                    //update
+                    $this->db->where('area_id', $areas[$jma_block_no]->id);
+                    $this->db->where('year', $back_day_ymd[0]);
+                    $this->db->where('month', $back_day_ymd[1]);
+                    $this->db->where('day', $back_day_ymd[2]);
+                    $this->db->update('weathers', $weatherData);
+                    
+                    print $back_day_year_month_day.'-'.$jma_block_no."\n";
+                }
+            }
+        }
+    }
+
     //来年の今日の未来を予測
     function createFutureForNextYearDaily($back_day = 1){
         $time = time();
@@ -223,7 +278,7 @@ class Tools extends CI_Controller {
         $this->load->model('Future_model');
         
         $holidays = null;
-        $sampling_year = 1993;
+        $sampling_year = $this->CI->config->item('jma_weather_start_year');
         //指定日の1日前のデータを取得した後、その1日前の予測が可能になるので、-1日する。例）11月1日の0時、10月31日のデータを持ってきたので、翌年の10月31日の予測ができる
         for ($i = $back_day; $i > 0; $i--){
             $back_day_string = strval("-".$i." day");
@@ -235,7 +290,7 @@ class Tools extends CI_Controller {
             $back_day_day = $back_day_ymd[2];
             
             //holiday
-            if(is_null($holidays)) $holidays = $this->weather_lib->get_holidays_this_month($next_year);
+            if(is_null($holidays)) $holidays = $this->weather_lib->get_holidays_this_month($back_day_ymd[0]);
             $month_string = $back_day_month < 10 ? '0'.$back_day_month : $back_day_month;
             
             foreach ($areas as $area){
@@ -252,7 +307,7 @@ class Tools extends CI_Controller {
                 
                 //先頭の天気文字で始まる過去データを使用する
                 $head = $this->weather_lib->changeWeatherHeadString($real_yesterday_night);
-                $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadtByMonthByDay($area->id,$head,$back_day_month,$back_day_day,$sampling_year);
+                $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadByMonthByDay($area->id,$head,$back_day_month,$back_day_day,$sampling_year);
 
                 //空の場合、サンプリングの数が5つに満たない場合は全体の統計予測で
                 if(empty($month_day_weathers) || count($month_day_weathers) < 5){

@@ -12,138 +12,39 @@ class Rakuten_lib
         $this->start_date = date("Ymd",strtotime("+30 day"));
     }
 
+    function getCoursesByLatitudeByLongitude($latitude,$longitude){
+        $this->cache_dir = 'cache/courses/';
+        $url = 'http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraGolfCourseSearch&version=2010-06-30&sort=evaluation&latitude='.$latitude.'&longitude='.$longitude.'&searchRadius=150';
+        return $this->_parseCoursesXML($this->_getXML($url));
+    }
+
     /*
     楽天のエリアとは都道府県のこと
     */
     function getCoursesByRakutenAreaCode($rakuten_AreaCode){
-        //http://api.rakuten.co.jp/rws/3.0/rest?developerId=1013706927174899148&operation=GoraGolfCourseSearch&version=2010-06-30&areaCode=0&sort=50on
-        //$url = 'http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key='.$this->ci->config->item('jalan_key').'&o_area_id='.$jalan_o_area.'&order=4&count=100';
+        $this->cache_dir = 'cache/courses/';
         $url = 'http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraGolfCourseSearch&version=2010-06-30&areaCode='.$rakuten_AreaCode.'&sort=evaluation';
-        $xml_courses = $this->_getXML($url);
-        $coursesData = array();
-
-        $i = 0;
-        foreach ($xml_courses->Hotel as $xml_course){
-            $AccessInformation = array();
-            foreach ($xml_course as $item){
-                if($item->getName() != 'Area' && $item->getName() != 'WifiHikariStation'){
-                    if($item->getName() == 'AccessInformation'){
-                        $AccessInformation[] = strval($item->attributes()->name) . ':' . strval($item);
-                        $hotelsData[$i][$item->getName()] = implode("\n",$AccessInformation);
-                    }else{
-                        $hotelsData[$i][$item->getName()] = strval($item);
-                    }
-                }
-            }
-            $i++;
-        }
-        return $hotelsData;
-    }
-
-    function getPlansByRakutenAreaCode($rakuten_AreaCode){
-        $url='http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraPlanSearch&version=2012-12-10&playDate='.$play_date.'&sort=evaluation&areaCode='.$rakuten_AreaCode;
-        $xml_courses = $this->_getXML($url);
-        $coursesData = array();
-
-        $i = 0;
-        foreach ($xml_courses->Hotel as $xml_course){
-            $AccessInformation = array();
-            foreach ($xml_course as $item){
-                if($item->getName() != 'Area' && $item->getName() != 'WifiHikariStation'){
-                    if($item->getName() == 'AccessInformation'){
-                        $AccessInformation[] = strval($item->attributes()->name) . ':' . strval($item);
-                        $hotelsData[$i][$item->getName()] = implode("\n",$AccessInformation);
-                    }else{
-                        $hotelsData[$i][$item->getName()] = strval($item);
-                    }
-                }
-            }
-            $i++;
-        }
-        return $hotelsData;
+        return $this->_parseCoursesXML($this->_getXML($url));
     }
 
     function getCourseByRakutenGolfCourseId($rakuten_golfCourseId){
-        //http://api.rakuten.co.jp/rws/3.0/rest?developerId=1013706927174899148&operation=GoraGolfCourseDetail&version=2010-06-30&golfCourseId=12345
-        //$url='http://jws.jalan.net/APIAdvance/HotelSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id;
+        $this->cache_dir = 'cache/courses/';
         $url='http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraGolfCourseDetail&version=2010-06-30&golfCourseId='.$rakuten_golfCourseId;
-        
-        $xml_hotels = $this->_getXML($url);
-        $hotelData = array();
-
-        foreach ($xml_hotels->Hotel as $xml_hotel){
-            $AccessInformation = array();
-            foreach ($xml_hotel as $item){
-                if($item->getName() != 'Area' && $item->getName() != 'WifiHikariStation'){
-                    if($item->getName() == 'AccessInformation'){//AccessInformationは並列で持っている様子
-                        $AccessInformation[] = strval($item->attributes()->name) . ':' . strval($item);
-                        $hotelData[$item->getName()] = implode("\n",$AccessInformation);
-                    }else{
-                        $hotelData[$item->getName()] = strval($item);
-                    }
-                    
-                }
-            }
-        }
-        return $hotelData;
+        return $this->_parseCourseXML($this->_getXML($url));
     }
 
-    function getPlansByRakutenGolfCourseIdByDate($rakuten_golfCourseId,$play_date){
-        //http://api.rakuten.co.jp/rws/3.0/rest?developerId=1013706927174899148&operation=GoraPlanSearch&version=2012-12-10&playDate=2013-01-10&areaCode=20&planLunch=1&sort=evaluation
-        //$url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count=100';
-        $url='http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraPlanSearch&version=2012-12-10&playDate='.$play_date.'&sort=evaluation&golfCourseId='.$rakuten_golfCourseId;
-        
-        $xml_stocks = $this->_getXML($url);
-        $stockData = array();
-        
-        $plan_name = '';
-        $before_plan_name = '';
-        $ymd = '';
-        $before_ymd = '';
-        $i = 0;
-        foreach ($xml_stocks->Plan as $xml_stock){
-            $stock_tmp_data = array();
-            $stock_number = intval($xml_stock->Stay->Date->Stock);
-            
-            if($stock_number > 0){
-                $facilities = array();
-                $AccessInformation = array();
-                foreach ($xml_stock as $item){
-                    if($item->getName() == 'Facilities'){
-                        foreach ($item as $facility){
-                            $facilities[] = strval($facility);
-                        }
-                        $stock_tmp_data['facilities'] = implode(',',$facilities);
-                    }elseif ($item->getName() == 'PlanName'){
-                        $plan_name = strval($item);
-                        $stock_tmp_data['PlanName'] = $plan_name;
-                    }elseif ($item->getName() == 'Stay'){
-                        $stock_tmp_data['stay']['PlanDetailURL'] = strval($item->PlanDetailURL);
-                        foreach ($item->Date as $date){
-                            $ymd = strval($date->attributes()->year).strval($date->attributes()->month).strval($date->attributes()->date);
-                            $stock_tmp_data['stay']['date'][$ymd]['rate'] = strval($date->Rate);
-                            $stock_tmp_data['stay']['date'][$ymd]['stock'] = intval($date->Stock);
-                        }
-                    }else{
-                        $stock_tmp_data[$item->getName()] = strval($item);
-                    }
-                    
-                }
-                //プラン名が同じ、日付も同じ場合は除去。禁煙、喫煙の違い等で発生する
-                if($before_plan_name != $plan_name || $before_ymd != $ymd){
-                    $stockData[$i] = $stock_tmp_data;
-                    $i++;
-                }
-                $before_plan_name = $plan_name;
-                $before_ymd = $ymd;
-            }
-        }
-        return $stockData;
+    function getPlansByRakutenGolfCourseIdBydate($rakuten_golfCourseId,$date){
+        $this->cache_dir = 'cache/plans/';
+        $url='http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraPlanSearch&version=2012-12-10&sort=evaluation&golfCourseId='.$rakuten_golfCourseId.'&playDate='.$date;
+        return $this->_parsePlansXML($this->_getXML($url));
     }
 
+    function getPlansByRakutenAreaCodeBydate($rakuten_AreaCode,$date,$hits = 4){
+        $this->cache_dir = 'cache/plans/';
+        $url='http://api.rakuten.co.jp/rws/3.0/rest?developerId='.$this->ci->config->item('rakuten_key').'&operation=GoraPlanSearch&version=2012-12-10&sort=evaluation&areaCode='.$rakuten_AreaCode.'&playDate='.$date.'&hits='.$hits;
+        return $this->_parsePlansXML($this->_getXML($url));
+    }
 
-
-    
     private function _getXML($url){
         // Are we caching?
         if ($this->cache_life != 0)
@@ -196,7 +97,63 @@ class Rakuten_lib
 
         return $xml;
     }
+
+    private function _parseCourseXML($xml_course){
+        $nameSpaces = $xml_course->getNamespaces(true);
+        $xml_course->registerXPathNamespace("goraGolfCourseDetail", $nameSpaces['goraGolfCourseDetail']);
+        $xpath_xml_course = $xml_course->xpath("//goraGolfCourseDetail:GoraGolfCourseDetail");
+        return (array) $xpath_xml_course[0]->Item;
+    }
+
+    private function _parseCoursesXML($xml_courses){
+        $nameSpaces = $xml_courses->getNamespaces(true);
+        $xml_courses->registerXPathNamespace("goraGolfCourseSearch", $nameSpaces['goraGolfCourseSearch']);
+        $xpath_xml_courses = $xml_courses->xpath("//goraGolfCourseSearch:GoraGolfCourseSearch");
+        $coursesData = array();
+        $i = 0;
+        foreach ($xpath_xml_courses[0]->Items->children()->Item as $course){
+            foreach ($course as $value){
+                $coursesData[$i][$value->getName()] = strval($value);
+            }
+            $i++;
+        }
+        return $coursesData;
+    }
     
+    private function _parsePlansXML($xml_plans){
+        $nameSpaces = $xml_plans->getNamespaces(true);
+        //存在チェック
+        $xml_plans->registerXPathNamespace("header", $nameSpaces['header']);
+        $xpath_xml_plans_header = $xml_plans->xpath("//header:Header");
+        if(strval($xpath_xml_plans_header[0]->Status) == 'NotFound') return array();
+
+        $xml_plans->registerXPathNamespace("goraPlanSearch", $nameSpaces['goraPlanSearch']);
+        $xpath_xml_plans = $xml_plans->xpath("//goraPlanSearch:GoraPlanSearch");
+        $plansData = array();
+        $i = 0;
+        foreach ($xpath_xml_plans[0]->Items->children()->Item as $item){
+            foreach ($item as $value){
+                if($value->getName() == 'planInfo'){
+                    //$plan_info = (array) $value->children()->plan;
+                    //foreach ($value->children()->plan as $plan){
+                    foreach ($value->children()->plan as $plan){
+                        foreach ($plan as $planinfo){
+                            if($planinfo->getName() == 'callInfo'){
+                                $plansData[$i][$value->getName()][$planinfo->getName()] = (array) $planinfo;
+                            }else{
+                                $plansData[$i][$value->getName()][$planinfo->getName()] = strval($planinfo);
+                            }
+                        }
+                    }
+                }else{
+                    $plansData[$i][$value->getName()] = strval($value);
+                }
+                
+            }
+            $i++;
+        }
+        return $plansData;
+    }
 }
 
 /* End of file Tank_auth.php */

@@ -9,14 +9,32 @@ class Future_model extends CI_Model
 {
     var $CI;
     private $table_name            = 'futures';
-    private $columns = "id, code, date, year, month, day, region_id,  todoufuken_id, area_id, daytime,is_daytime_shine,daytime_number,daytime_shine_sequence,night,is_night_shine,night_shine_sequence,yesterday_night,is_yesterday_night_shine , temperature_max, temperature_min, rain_percentage, snow_percentage,holiday,holiday_sequence";
+    private $columns = "id, code, date, year, month, day, region_id,  todoufuken_id, area_id, daytime,is_daytime_shine,daytime_number,daytime_shine_sequence,night,is_night_shine,night_shine_sequence,yesterday_night,is_yesterday_night_shine , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence";
+    private $start_datetime;
     private $start_date;
+    /*
+    除去
+    川崎市、、神戸市、さいたま市、横浜市#
+    
+    top下部の連休
+    札幌 4
+    仙台 13
+    東京 30
+    名古屋 25
+    京都 34
+    大阪 40
+    広島 37
+    福岡 43
+    沖縄 56
+    */
+    private $million_city_query = 'area_id = 4 OR area_id = 13 OR area_id = 30 OR area_id = 25 OR area_id = 34 OR area_id = 40 OR area_id = 37 OR area_id = 43 OR area_id = 56';
     
     function __construct()
     {
         parent::__construct();
         $this->CI =& get_instance();
-        $this->start_date = date("Y-n-j",strtotime("+8 day"));
+        $this->start_datetime = strtotime("+8 day");
+        $this->start_date = date("Y-n-j",$this->start_datetime);
     }
     
     //top slide
@@ -32,23 +50,15 @@ class Future_model extends CI_Model
         if ($query->num_rows() != 0) return $query->result();
         return array();
     }
-    /*
-    top下部の連休
-    札幌
-    仙台
-    東京
-    名古屋
-    大阪
-    福岡
-    沖縄
-    */
-    function getFuturesGoupByAreaByHolidayBySequenceForSlide($holiday = 2,$sequence = 2)
+
+    function getFuturesGoupByAreaByHolidaySequenceByMillionCity($holiday_sequence = 2,$shine_sequence = 2)
     {
         $query = $this->db->query("SELECT {$this->columns}
                                     FROM {$this->table_name}
-                                    WHERE date > '{$this->start_date}' AND holiday = {$holiday} AND is_daytime_shine = 0 AND is_night_shine = 0 AND is_yesterday_night_shine = 0  AND ( area_id = 4 OR area_id = 13 OR area_id = 30 OR area_id = 25 OR area_id = 40 OR area_id = 43 OR area_id = 56)
+                                    WHERE daytime='晴' AND is_daytime_shine = 0 AND holiday >= 1 AND date > '{$this->start_date}' AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
+                                    AND ( {$this->million_city_query} )
                                     GROUP BY area_id"
-        , array($holiday)
+        , array($holiday_sequence,$shine_sequence)
         );
         if ($query->num_rows() != 0) return $query->result();
         return array();
@@ -92,21 +102,95 @@ class Future_model extends CI_Model
 
         return $result;
     }
-    
-    //休日+休前日限定で晴れる連休を取得
-    function getFuturesByAreaIdByHolidayByYoubiBySequence($area_id,$holiday,$sequence,$order, $page,$youbi = null)
+
+    //汎用未来データ取得
+    function getFutures($type = 'area', $object_id, $order, $page, $sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
+    {
+        $result = array();
+        $cond = '';
+        $and_cond = array();
+        
+        //タイプ指定
+        switch ($type){
+            case 'index':
+                $perPageCount = 9 * 7;//表示エリア数 × 7日間
+                $offset = $perPageCount * ($page - 1);
+                //$and_cond[] = "{$this->table_name}.area_id = ".$object_id;
+                $end_datetime = $this->start_datetime + (86400 * 7);
+                $end_date = date("Y-n-j",$end_datetime);
+                $and_cond[] = "( {$this->million_city_query} )";
+                $and_cond[] = "date < '{$end_date}'";
+            break;
+            case 'area':
+                $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+                $offset = $perPageCount * ($page - 1);
+                $and_cond[] = "is_daytime_shine = 0";
+                $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
+            break;
+        }
+        
+        //晴れの連続数
+        if(!is_null($sequence)){
+            $and_cond[] = "holiday_sequence >= {$sequence}";
+        }
+        
+        //日タイプ
+        switch ($day_type['type']){
+            case 'index':
+
+            break;
+            case 'holiday':
+                $and_cond[] = "holiday >= {$day_type['value']}";
+            break;
+            case 'youbi':
+                $and_cond[] = "day_of_the_week = {$day_type['value']}";
+            break;
+        }
+        
+        //期間
+        if(is_null($start_date)){
+            $and_cond[] = "date >= '{$this->start_date}'";
+        }else{
+            $and_cond[] = "date >= '{$start_date}'";
+        }
+        
+        if(!empty($and_cond)) $cond = implode(' AND ',$and_cond);
+        $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS {$this->columns}
+                                    FROM {$this->table_name}
+                                    WHERE $cond
+                                    ORDER BY {$this->table_name}.{$order}
+                                    LIMIT {$offset},{$perPageCount}"
+        );
+        if ($query->num_rows() != 0) {
+            $result['data'] = $query->result();
+            $query = $this->db->query("SELECT FOUND_ROWS() as count");
+            if($query->num_rows() == 1) {
+                foreach ($query->result() as $row)
+                $result['count'] = $row->count;
+            }
+        } else {
+            $result['data'] = array();
+            $result['count'] = 0;
+        }
+
+        return $result;
+    }
+
+    //休日で晴れる連休を取得。ゴルフはこちら
+    //休日+休前日限定で晴れる連休を取得。温泉はこちら
+    function getFuturesByAreaIdByHolidayByYoubiBySequence($area_id, $order, $page, $holiday = null, $sequence = null, $youbi = null)
     {
         $result = array();
         $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
         $offset = $perPageCount * ($page - 1);
         if(is_null($youbi)){
-            $cond = "holiday >= $holiday";
+            $cond = "holiday >= $holiday AND holiday_sequence >= $sequence";
         }else{
             $cond = "(holiday >= $holiday AND holiday_sequence >= $sequence || day_of_the_week = $youbi)";
         }
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS {$this->columns}
                                     FROM {$this->table_name}
-                                    WHERE is_daytime_shine = 0 AND date > '{$this->start_date}' AND {$this->table_name}.area_id = ? AND $cond
+                                    WHERE is_daytime_shine = 0 AND date > '{$this->start_date}' AND {$this->table_name}.area_id = ?
                                     ORDER BY {$this->table_name}.{$order}
                                     LIMIT {$offset},{$perPageCount}"
         , array($area_id,$sequence)
@@ -138,7 +222,8 @@ class Future_model extends CI_Model
         if ($query->num_rows() == 1) return $query->row();
         return array();
     }
-
+    
+    //指定エリアの指定日
     function getFutureByAreaIdByDate($area_id,$date)
     {
         $query = $this->db->query("SELECT *
@@ -147,6 +232,31 @@ class Future_model extends CI_Model
         , array(intval($area_id))
         );
         if ($query->num_rows() == 1) return $query->row();
+
+        return array();
+    }
+    
+    //指定エリアの指定日+前後1周間分
+    function getFuturesByAreaIdByDateForWeek($area_id,$date)
+    {
+        $ymd = explode('-',$date);
+        $time = mktime(0,0,0,$ymd[1],$ymd[2],$ymd[0]);
+        $cond = '';
+        
+
+        if( $this->start_datetime < $time && ($this->start_datetime - $time) <= 86400*3 ){//予想開始日から3日以内の場合はstart_dateを使用
+            $cond = "date >= '{$this->start_date}'";
+        }else{//天気予報が出している日付+今日を含む過去の日付又は、通常日付
+            $base = $time - 86400*3;
+            $cond = "date >= '{$base}'";
+        }
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE {$this->table_name}.area_id = ? AND {$cond}
+                                    LIMIT 0,7"
+        , array(intval($area_id))
+        );
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 

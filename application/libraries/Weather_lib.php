@@ -2,6 +2,8 @@
 
 class Weather_lib
 {
+    public  $cache_dir             = 'cache/';     // Cache directory
+    
     function __construct()
     {
         $this->ci =& get_instance();
@@ -206,10 +208,7 @@ class Weather_lib
                 if($month_day_weather->is_snow == 0) $is_snows[] = 0;
             }
         }
-        if(!isset($temperature_mins)){
-var_dump($month_day_weathers);
-die();
-        }
+
         //昼の天気予想
         $array_count = array_count_values($daytimes);
         arsort($array_count);
@@ -280,39 +279,94 @@ die();
     }
 
     function get_holidays_this_month($year){
-        $holidays_url = sprintf(
-            'http://www.google.com/calendar/feeds/%s/public/full?alt=json&%s&%s',
-            'japanese__ja%40holiday.calendar.google.com',
-            'start-min='.$year.'-01-01',
-            'start-max='.$year.'-12-31'
-        );
-        if ( $results = file_get_contents($holidays_url) ) {
-                $results = json_decode($results, true);
-                $holidays = array();
-                foreach ($results['feed']['entry'] as $val ) {
+        $return_holidays = array();
+        
+        //2年分
+        for ($loop_year=$year;$loop_year <= $year+1;$loop_year++){
+            $holidays_url = sprintf(
+                'http://www.google.com/calendar/feeds/%s/public/full?alt=json&%s&%s',
+                'japanese__ja%40holiday.calendar.google.com',
+                'start-min='.$loop_year.'-01-01',
+                'start-max='.$loop_year.'-12-31'
+            );
+
+            $filename = APPPATH.$this->cache_dir.'holidays/'.md5($holidays_url).'.serialize';
+            // Is there a cache file ?
+            if (file_exists($filename))
+            {
+                $file = file($filename);
+                $holidays = unserialize($file[0]);
+            }
+            else
+            {
+                if ( $results = file_get_contents($holidays_url) ) {
+                    $results = json_decode($results, true);
+                    $holidays = array();
+                    foreach ($results['feed']['entry'] as $val ) {
                         $date  = $val['gd$when'][0]['startTime'];
                         $week = date('w',strtotime($date));
                         $title = $val['title']['$t'];
                         $holidays[$date] = $title;
-     
+
                         if( $week == 0) {
                             $nextday = date('Y-m-d',strtotime('+1 day', strtotime($date)));
                             $holidays[$nextday] = '振替休日';
                         }
-     
+
                         $before_yesterday = date('Y-m-d',strtotime('-2 day', strtotime($date)));
-     
+
                         if(isset($holidays[$before_yesterday])){
                             $yesterday = date('Y-m-d',strtotime('-1 day', strtotime($date)));
                             $holidays[$yesterday] = '国民の休日';
                         }
-     
+                    }
+                    ksort($holidays);
                 }
-                ksort($holidays);
+                if (!$fp = @fopen($filename, 'w+b'))
+                {
+                    log_message('error', "Unable to write cache file: ".$filename);
+                    return;
+                }
+                flock($fp, LOCK_EX);
+                fwrite($fp, serialize($holidays));
+                flock($fp, LOCK_UN);
+                fclose($fp);
+            }
+            $return_holidays = array_merge($return_holidays,$holidays);
         }
-        return $holidays;
+        return $return_holidays;
     }
 
+    function getFeelTemperature($temperature_average){
+        if($temperature_average > 30){
+            return '暑い';
+        }elseif($temperature_average <= 30 && $temperature_average > 15){
+            return '暖かい';
+        }elseif($temperature_average <= 15 && $temperature_average > 0){
+            return '寒い';
+        }else{
+            return '凍える';
+        }
+    }
+    
+    function makeHistoricalWeatherByAreaIdByDate(&$data,$area_id,$date){
+        $ymd = explode('-',$date);
+        $from_year = $ymd[0] - 20;//20年間表示
+        $data['month_day_weathers'] = $this->ci->Weather_model->getWeatherByAreaIdByMonthByDayByYear($area_id,$ymd[1],$ymd[2],$from_year);
+        foreach ($data['month_day_weathers'] as $month_day_weather){
+            $daytimes[] = $month_day_weather->daytime;
+            $temperature_averages[] = $this->getFeelTemperature($month_day_weather->temperature_average);
+        }
+        $data['daytimes'] = array_count_values($daytimes);
+        arsort($data['daytimes']);
+        $data['count_daytimes'] = count($data['daytimes']);
+
+        //最高気温
+        $data['feel_temperatures'] = array_count_values($temperature_averages);
+        arsort($data['feel_temperatures']);
+        $data['count_temperature_averages'] = count($data['feel_temperatures']);
+    }
+    
     function checkCsvRowForNumeric($column){
         if(is_numeric($column)){
             return $column;

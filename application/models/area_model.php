@@ -64,6 +64,18 @@ class Area_model extends CI_Model
         return array();
     }
 
+    function getAreaByRakutenAreaCode($rakuten_area_code)
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE {$this->table_name}.rakuten_area_code = ?"
+        , array($rakuten_area_code)
+        );
+
+        if ($query->num_rows() == 1) return $query->row();
+        return array();
+    }
+
     function getAllAreasFlipJmaId()
     {
         $query = $this->db->query("SELECT *
@@ -85,6 +97,19 @@ class Area_model extends CI_Model
 
         //if ($query->num_rows() != 0) return $query->result();
         if ($query->num_rows() != 0) return $query->result('flip');
+        return array();
+    }
+
+    function getAllAreasOrderRegionIdOrderRakutenTdoufukenId()
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE rakuten_area_code != 9999
+                                    ORDER BY {$this->table_name}.region_id,{$this->table_name}.rakuten_area_code ASC"
+        );
+
+        //if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 
