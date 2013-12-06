@@ -38,14 +38,14 @@ class Future_model extends CI_Model
     }
     
     //top slide
-    function getSpringFuturesGoupByAreaByHolidayBySequenceForSlide($spring_id,$holiday = 1,$sequence = 2)
+    function getSpringFuturesGoupByAreaByHolidayBySequenceForSlide($spring_id,$holiday = 1,$holiday_sequence = 2,$shine_sequence = 2)
     {
         $query = $this->db->query("SELECT {$this->table_name}.id AS id,{$this->table_name}.area_id AS area_id, date, springs.id AS spring_id, springs.spring_name, daytime,is_daytime_shine,daytime_number,daytime_shine_sequence,night,is_night_shine,night_shine_sequence,yesterday_night,is_yesterday_night_shine , temperature_max, temperature_min, rain_percentage, snow_percentage,holiday,holiday_sequence
                                     FROM {$this->table_name}
                                     INNER JOIN springs ON {$this->table_name}.area_id = springs.area_id
-                                    WHERE is_daytime_shine = 0 AND is_night_shine = 0 AND is_yesterday_night_shine = 0 AND date > '{$this->start_date}' AND springs.id = ? AND holiday >= ? AND holiday_sequence >= ?
+                                    WHERE is_daytime_shine = 0 AND date > '{$this->start_date}' AND springs.id = ? AND holiday >= ? AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
                                     GROUP BY area_id"
-        , array($spring_id,$holiday,$sequence)
+        , array($spring_id,$holiday,$holiday_sequence,$shine_sequence)
         );
         if ($query->num_rows() != 0) return $query->result();
         return array();
@@ -78,7 +78,7 @@ class Future_model extends CI_Model
     function getFuturesByRegionIdByHoliday($region_id,$order, $page)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS {$this->columns}
                                     FROM {$this->table_name}
@@ -104,7 +104,7 @@ class Future_model extends CI_Model
     }
 
     //汎用未来データ取得
-    function getFutures($type = 'area', $object_id, $order, $page, $sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
+    function getFutures($type = 'area', $object_id, $order, $page,$weather = 'shine', $daytime_shine_sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
     {
         $result = array();
         $cond = '';
@@ -113,7 +113,7 @@ class Future_model extends CI_Model
         //タイプ指定
         switch ($type){
             case 'index':
-                $perPageCount = 9 * 7;//表示エリア数 × 7日間
+                $perPageCount = $this->CI->config->item('paging_count_per_index_page');
                 $offset = $perPageCount * ($page - 1);
                 //$and_cond[] = "{$this->table_name}.area_id = ".$object_id;
                 $end_datetime = $this->start_datetime + (86400 * 7);
@@ -122,16 +122,25 @@ class Future_model extends CI_Model
                 $and_cond[] = "date < '{$end_date}'";
             break;
             case 'area':
-                $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+                $perPageCount = $this->CI->config->item('paging_count_per_area_page');
                 $offset = $perPageCount * ($page - 1);
-                $and_cond[] = "is_daytime_shine = 0";
                 $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
+                if($weather == 'shine'){
+                    $and_cond[] = "is_daytime_shine = 0";
+                }elseif($weather == 'rain'){
+                    $and_cond[] = "is_rain = 0";
+                }elseif($weather == 'snow'){
+                    $and_cond[] = "is_daytime_snow = 0";
+                }
+                
+                
             break;
         }
         
         //晴れの連続数
-        if(!is_null($sequence)){
-            $and_cond[] = "holiday_sequence >= {$sequence}";
+        if(!is_null($daytime_shine_sequence)){
+            //$and_cond[] = "holiday_sequence {$sequence}";
+            $and_cond[] = "daytime_shine_sequence {$daytime_shine_sequence}";
         }
         
         //日タイプ
@@ -145,15 +154,29 @@ class Future_model extends CI_Model
             case 'youbi':
                 $and_cond[] = "day_of_the_week = {$day_type['value']}";
             break;
+            case 'multi':
+                if(!empty($day_type['value'])){
+                    foreach ($day_type['value'] as $value){
+                        if($value == 0){
+                            break;
+                        }elseif($value <= 7){
+                            $or_cond[] = "day_of_the_week = ".$value;
+                        }elseif ($value == 8){
+                            $or_cond[] = "holiday = 2";
+                        }
+                        
+                    }
+                }
+            break;
         }
-        
+
         //期間
         if(is_null($start_date)){
             $and_cond[] = "date >= '{$this->start_date}'";
         }else{
             $and_cond[] = "date >= '{$start_date}'";
         }
-        
+        if(!empty($or_cond)) $and_cond[] = '('.implode(' OR ',$or_cond).')';
         if(!empty($and_cond)) $cond = implode(' AND ',$and_cond);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS {$this->columns}
                                     FROM {$this->table_name}
@@ -161,6 +184,7 @@ class Future_model extends CI_Model
                                     ORDER BY {$this->table_name}.{$order}
                                     LIMIT {$offset},{$perPageCount}"
         );
+
         if ($query->num_rows() != 0) {
             $result['data'] = $query->result();
             $query = $this->db->query("SELECT FOUND_ROWS() as count");
@@ -181,7 +205,7 @@ class Future_model extends CI_Model
     function getFuturesByAreaIdByHolidayByYoubiBySequence($area_id, $order, $page, $holiday = null, $sequence = null, $youbi = null)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         if(is_null($youbi)){
             $cond = "holiday >= $holiday AND holiday_sequence >= $sequence";
@@ -242,17 +266,17 @@ class Future_model extends CI_Model
         $ymd = explode('-',$date);
         $time = mktime(0,0,0,$ymd[1],$ymd[2],$ymd[0]);
         $cond = '';
-        
 
-        if( $this->start_datetime < $time && ($this->start_datetime - $time) <= 86400*3 ){//予想開始日から3日以内の場合はstart_dateを使用
+        if( $this->start_datetime < $time && ($time - $this->start_datetime) <= 86400*3 ){//予想開始日から3日以内の場合はstart_dateを使用
             $cond = "date >= '{$this->start_date}'";
         }else{//天気予報が出している日付+今日を含む過去の日付又は、通常日付
-            $base = $time - 86400*3;
+            $base = date("Y-m-d",$time - 86400*3);
             $cond = "date >= '{$base}'";
         }
         $query = $this->db->query("SELECT *
                                     FROM {$this->table_name}
                                     WHERE {$this->table_name}.area_id = ? AND {$cond}
+                                    ORDER BY date ASC
                                     LIMIT 0,7"
         , array(intval($area_id))
         );

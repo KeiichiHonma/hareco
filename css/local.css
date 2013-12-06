@@ -14,7 +14,6 @@ body {
 	width:100%;
 	background:#fff;
 	height:82px;
-	position:fixed;
 	z-index:5000;
 }
 #headerInner{
@@ -56,7 +55,7 @@ body {
 	position:absolute;
 	top:8px;
 	right:0;
-	z-index:100;
+	z-index:6000;
 }
 
 .navPc li {
@@ -117,11 +116,72 @@ body {
 #header .navPc li ul li a:hover {
 	color:#fff;
 } 
+#header .navPc li ul.menuCity {
+	top: 28px;
+	left:-468px;
+	width:600px;
+	background: url(../images/bg_nav.png) 0px 0px repeat;
+}
+ul.menuCity div {
+	padding:20px;
+	padding-bottom:15px;
+}
+ul.menuCity dl {
+	display:block;
+	border-bottom:1px solid #ccc;
+
+	margin-bottom:10px;
+}
+ul.menuCity dt, ul.menuCity dd{
+	display:block;
+	float:left;
+	margin-bottom:5px;
+}
+
+ul.menuCity dt{
+	clear: left;
+	width:100px;
+	color:#a3a3a3;
+}
+
+ul.menuCity dt.spring_area{
+	width:80px;
+}
+
+ul.menuCity dt.hakone{
+	width:80px;
+    height:140px;
+}
+
+ul.menuCity dd{
+	margin-right:10px;
+	padding:0 0;
+}
+ul.menuCity dd{
+	margin-right:10px;
+}
+
+ul.menuCity dd a {
+	display: block;
+	text-decoration:none;
+	color:#fff;
+	line-height:120%;
+	padding-left:12px;
+	background: url(../images/icon_arrow_nav.png) 0 1px no-repeat; 
+}
+ul.menuCity dd a:hover {
+	color:#a3a3a3;
+} 
+
+
+
+
 #breadcrumb {
 	width:100%;
 	background:url(../images/bg_breadcrumb.png) 0 0 repeat-x;
 	float:none;
 	display:block;
+	z-index:2000;
 }
 #breadcrumbInner {
 	width:997px;
@@ -146,6 +206,25 @@ body {
 #breadcrumbInner span a:hover{
 	background:url(../images/bg_breadcrumb_on.png) 0 0 repeat-x;
 }
+#breadcrumb #searchBox {
+	float:right;
+	padding-top:7px;
+}
+#breadcrumb #searchBox .focus{
+	width:300px;
+	height:16px;
+	padding:2px 5px;
+	margin-right:8px;
+	color:#a0a09f;
+}
+
+.ie #breadcrumb #searchBox .focus{ height:20px; }
+
+#breadcrumb #searchBox .btnSearch {
+	width:56px;
+	height:26px;
+}
+
 
 
 #cloud {
@@ -156,7 +235,7 @@ body {
 	position:absolute;
 	top:49px;
 	right:0;
-	z-index:10;
+	z-index:5000;
 }
 #cloud h3{
 	display:none;
@@ -187,26 +266,10 @@ body {
 	background-color: #000 !important;
 	margin:0 auto;
 	position:relative;
-	top:82px;
+	top:0;
 	left:0;	
 }
-/*
-#ind #mainImage .gradationLeft {
-	width:126px;
-	height:460px;
-	z-index:100;
-	position:absolute;
-	background: url(../images/gradation_left.png) 0 0 no-repeat;
-}
-#ind #mainImage .gradationRight {
-	width:126px;
-	height:460px;
-	z-index:100;
-	right:0;
-	position:absolute;
-	background: url(../images/gradation_right.png) right 0 no-repeat;
-}
-*/
+
 #ind #mainImage #copy {
 	position:absolute;
 	top:108px;
@@ -312,13 +375,13 @@ body {
 
 #ind #mainImage .minWeather{
 	position:absolute;
-	top:800px;
+	top:780px;
 	right:0;	
 	background:#000;
-	width:326px;
-	height:82px;
-	padding-top:20px;
+	width:auto;
+	padding-top:15px;
 	padding-left:30px;
+	padding-bottom:15px;
 	 border-radius: 10px;
     -webkit-border-radius: 10px;  
     -moz-border-radius: 10px;
@@ -328,21 +391,35 @@ body {
     font-weight:bold;
     font-size:24px;
 }
+#ind .minWeather h4 {
+	text-align:left;
+	margin-bottom:8px;
+	font-size:18px;
+	font-weight:bold;
+}
+
 #ind .minWeather .box {
-	width:140px;
-	float:left;
-	margin-right:20px;
-}
-#ind .minWeather .icon {
-	width:60px;
-	height:60px;
+	width:170px;
 	float:left;
 }
-#ind .minWeather .icon img{
+#ind .minWeather div.icon {
+	width:64px;
+	height:64px;
+	float:left;
+}
+#ind .minWeather div.icon img{
 	width:64px;
 	height:64px;
 }
 
+#ind .minWeather div.date { 
+	width:140px;
+	font-size:26px; 
+	font-weight:bold;
+	padding-top:30px;
+}
+
+/*
 #ind .minWeather ul {
 	display:block;
 	float:left;
@@ -354,7 +431,7 @@ body {
 }
 #ind .minWeather .date { font-size:14px; }
 #ind .minWeather .city { font-size:18px; }
-
+*/
 
 
 
@@ -372,7 +449,7 @@ body {
 	border: solid #fff 0px;
 	margin:0 auto;
 	position:relative;
-	top:82px;
+	top:0;
 	left:0;	
 	background-position:center center !important;
 	background-repeat:no-repeat !important;
@@ -384,7 +461,7 @@ body {
 
 #mainImage.sub #mainImageInner{
 	position: relative;
-	max-width:2000px;
+	max-width:1600px;
 	margin: 0 auto;
 	background:#fff;
 	z-index:1000;
@@ -392,14 +469,14 @@ body {
 
 
 #mainImage.sub .gradationLeft {
-	width:126px;
+	width:200px;
 	height:460px;
 	z-index:100;
 	position:absolute;
 	background: url(../images/gradation_left.png) 0 0 no-repeat;
 }
 #mainImage.sub .gradationRight {
-	width:126px;
+	width:200px;
 	height:460px;
 	z-index:100;
 	right:0px;
@@ -530,7 +607,6 @@ body {
 --------------------------------------------------*/
 #contents {
 	background:url(../images/bg_content.png) 0 0 repeat;
-	padding-top:82px;
 }
 #contentsInner {
 	width:970px;
@@ -545,8 +621,7 @@ body {
 	margin-bottom:20px;
 	line-height:120%;
 }
-#contentsInner .line00 { margin-bottom:20px;}
-#contentsInner .line01 { margin-bottom:20px;}
+#contentsInner .line { margin-bottom:20px;}
 
 
 #contentsInner div.box {
@@ -658,6 +733,7 @@ body {
 #contentsInner div.box .text p{
     margin-bottom:8px;
     padding-right:10px;
+    height:35px;
 }
 
 #contentsInner div.box .date {
@@ -689,7 +765,61 @@ body {
 	margin-top:40px;
 }
 
+#contentsInner #recommend div.box { 
+	height:168px;
+	width:117px;
+}
+#contentsInner #recommend div.shadow { 
+	width:117px;
+	114px-position:bottom 0;
+	background-size:150px 60px;
+	background-position:0 bottom;
+}
+#contentsInner #recommend div.box .photo{
+	width:117px;
+	height:80px;
+}
+#contentsInner #recommend div.box .photo img{
+	width:117px;
+	height:80px;
+}
+#contentsInner #recommend div.box span{
+	font-size:12px;
+	bottom:4px;
+	left:0;
+	width:100%;
+	text-align:center;
+}
 
+#contentsInner div.box .photo span{
+	position:absolute;
+    bottom:12px;
+    right:15px;
+	display:block;
+	color:#fff;
+	font-weight:bold;
+	z-index:300;
+	line-height:140%;
+	text-align:right;
+}
+
+
+#contentsInner #recommend div.box .icon {
+	display:block;
+    position:absolute;
+    top:8px;
+    left:8px;
+    width:60px;
+    height:60px;
+    z-index:300;
+}
+#contentsInner #recommend div.box .text {
+    top:94px;
+    left:8px;
+}
+#contentsInner #recommend div.box em {font-style:normal;}
+#contentsInner #recommend div.box .highTemp em { color:#fc4747;}
+#contentsInner #recommend div.box .lowTemp em { color:#26aadb;}
 
 
 
@@ -814,57 +944,62 @@ body {
 
 /* area page
 --------------------------------------------------*/
-#area #btnPc {
-	width:930px;
-	border-bottom:1px solid #dad9d9;
+#btnPc {
+	width:910px;
 	padding-bottom:20px;
-	margin-bottom:30px;
-}
-
-#area #btnPc dl {
-	display:block;
 	margin-bottom:10px;
-	font-size:14px;
 }
 
-#area #btnPc dt {
+#btnPc dl {
+	display:block;
+	font-size:14px;
+	border-bottom: 1px solid #eaeaea;
+	padding:10px 10px;
+}
+
+#btnPc dl.btnPc01, #btnPc dl.btnPc03 {
+	background:#f9f9f9;
+}
+
+#btnPc dt {
 	display:block;
 	font-weight:bold;
 	float:left;
 	clear:left;
 	width:50px;
-    padding-top:8px;
+    padding-top:5px;
 }
 
-#area #btnPc dd {
+#btnPc dd {
 	display:block;
 	font-weight:bold;
 	float:left;
     margin-right:12px;  
 }
 
-#area #btnPc dd a{
+#btnPc dd a{
 	display:block;
 	border:1px solid #e2e2e2;
 	border-radius: 2px;
     -webkit-border-radius: 2px;  
     -moz-border-radius: 2px;
-    padding:20px 30px;
+    padding:20px 40px;
     -moz-box-shadow: 0 0 3px #e2e2e2;
     -webkit-box-shadow: 0 0 3px #e2e2e2;
     box-shadow: 0 0 3px #e2e2e2; 
+    background:#fff;
 }
-#area #btnPc dd a:hover{
+#btnPc dd a:hover{
 	border:1px solid #c3c2c2;
 }
-#area #btnPc dd.active a{
+#btnPc dd.active a{
 	border:1px solid #ffb969;
 	-moz-box-shadow: 0 0 3px #ffc37f;
     -webkit-box-shadow: 0 0 3px #ffc37f;
     box-shadow: 0 0 3px #ffc37f; 
 }
 
-#area #btnSp {
+#btnSp {
 	display:none;
 }
 
@@ -906,16 +1041,20 @@ body {
 	background:#fef2c3;
 	font-weight:bold;
 	color:#333;
-	border-right:1px solid #fff;
-	/* border-right:1px solid #f3ca35; */
+	/*border-right:1px solid #fff;*/
+	 border-right:1px solid #f3ca35;
 }
 
-#weather td.day07{ border-right:none; }
+#weather th.cell01{ border-left:1px solid #f3ca35; }
+#weather th.cell02{ border-left:1px solid #dfdedb; }
 
-#weather .title td.day04 { background:#c4e1f0; }
-#weather .title td.day05 { background:#ffd4b5; }
-#weather td.day04{ background:#eef6fa; }
-#weather td.day05{ background:#feede1; }
+/*
+#weather td.day07{ border-right:none; }
+*/
+#weather .title td.sat { background:#c4e1f0; }
+#weather .title td.sun { background:#ffd4b5; }
+#weather td.sat{ background:#eef6fa; }
+#weather td.sun{ background:#feede1; }
 
 #weather .icon { width:50%;}
 
@@ -996,7 +1135,7 @@ body {
 }
 #boxLeisure .plan li{
 	display:block;
-	width:300px;
+	width:270px;
 	float:left;
 	margin-right:20px;
 }
@@ -1082,7 +1221,9 @@ body {
 
 #mainImage.sub h2 { margin-top:106px; padding:0 20px;}
 #mainImage.sub h3 { padding:0 20px;}
-#area #btnPc { width:100%; }
+#btnPc {width:920px; }
+
+
 
 }
 

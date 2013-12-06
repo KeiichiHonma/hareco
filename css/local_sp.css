@@ -1,4 +1,4 @@
-﻿@charset "utf-8";
+@charset "utf-8";
 /* local_sp css*/
 
 
@@ -6,7 +6,9 @@
 /* 640px以下 for Smart Phone
 ------------------------------------------------------------------*/
 @media only screen and (max-width: 640px){
-
+.undisp{
+    display:none;
+}
 /* header
 --------------------------------------------------*/
 #header {
@@ -47,8 +49,6 @@
 	background:url(../images/menu_sp.png) 0 0 no-repeat;
 	background-size:34px 34px;
 }
-
-
 #header .navSp .ttl{
 	background:#505050;
 	padding-left:10px;
@@ -58,6 +58,12 @@
 
 #header .navSp .ttl:hover{
 	border-top: 1px solid #4d4d4d;
+}
+#breadcrumb #searchBox {
+	display:none;
+}
+.scrolltop {
+	position:relative !important;
 }
 
 
@@ -194,9 +200,6 @@
 
 /* content
 --------------------------------------------------*/
-#contents {
-	margin-top:-82px !important;
-}
 #contentsInner {
 	width:278px;
 	margin:0 auto;
@@ -217,7 +220,6 @@
 	height:125px;
 }
 
-#contentsInner .line02 { display:none;}
 #contentsInner #guide div.box .icon { top:100px; }
 #contentsInner #guide div.box .text { top:130px; }
 
@@ -238,6 +240,11 @@
 #contentsInner #outing div.box  {
 	height:125px;
 }
+#contentsInner #recommend div.box { 
+	float:left;
+	margin:10px;
+}
+
 
 
 
@@ -302,9 +309,10 @@
 }
 #weather th{ width:20px;}
 #weather th , #weather td{ padding: 4px 8px; }
+/*
 #weather td.day01, #weather td.day02, #weather td.day03, #weather td.day06, #weather td.day07{ display:none; }
 #weather td.day05 { border-right:none;}
-
+*/
 
 
 
@@ -337,7 +345,12 @@
 	float:left;
 	margin-right:20px;
 }
-
+#boxLeisure .plan li img {
+	width:100%;
+	float:none;
+	margin-right:0;
+	margin-bottom:10px;
+}
 #boxLeisure .btnBooking {margin:0;}
 #boxLeisure .plan {
 	padding:25px;

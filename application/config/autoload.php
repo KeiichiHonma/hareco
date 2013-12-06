@@ -108,7 +108,7 @@ $autoload['language'] = array('common');
 |
 */
 
-$autoload['model'] = array('Area_model');
+//$autoload['model'] = array('Region_model','Area_model');
 
 
 /* End of file autoload.php */

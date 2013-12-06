@@ -25,15 +25,40 @@ class Area extends MY_Controller {
         $this->load->helper('url');
         $this->load->helper('form');
         $this->load->helper('image');
+        $this->load->helper('weather');
         $this->lang->load('setting');
         $this->lang->load('spring');
         $this->load->library('tank_auth');
+        $this->load->model('Region_model');
+        $this->load->model('Area_model');
         $this->load->model('Spring_model');
         $this->load->model('Future_model');
         $this->load->model('Weather_model');
         $this->load->library('weather_lib');
         $this->load->library('jalan_lib');
+        $this->data['regions'] = $this->Region_model->getAllregions();
         $this->data['areas'] = $this->Area_model->getAllAreas();
+        $this->data['holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+    }
+    function test()
+    {
+        $data['csrf_token'] = $this->security->get_csrf_token_name();
+        $data['csrf_hash'] = $this->security->get_csrf_hash();
+        $this->load->view('area/test', $data);
+    }
+
+    function index()
+    {
+        $data['isIndex'] = TRUE;
+        $data['bodyId'] = 'ind';
+
+        $data['area_slide'] =array_rand($this->data['areas'],5);
+        $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
+        $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
+
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/jquery-ui-1.10.3.custom.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js','js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
+        $this->load->view('area/index', array_merge($this->data,$data));
     }
 
     /**
@@ -45,26 +70,44 @@ class Area extends MY_Controller {
         if(!isset($this->data['areas'][$area_id])){
             show_404();
         }
+        $data['bodyId'] = 'area';
+        $data['leisure_type'] = 'area';
         $data['area_id'] = $area_id;
 
         //未来データ/////////////////////////////////////////
+        $data['recommend_futures_title'] = $this->data['areas'][$area_id]->area_name.'のおでかけプランニング';
         $orderExpression = "date ASC";
         $page = 1;
-        $sequence = 1;
-        $day_type = array('type'=>'holiday','value'=>1);//休日+祝日
+        $weather = 'shine';
+        $daytime_shine_sequenceExpression = ' >= 1';//指定なし
+        $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = null;//指定なし。直近
-        $futuresData = $this->Future_model->getFutures('area', $area_id, $orderExpression, $page, $sequence, $day_type = array('type'=>'holiday','value'=>1), $start_date);
-        $data['futures'] = $futuresData['data'];
+        $futuresData = $this->Future_model->getFutures('area', $area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
 
-        //温泉
-        $this->jalan_lib->makeSpringsPlansByAreaId($data,$area_id);
-
-        $data['topicpaths'][] = array('/',$this->lang->line('common_title_home'));
-        $data['topicpaths'][] = array(null,$this->data['areas'][$area_id]->area_name);
+        //じゃらんホテル
+        $data['hotel_title'] = '晴れの日に'.$this->data['areas'][$area_id]->area_name.'近辺の温泉へ行く';
+        $this->jalan_lib->makeSpringsHotelsByAreaId($data,$area_id);
+        $data['stop_line'] = 2;
+        
+        $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
+        $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
+        $data['topicpaths'][] = array('/area/show/'.$area_id,$this->data['areas'][$area_id]->area_name);
+        
         //set header title
         $data['header_title'] = sprintf($this->lang->line('spring_header_title'), $this->data['areas'][$area_id]->area_name, $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $this->data['areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $this->data['areas'][$area_id]->area_name);
+        
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery-ui-1.10.3.custom.css','css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js',
+            'js/jquery.form.js',
+            'js/jquery.blockUI.js',
+            'js/jquery.easing.1.3.js',
+            'js/scrolltop.js',
+            'js/future.js'
+        )));
 
         $this->load->view('area/show', array_merge($this->data,$data));
     }
@@ -74,39 +117,71 @@ class Area extends MY_Controller {
         if(!isset($this->data['areas'][$area_id])){
             show_404();
         }
-        $data['area_id'] = $area_id;
-        
-        //書式：2012/01/01
-        if(preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
 
+        //書式：2012/01/01
+        if(!preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
+        
+        $data['bodyId'] = 'area';
+        $data['leisure_type'] = 'area';
+        $data['area_id'] = $area_id;
+/*
+        $data['date'] = $date;
+        $data['ymd'] = explode('-',$date);
+        $data['datetime'] = mktime(0,0,0,$data['ymd'][1],$data['ymd'][2],$data['ymd'][0]);
+        $data['display_date'] = date("Y年n月j日",$data['datetime']);
+        $data['jalan_date'] = $data['ymd'][0].$data['ymd'][1].$data['ymd'][2];
+*/
+        //dateページでは全て指定日表示なので、この段階で生成
+        $data['target_date'] = $date;
+        $data['from_ymd'] = explode('-',$date);
+        $data['from_datetime'] = mktime(0,0,0,$data['from_ymd'][1],$data['from_ymd'][2],$data['from_ymd'][0]);
+        $data['from_display_date'] = date("n/j",$data['from_datetime']);
+        $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['holidays']),TRUE);
+        $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
+        $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
+        
+        $data['to_datetime'] = $data['from_datetime'] + 86400;
+        $data['to_display_date'] = date("n/j",$data['to_datetime']);
+        $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['holidays']),TRUE);
+        
         //未来データ
         $data['week_futures'] = $this->Future_model->getFuturesByAreaIdByDateForWeek($area_id,$date);
+
         if(empty($data['week_futures'])){
             show_404();
         }
-        
+
         //天気の歴史
         $this->weather_lib->makeHistoricalWeatherByAreaIdByDate($data,$area_id,$date);
 
         //デフォルト
         $orderExpression = "date ASC";
         $page = 1;
-        $sequence = 1;//
-        $day_type = array('type'=>'holiday','value'=>1);//休日+祝日
+        $weather = 'shine';
+        $daytime_shine_sequenceExpression = ' >= 1';//指定なし
+        $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = null;//指定なし。直近
-        $futuresData = $this->Future_model->getFutures('area', $area_id, $orderExpression, $page, $sequence, $day_type = array('type'=>'holiday','value'=>1), $start_date);
-        $data['etc_futures'] = $futuresData['data'];
+        $futuresData = $this->Future_model->getFutures('area', $area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $data['etc_futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
         
         //温泉
+        $data['plan_title'] = $this->data['areas'][$area_id]->area_name.'-'.date("n月j日",$data['from_datetime']).'の温泉プラン';
         $this->jalan_lib->makeSpringsPlansByAreaIdByDate($data,$area_id,$date);
+        $data['use_image_type'] = 'hotel';//ホテル画像の方が映える
+        $data['stop_line'] = 2;
 
-        $data['topicpaths'][] = array('/',$this->lang->line('common_title_home'));
-        $data['topicpaths'][] = array(null,$this->data['areas'][$area_id]->area_name);
+        $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
+        $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
+        $data['topicpaths'][] = array('/area/show/'.$area_id,$this->data['areas'][$area_id]->area_name);
+        $data['topicpaths'][] = array('/area/show/'.$area_id.'/'.str_replace('/','-',$date),$date);
+
         //set header title
         $data['header_title'] = sprintf($this->lang->line('spring_header_title'), $this->data['areas'][$area_id]->area_name, $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $this->data['areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $this->data['areas'][$area_id]->area_name);
-
+        
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/add.css','css/add_sp.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/scrolltop.js','js/Chart.js')));
         $this->load->view('area/date', array_merge($this->data,$data));
     }
 }

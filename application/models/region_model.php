@@ -43,7 +43,7 @@ class Region_model extends CI_Model
     function getRegionsOrder($order, $page)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS *
                                     FROM {$this->table_name}

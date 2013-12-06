@@ -33,7 +33,7 @@
 }
 #ind #mainImageInner{
 	position: relative;
-	max-width:1560px;
+	max-width:1600px;
 	margin: 0 auto !important;
 }
 
@@ -56,14 +56,6 @@
 	position:absolute;
 	background: url(../images/gradation_right.png) right 0 no-repeat;
 }
-
-
-#ind #mainImage .photo01{ background-image:url(../images/photo_main_01.jpg); }
-#ind #mainImage .photo02{ background-image:url(../images/photo_main_02.jpg); }
-#ind #mainImage .photo03{ background-image:url(../images/photo_main_03.jpg); }
-#ind #mainImage .photo04{ background-image:url(../images/photo_main_04.jpg); }
-#ind #mainImage .photo05{ background-image:url(../images/photo_main_05.jpg); }
-
 
 /* under image size for display
 ------------------------------------------------------------------*/
@@ -187,6 +179,7 @@
 	left: 18px;
 	background: url(../images/icon_prev.png) no-repeat 0 0;
 	background-size:23px 39px;
+	z-index:1000 !important;
 }
 
 .bx-wrapper .bx-next {
@@ -196,6 +189,7 @@
 	top:240px !important;
 	background: url(../images/icon_next.png) no-repeat 0 0;
 	background-size:23px 39px;
+	z-index:1000 !important;
 }
 
 /*

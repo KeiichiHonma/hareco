@@ -28,11 +28,12 @@ class Weather_model extends CI_Model
         return array();
     }
 
-    function getWeatherByAreaIdByMonthByDayByYear($area_id,$month,$day,$from_year)
+    function getWeatherByAreaIdByMonthByDayByYear($area_id,$month,$day,$from_year,$orderExpression = '')
     {
         $query = $this->db->query("SELECT *
                                     FROM {$this->table_name}
-                                    WHERE {$this->table_name}.area_id = ? AND {$this->table_name}.month = ? AND {$this->table_name}.day = ? AND {$this->table_name}.year >= ?"
+                                    WHERE {$this->table_name}.area_id = ? AND {$this->table_name}.month = ? AND {$this->table_name}.day = ? AND {$this->table_name}.year >= ?
+                                    {$orderExpression}"
         , array(intval($area_id),intval($month),intval($day),$from_year)
         );
         if ($query->num_rows() != 0) return $query->result();
@@ -103,7 +104,7 @@ class Weather_model extends CI_Model
     function getWeathersOrder($order, $page)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS *
                                     FROM {$this->table_name}

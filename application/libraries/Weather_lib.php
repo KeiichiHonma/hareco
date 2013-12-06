@@ -289,7 +289,6 @@ class Weather_lib
                 'start-min='.$loop_year.'-01-01',
                 'start-max='.$loop_year.'-12-31'
             );
-
             $filename = APPPATH.$this->cache_dir.'holidays/'.md5($holidays_url).'.serialize';
             // Is there a cache file ?
             if (file_exists($filename))
@@ -352,19 +351,32 @@ class Weather_lib
     function makeHistoricalWeatherByAreaIdByDate(&$data,$area_id,$date){
         $ymd = explode('-',$date);
         $from_year = $ymd[0] - 20;//20年間表示
-        $data['month_day_weathers'] = $this->ci->Weather_model->getWeatherByAreaIdByMonthByDayByYear($area_id,$ymd[1],$ymd[2],$from_year);
+        $data['month_day_weathers'] = $this->ci->Weather_model->getWeatherByAreaIdByMonthByDayByYear($area_id,$ymd[1],$ymd[2],$from_year,$orderExpression = "ORDER BY date ASC");
+        $i = 2;
         foreach ($data['month_day_weathers'] as $month_day_weather){
-            $daytimes[] = $month_day_weather->daytime;
+            $daytimes[] = $this->changeWeatherHeadString($month_day_weather->daytime);
             $temperature_averages[] = $this->getFeelTemperature($month_day_weather->temperature_average);
+            
+            
+            if($i == 2){
+                //$data['temperature_averages']['data'][] = $month_day_weather->temperature_average;
+                //$data['temperature_averages']['year'][] = $month_day_weather->year;
+                $data['precipitation_total']['data'][] = $month_day_weather->precipitation_total;
+                $data['precipitation_total']['year'][] = $month_day_weather->year;
+                $i = $i-2;
+            }else{
+                $i++;
+            }
         }
+
         $data['daytimes'] = array_count_values($daytimes);
         arsort($data['daytimes']);
         $data['count_daytimes'] = count($data['daytimes']);
 
-        //最高気温
+        //平均気温
         $data['feel_temperatures'] = array_count_values($temperature_averages);
         arsort($data['feel_temperatures']);
-        $data['count_temperature_averages'] = count($data['feel_temperatures']);
+        //$data['count_temperature_averages'] = count($data['feel_temperatures']);
     }
     
     function checkCsvRowForNumeric($column){

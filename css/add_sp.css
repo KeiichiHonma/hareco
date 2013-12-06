@@ -1,0 +1,18 @@
+@charset "utf-8";
+/* local_sp css*/
+
+
+
+/* 640px以下 for Smart Phone
+------------------------------------------------------------------*/
+@media only screen and (max-width: 640px){
+    #contentsInner #history { { width:100%; }
+    #contentsInner div.history_box {
+        width:278px;
+        margin:20px auto;
+        float:none;
+    }
+    #backnumber {
+        display:none;
+    }
+}

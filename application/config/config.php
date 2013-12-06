@@ -389,16 +389,12 @@ if(isset($_SERVER['REQUEST_URI']) && in_array('console',explode('/',$_SERVER['RE
 |--------------------------------------------------------------------------
 |
 */
-if($is_console){
-    $config['stylesheets'][] = '';
-    
-    $config['javascripts'][] = '';
-    
-}else{
-    $config['stylesheets'][] = '';
-    
-    $config['javascripts'][] = '';
-}
+$config['stylesheets'][] = 'css/master.css';
+$config['stylesheets'][] = 'css/jquery.sidr.dark.css';
+$config['javascripts'][] = 'js/jquery-1.7.2.min.js';
+$config['javascripts'][] = 'js/css_browser_selector.js';
+$config['javascripts'][] = 'js/jquery.sidr.min.js';
+$config['javascripts'][] = 'http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js';
 
 /*
 |--------------------------------------------------------------------------
@@ -457,8 +453,12 @@ $config['jma_weather_start_year'] = 1967;//1967から天気がある
 
 $config['page_link_number'] = 5;
 $config['paging_row_count'] = 3;
-$config['paging_column_count'] = 5;
+$config['paging_column_count'] = 3;
+$config['paging_day_row_count'] = 7;
+$config['paging_day_column_count'] = 3;
 $config['paging_count_per_page'] = $config['paging_row_count'] * $config['paging_column_count'];
+$config['paging_count_per_index_page'] = 9 * 7;//表示エリア数 × 7日間
+$config['paging_count_per_area_page'] = $config['paging_day_row_count'] * $config['paging_day_column_count'];//7days 5つ
 $config['paging_count_per_manage_page'] = 10;
 /*
 |--------------------------------------------------------------------------
@@ -466,6 +466,8 @@ $config['paging_count_per_manage_page'] = 10;
 |--------------------------------------------------------------------------
 |
 */
+$config['sp_display_number'] = 2;
+
 $config['area_title_min_length'] = 1;
 $config['area_title_max_length'] = 100;
 $config['category_title_min_length'] = 1;

@@ -1,0 +1,95 @@
+        <?php if($bodyId == 'area'): ?>
+        <div id="btnPc">
+            <?php echo form_open('/json/futures','method="post" id="futures_search" class="futures_search"'); ?>
+                <dl class="btnPc01 cf gray">
+                    <dt>日付：</dt>
+                    <dd id="future_searchBox"><input type="text" name="date" value="日付を選択" id="datepicker" /></dd>
+                </dl>
+
+                <dl class="btnPc02 radio-group cf">
+                    <dt>天気：</dt>
+                    <dd><input type="radio" id="shine" name="weather" value="shine" checked /><label for="shine">晴れ</label></dd>
+                    <dd><input type="radio" id="rain" name="weather" value="rain" /><label for="rain">雨</label></dd>
+                    <dd><input type="radio" id="snow" name="weather" value="snow" /><label for="snow">雪</label></dd>
+                </dl>
+                <dl class="btnPc03 radio-group cf">
+                    <dt>晴数：</dt>
+                    <dd><input type="radio" id="sequence1" name="daytime_shine_sequence" value="1" checked /><label for="sequence1">指定なし</label></dd>
+                    <dd><input type="radio" id="sequence2" name="daytime_shine_sequence" value="2" /><label for="sequence2">2日連続</label></dd>
+                    <dd><input type="radio" id="sequence3" name="daytime_shine_sequence" value="3" /><label for="sequence3">3日連続</label></dd>
+                    <dd><input type="radio" id="sequence4" name="daytime_shine_sequence" value="4" /><label for="sequence4">4日連続</label></dd>
+                </dl>
+                <dl class="btnPc04 check-group cf gray">
+                    <dt>曜日：</dt>
+                    <dd><input type="checkbox" id="day_type0" name="dummy[]" value="0" /><label for="day_type0">指定なし</label></dd>
+                    <dd><input type="checkbox" id="day_type1" name="dummy[]" value="1" /><label for="day_type1">月</label></dd>
+                    <dd><input type="checkbox" id="day_type2" name="dummy[]" value="2" /><label for="day_type2">火</label></dd>
+                    <dd><input type="checkbox" id="day_type3" name="dummy[]" value="3" /><label for="day_type3">水</label></dd>
+                    <dd><input type="checkbox" id="day_type4" name="dummy[]" value="4" /><label for="day_type4">木</label></dd>
+                    <dd><input type="checkbox" id="day_type5" name="dummy[]" value="5" /><label for="day_type5">金</label></dd>
+                    <dd><input type="checkbox" id="day_type6" name="dummy[]" value="6" checked="check" /><label for="day_type6">土</label></dd>
+                    <dd><input type="checkbox" id="day_type7" name="dummy[]" value="7" checked="check"/><label for="day_type7">日</label></dd>
+                    <dd><input type="checkbox" id="day_type8" name="dummy[]" value="8" checked="check" /><label for="day_type8">祝日</label></dd>
+                </dl>
+                <input type="hidden" name="page" id="page" value="" />
+                <input type="hidden" name="type" value="area" />
+                <input type="hidden" name="day_type" id="day_type" value="" />
+                <input type="hidden" name="area_id" value="<?php echo $area_id ?>" />
+            </form>
+        </div>
+        
+        <div id="btnSp">
+            <select name="days">
+                <option value="">晴れの数</option>
+                <option value="">2日</option>
+                <option value="">3日</option>
+                <option value="">4日</option>
+            </select>
+            <select name="holiday">
+                <option value="">休日</option>
+                <option value="">休前日</option>
+                <option value="">土曜</option>
+                <option value="">日曜</option>
+                <option value="">祝日</option>
+            </select>
+            <select name="schedule">
+                <option value="">日程</option>
+                <option value="">直近</option>
+                <option value="">来月</option>
+                <option value="">再来月</option>
+            </select>
+        </div>
+        <?php endif; ?>
+        <div id="recommend">
+            <h2><?php echo $recommend_futures_title; ?></h2>
+            <?php if($bodyId == 'area'): ?><div class="moreBtn" id="next"><a href="#">次へ ></a></div><?php endif; ?>
+            <div id="boxes">
+            <!-- 下段(スマホは非表示) -->
+            <?php foreach ($futures as $key => $chunk) : ?>
+                <div class="line<?php if($key >= $this->config->item('sp_display_number')) echo ' undisp'; ?> cf">
+                <?php foreach ($chunk as $future) : ?>
+                    <div class="box">
+                        <?php if($leisure_type == 'spring'): ?>
+                            <?php if(isset($hotel['HotelID'])): ?>
+                                <a href="<?php echo '/spring/date/'.$springs[0]->id.'/'.$hotel['HotelID'].'/'.$springs[0]->area_id.'/'.$future->date; ?>">
+                            <?php else: ?>
+                                <a href="<?php echo '/spring/date/'.$springs[0]->id.'/0/'.$springs[0]->area_id.'/'.$future->date; ?>">
+                            <?php endif; ?>
+                        
+                        <?php else: ?>
+                        <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
+                        <?php endif; ?>
+                        
+                        <div class="photo"><img src="/images/weather/sunny.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $future->daytime; ?></span></div>
+                        <div class="text">
+                            <div class="date"><?php echo $future->month.'/'.$future->day; ?><?php echo get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$holidays),TRUE); ?></div>
+                            <div class="highTemp">最高気温 <em><?php echo $future->temperature_max; ?>°C</em></div>
+                            <div class="lowTemp">最低気温 <em><?php echo $future->temperature_min; ?>°C</em></div>
+                        </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+                </div>
+            <?php endforeach; ?>
+            </div>
+        </div>

@@ -94,7 +94,7 @@ class Users extends CI_Model
     function getUsersOrder($order, $page)
     {
         $result = array();
-        $perPageCount = $this->ci->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->ci->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS *
                                     FROM {$this->table_name}

@@ -27,12 +27,12 @@ class Search extends MY_Controller
     function index()
     {
         $data = array();
-        
+
         if(!isset($_GET['keyword'])) show_404();
         $data['keyword'] = $_GET['keyword'];
         
         //書式：2012/01/01
-        if(isset($_GET['date']) && !preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $_GET['date'])) $data['date'] = $_GET['date'];
+        if(isset($_GET['date']) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $_GET['date'])) $data['date'] = $_GET['date'];
 
         $yahoo_address = $this->yahoo_lib->getGeoCode($data['keyword']);
         $search_simple_area = $this->config->item('search_simple_area');
@@ -133,8 +133,6 @@ class Search extends MY_Controller
 
             $this->load->view('search/keyword/date', array_merge($this->data,$data));
         }else{//キーワードだけ
-var_dump(123);
-die();
             //未来データ
             $orderExpression = "date ASC";
             $page = 1;

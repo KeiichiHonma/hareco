@@ -92,7 +92,7 @@ class Area_model extends CI_Model
     {
         $query = $this->db->query("SELECT *
                                     FROM {$this->table_name}
-                                    ORDER BY {$this->table_name}.id ASC"
+                                    ORDER BY {$this->table_name}.region_id,{$this->table_name}.id ASC"
         );
 
         //if ($query->num_rows() != 0) return $query->result();
@@ -116,7 +116,7 @@ class Area_model extends CI_Model
     function getAreasOrder($order, $page)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS *
                                     FROM {$this->table_name}

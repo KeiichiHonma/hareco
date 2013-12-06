@@ -75,12 +75,12 @@ class Spring_model extends CI_Model
         return array();
     }
 
-    function getAllSpringsOrderTodoufukenId()
+    function getAllSpringsOrderSpringAreaId()
     {
         $query = $this->db->query("SELECT *,{$this->table_name}.id AS id
                                     FROM {$this->table_name}
                                     INNER JOIN spring_areas ON {$this->table_name}.spring_area_id = spring_areas.id
-                                    ORDER BY {$this->table_name}.todoufuken_id ASC"
+                                    ORDER BY {$this->table_name}.spring_area_id ASC"
         );
 
         //if ($query->num_rows() != 0) return $query->result();
@@ -106,7 +106,7 @@ class Spring_model extends CI_Model
     function getSpringsOrder($order, $page)
     {
         $result = array();
-        $perPageCount = $this->CI->config->item('paging_count_per_manage_page');
+        $perPageCount = $this->CI->config->item('paging_count_per_page');
         $offset = $perPageCount * ($page - 1);
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS *
                                     FROM {$this->table_name}

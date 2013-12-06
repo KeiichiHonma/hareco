@@ -14,22 +14,44 @@ class Jalan_lib
         $this->start_date = date("Ymd",strtotime("+30 day"));
     }
 
-    function makeSpringsPlansByAreaId(&$data,$area_id){
+    function makeSpringHotelsByOAreaId(&$data,$spring_id,$jalan_o_area){
+        //o_areaで取得
+        $o_area_hotels = $this->getHotelsByOAreaId($jalan_o_area);
+        if(!empty($o_area_hotels)){
+            $data['o_area_hotels'][$spring_id] = array_chunk($o_area_hotels,3);
+        }
+    }
+
+    function makeSpringsHotelsByAreaId(&$data,$area_id){
         //温泉
         $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id);
 
         //温泉地の数で挙動を変える。箱根エリアの温泉等
         if(count($data['springs']) > 2){
             //s_areaで
-            $data['s_area_hotels'] = $this->jalan_lib->getHotelsBySAreaId($data['springs'][0]->jalan_s_area);
+            $s_area_hotelss = $this->getHotelsBySAreaId($data['springs'][0]->jalan_s_area);
+            if(!empty($s_area_hotelss)){
+                $data['s_area_hotels'] = array_chunk($s_area_hotelss,3);
+            }
         }elseif(!empty($data['springs'])){
             foreach ($data['springs'] as $spring){
                 //o_areaで取得
-                $data['o_area_hotels'][$spring->id] = $this->jalan_lib->getHotelsByOAreaId($spring->jalan_o_area);
+                $o_area_hotels = $this->getHotelsByOAreaId($spring->jalan_o_area);
+                if(!empty($o_area_hotels)){
+                    $data['o_area_hotels'][$spring->id] = array_chunk($o_area_hotels,3);
+                }
             }
         }
     }
     
+    //ホテルの日付指定しないでプランを生成
+    function makeHotelPlansByJalan_h_idByShineSequence(&$data,$jalan_h_id,$shine_sequence){
+        $plans = $this->getStocksByHotelIdByShineSequence($jalan_h_id,$shine_sequence);
+        if(!empty($plans)){
+            $data['plans'] = array_chunk($plans,3);
+        }
+    }
+
     function makeSpringsPlansByAreaIdByDate(&$data,$area_id,$date){
         //温泉
         $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id);
@@ -39,41 +61,48 @@ class Jalan_lib
         */
         //温泉地の数で挙動を変える。箱根エリアの温泉等
         $sequence = 2;
-        $data['s_area_plans'] = array();
+        $data['plans'] = array();
         $data['o_area_plans'] = array();
         $jalan_date = str_replace('-','',$date);
-        if(count($data['springs']) > 2){
-            //指定日、s_areaで空いているプランを表示
-            $data['s_area_plans'] = $this->getStocksBySAreaIdBySequenceByDate($data['springs'][0]->jalan_s_area,$sequence,$jalan_date);
-        }elseif(!empty($data['springs'])){
-            foreach ($data['springs'] as $spring){
-                //指定日、o_areaで空いているプランを表示
-                $data['o_area_plans'][$spring->id] = $this->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$sequence,$jalan_date);
+        if(!empty($data['springs'])){
+            if(count($data['springs']) == 1){
+                //指定日、s_areaで空いているプランを表示
+                $plans = $this->getStocksBySAreaIdBySequenceByDate($data['springs'][0]->jalan_s_area,$sequence,$jalan_date);
+                if(!empty($plans)){
+                    $data['plans'] = array_chunk($plans,3);
+                }
+            }else{
+                //対応の温泉が2つ以上あるため、指定日、o_areaで空いているプランを表示
+                $o_area_plans = $this->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$sequence,$jalan_date);
+                if(!empty($o_area_plans)){
+                    $data['o_area_plans'][$spring->id] = array_chunk($o_area_plans,3);
+                }
             }
         }
     }
     
     //ホテル指定晴れ日付空室確認
-    function getStocksByHotelIdBySequenceByDate($jalan_h_id,$sequence,$stay_date){
+    function getStocksByHotelIdBySequenceByDate($jalan_h_id,$shine_sequence,$stay_date){
         $this->cache_dir = 'cache/stocks/';
-        $stay_count = $sequence - 1;//2連続晴れの場合は1泊だけということ
-        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4';
+        $stay_count = $shine_sequence - 1;//2連続晴れの場合は1泊だけということ
+        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4&adult_num=2';
         return $this->_parseStockXML($this->_getXML($url));
     }
 
     //空室確認。日付は関係なく、プランがあるかどうか
-    function getStocksByHotelIdBySequence($jalan_h_id,$sequence){
+    function getStocksByHotelIdByShineSequence($jalan_h_id,$shine_sequence){
         $this->cache_dir = 'cache/stocks/';
-        $stay_count = $sequence - 1;//2連続晴れの場合は1泊だけということ
-        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4';
+        $stay_count = $shine_sequence - 1;//2連続晴れの場合は1泊だけということ
+        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4&adult_num=2';
         return $this->_parseStockXML($this->_getXML($url));
     }
 
-    //o_area指定晴れ日付空室確認
-    function getStocksByOAreaIdBySequenceByDate($jalan_o_area,$sequence,$stay_date){
+    //ホテルID指定晴れ日付空室確認
+    function getStocksByHotelIdByShineSequenceByDate($jalan_h_id,$shine_sequence,$stay_date){
         $this->cache_dir = 'cache/stocks/';
-        $stay_count = $sequence - 1;//2連続晴れの場合は1泊だけということ
-        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&o_area_id='.$jalan_o_area.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4';
+        $stay_count = $shine_sequence - 1;//2連続晴れの場合は1泊だけということ
+        $stock_count = 5;
+        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&h_id='.$jalan_h_id.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$stock_count.'&picts=3&pict_size=4&adult_num=2';
         return $this->_parseStockXML($this->_getXML($url));
     }
 
@@ -81,7 +110,15 @@ class Jalan_lib
     function getStocksBySAreaIdBySequenceByDate($jalan_s_area,$sequence,$stay_date){
         $this->cache_dir = 'cache/stocks/';
         $stay_count = $sequence - 1;//2連続晴れの場合は1泊だけということ
-        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&s_area='.$jalan_s_area.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4';
+        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&s_area='.$jalan_s_area.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4&adult_num=2';
+        return $this->_parseStockXML($this->_getXML($url));
+    }
+
+    //o_area指定晴れ日付空室確認
+    function getStocksByOAreaIdBySequenceByDate($jalan_o_area,$shine_sequence,$stay_date){
+        $this->cache_dir = 'cache/stocks/';
+        $stay_count = $shine_sequence - 1;//2連続晴れの場合は1泊だけということ
+        $url='http://jws.jalan.net/APIAdvance/StockSearch/V1/?key='.$this->ci->config->item('jalan_key').'&o_area_id='.$jalan_o_area.'&stay_date='.$stay_date.'&stay_count='.$stay_count.'&order=4&count='.$this->stock_count.'&picts=3&pict_size=4&adult_num=2';
         return $this->_parseStockXML($this->_getXML($url));
     }
 
@@ -110,7 +147,6 @@ class Jalan_lib
         if ($this->cache_life != 0)
         {
             $filename = APPPATH.$this->cache_dir.md5($url).'.xml';
-
             // Is there a cache file ?
             if (file_exists($filename))
             {
@@ -138,26 +174,31 @@ class Jalan_lib
         // Parse the document
         if (!isset($xml))
         {
-            $xml_write = file_get_contents($url);
-            // Do we need to write the cache file?
-            if ($this->write_cache_flag)
-            {
-                if (!$fp = @fopen($filename, 'w+b'))
+            $xml_write = @file_get_contents($url);
+            if($xml_write !== FALSE){
+                // Do we need to write the cache file?
+                if ($this->write_cache_flag)
                 {
-                    log_message('error', "Unable to write cache file: ".$filename);
-                    return;
+                    if (!$fp = @fopen($filename, 'w+b'))
+                    {
+                        log_message('error', "Unable to write cache file: ".$filename);
+                        return;
+                    }
+                    flock($fp, LOCK_EX);
+                    fwrite($fp, $xml_write);
+                    flock($fp, LOCK_UN);
+                    fclose($fp);
                 }
-                flock($fp, LOCK_EX);
-                fwrite($fp, $xml_write);
-                flock($fp, LOCK_UN);
-                fclose($fp);
+                $xml = @simplexml_load_file($filename);
+                return $xml;
             }
-            $xml = @simplexml_load_file($filename);
+        }else{
+            return $xml;
         }
-
-        return $xml;
+        return FALSE;
     }
     private function _parseHotelXML($xml_hotels,$is_multi = TRUE){
+        if(!$xml_hotels) return FALSE;
         $hotelsData = array();
         $i = 0;
         foreach ($xml_hotels->Hotel as $xml_hotel){
@@ -170,6 +211,26 @@ class Jalan_lib
                             $hotelsData[$i][$item->getName()] = implode("\n",$AccessInformation);
                         }else{
                             $hotelsData[$item->getName()] = implode("\n",$AccessInformation);
+                        }
+                    }elseif ($item->getName() == 'PictureURL'){
+                        if(!$is_multi){
+                            $pic_i = 0;
+                            foreach ($xml_hotel->PictureURL as $picture_url){
+                                $hotelsData['Picture'][$pic_i][$item->getName()] = strval($picture_url);
+                                $pic_i++;
+                            }
+                        }else{
+                            $hotelsData[$i][$item->getName()] = strval($item);
+                        }
+                    }elseif ($item->getName() == 'PictureCaption'){
+                        if(!$is_multi){
+                            $pic_i = 0;
+                            foreach ($xml_hotel->PictureCaption as $picture_caption){
+                                $hotelsData['Picture'][$pic_i][$item->getName()] = strval($picture_caption);
+                                $pic_i++;
+                            }
+                        }else{
+                            $hotelsData[$i][$item->getName()] = strval($item);
                         }
                     }else{
                         if($is_multi){
@@ -186,6 +247,7 @@ class Jalan_lib
     }
     
     private function _parseStockXML($xml_stocks){
+        if(!$xml_stocks) return FALSE;
         $stockData = array();
         $plan_name = '';
         $before_plan_name = '';
