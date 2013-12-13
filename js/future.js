@@ -2,7 +2,6 @@ $(function(){
     $("#futures_search").ajaxForm({
         beforeSubmit : function(){
             $('#btnPc').block({
-                //message: '<img src="/images/loading.gif" alt="" />',
                 message: null,
                 overlayCSS:  {
                     backgroundColor: '#ffffff', 
@@ -11,7 +10,6 @@ $(function(){
                 }
             });
             $('#boxes').block({
-                //message: '<img src="/images/loading.gif" alt="" />',
                 message: '<img src="/images/loadinfo.net.gif" alt="" />',
                 overlayCSS:  {
                     backgroundColor: '#fdfdfd', 
@@ -50,7 +48,7 @@ $(function(){
     /* カレンダー */
     $('#datepicker').datepicker({
         onSelect: function(dateText, inst){
-            //alert(dateText);
+            var w = $(window).width();if (w <= 640) $("#sp").val(0);
             $("#day_type").val($dayArray.join(","));
             $("#futures_search").submit();
         }
@@ -62,6 +60,7 @@ $(function(){
     
     //クリックした要素にクラス割り当てる
     $('#next').live('click',function() {
+        var w = $(window).width();if (w <= 640) $("#sp").val(0);
         $pageValue = $pageValue + 1;
         $("#page").val($pageValue);
         $("#day_type").val($dayArray.join(","));
@@ -95,6 +94,7 @@ $(function(){
             $("#"+attr).prop("checked", true);
             $dayArray.push( $("#"+attr).val() );
         }
+        var w = $(window).width();if (w <= 640) $("#sp").val(0);
         $("#day_type").val($dayArray.join(","));
         $("#futures_search").submit();
     });
@@ -117,6 +117,7 @@ $(function(){
         var attr = $(this).attr('for');
         $("#"+attr).attr('checked','checked');
         
+        var w = $(window).width();if (w <= 640) $("#sp").val(0);
         $("#day_type").val($dayArray.join(","));
         $("#futures_search").submit();
     });

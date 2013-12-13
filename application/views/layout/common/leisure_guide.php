@@ -2,7 +2,7 @@
                 <div class="line cf">
                     <!-- ガイド0 -->
                     <div class="box">
-                        <a href="/area/"><div class="photo"><img src="/images/photo_outing_01.jpg" alt="" /><span>エリア</span></div></a>
+                        <a href="/area/"><div class="photo"><img src="/images/photo_outing_00.jpg" alt="" /><span>エリア</span></div></a>
                     </div>
                     <!-- ガイド01 -->
                     <div class="box">

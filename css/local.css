@@ -83,6 +83,8 @@ body {
 #header .navPc li a.nav01 { background-image: url(../images/nav_01.png) ; }
 #header .navPc li a.nav02 { background-image: url(../images/nav_02.png) ; }
 #header .navPc li a.nav03 { background-image: url(../images/nav_03.png) ; }
+#header .navPc li a.nav04 { background-image: url(../images/nav_04.png) ; }
+#header .navPc li a.nav05 { background-image: url(../images/nav_05.png) ; }
 
 
 #header .navPc li ul {
@@ -116,52 +118,52 @@ body {
 #header .navPc li ul li a:hover {
 	color:#fff;
 } 
-#header .navPc li ul.menuCity {
+#header .navPc li ul.menuBox {
 	top: 28px;
-	left:-468px;
-	width:600px;
+	left:-528px;
+	width:660px;
 	background: url(../images/bg_nav.png) 0px 0px repeat;
 }
-ul.menuCity div {
+ul.menuBox div {
 	padding:20px;
 	padding-bottom:15px;
 }
-ul.menuCity dl {
+ul.menuBox dl {
 	display:block;
 	border-bottom:1px solid #ccc;
 
 	margin-bottom:10px;
 }
-ul.menuCity dt, ul.menuCity dd{
+ul.menuBox dt, ul.menuBox dd{
 	display:block;
 	float:left;
 	margin-bottom:5px;
 }
 
-ul.menuCity dt{
+ul.menuBox dt{
 	clear: left;
 	width:100px;
 	color:#a3a3a3;
 }
 
-ul.menuCity dt.spring_area{
+ul.menuBox dt.spring_area{
 	width:80px;
 }
 
-ul.menuCity dt.hakone{
+ul.menuBox dt.hakone{
 	width:80px;
-    height:140px;
+    height:120px;
 }
 
-ul.menuCity dd{
+ul.menuBox dd{
 	margin-right:10px;
 	padding:0 0;
 }
-ul.menuCity dd{
+ul.menuBox dd{
 	margin-right:10px;
 }
 
-ul.menuCity dd a {
+ul.menuBox dd a {
 	display: block;
 	text-decoration:none;
 	color:#fff;
@@ -169,7 +171,7 @@ ul.menuCity dd a {
 	padding-left:12px;
 	background: url(../images/icon_arrow_nav.png) 0 1px no-repeat; 
 }
-ul.menuCity dd a:hover {
+ul.menuBox dd a:hover {
 	color:#a3a3a3;
 } 
 
@@ -211,7 +213,8 @@ ul.menuCity dd a:hover {
 	padding-top:7px;
 }
 #breadcrumb #searchBox .focus{
-	width:300px;
+	/*width:150px;*/
+    width:300px;
 	height:16px;
 	padding:2px 5px;
 	margin-right:8px;
@@ -219,6 +222,16 @@ ul.menuCity dd a:hover {
 }
 
 .ie #breadcrumb #searchBox .focus{ height:20px; }
+
+#breadcrumb #searchBox #datepicker {
+	width:90px;
+	height:16px;
+	padding:2px 5px;
+	margin-right:8px;
+	color:#a0a09f;
+    background:url(../images/icon_calendar.png) 79px 3px no-repeat #fff;
+}
+.win.ie8 #breadcrumb #searchBox #datepicker{ line-height:240%;}
 
 #breadcrumb #searchBox .btnSearch {
 	width:56px;
@@ -765,9 +778,23 @@ ul.menuCity dd a:hover {
 	margin-top:40px;
 }
 
+#contentsInner #recommend {
+	margin-top:40px;
+}
+
 #contentsInner #recommend div.box { 
-	height:168px;
+	height:138px;
 	width:117px;
+}
+#contentsInner div.box .info {
+    position:absolute;
+    z-index:100;
+}
+#contentsInner #recommend div.box .info { top:74px;left:8px; }
+#contentsInner div.box .info p{
+    margin-bottom:8px;
+    padding-right:10px;
+    height:35px;
 }
 #contentsInner #recommend div.shadow { 
 	width:117px;
@@ -782,6 +809,15 @@ ul.menuCity dd a:hover {
 #contentsInner #recommend div.box .photo img{
 	width:117px;
 	height:80px;
+}
+#contentsInner #recommend div.box .weather{
+	width:64px;
+	height:72px;
+    margin: 0 auto;
+    /*border: 1px solid #4d4d4d;*/
+}
+#contentsInner #recommend div.box .weather img{
+	width:100%;
 }
 #contentsInner #recommend div.box span{
 	font-size:12px;
@@ -1058,6 +1094,12 @@ ul.menuCity dd a:hover {
 
 #weather .icon { width:50%;}
 
+.weather_index td{
+	padding: 3px!important;
+	text-align:center;
+}
+
+.weather_index .icon { width:30px!important;}
 
 /* leisure
 ------------------------------------------------------------------*/

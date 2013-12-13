@@ -19,24 +19,24 @@ main image
         <h2>エリアガイド</h2>
         <div id="searchBox">
             <div id="searchBoxInner">
-                <ul class="menuCity">
+                <ul class="menuBox">
                     <div>
                         <?php
                             $i = 0;
-                            $count = count($areas);
+                            $count = count($all_areas);
                             $before_region_id = '';
                             $end_dl = FALSE;
                         ?>
-                        <?php foreach ($areas as $area) : ?>
+                        <?php foreach ($all_areas as $area) : ?>
                         <?php
                             if($before_region_id != $area->region_id){
                                 if($i != 0 || $i != $count) echo '</dl>';
                                 if($i == $count) $end_dl = TRUE;
-                                echo '<dl class="cf"><dt>'.$regions[$area->region_id]->region_name.'</dt>';
+                                echo '<dl class="cf"><dt>'.$all_regions[$area->region_id]->region_name.'</dt>';
                             }
                             $before_region_id = $area->region_id;
                         ?>
-                        <dd style="float:left;"><?php echo anchor('area/show'.$area->id,$area->area_name); ?></dd>
+                        <dd style="float:left;"><?php echo anchor('area/show/'.$area->id,$area->area_name); ?></dd>
                         <?php if($end_dl) echo '</dl>'; ?>
                         <?php $i++; ?>
                         <?php endforeach; ?>

@@ -195,11 +195,10 @@
     margin-bottom:0px;
 }
 
-#contentsInner .moreBtn {
-    width: 940px;
-    margin-bottom:10px;
+#contentsInner .nextBtn {
+    margin-right:30px;
 }
-#contentsInner .moreBtn a{
+#contentsInner .nextBtn a{
     display:block;
     background:#e3e2e2;
     text-align:center;
@@ -216,7 +215,7 @@
     behavior: url(js/PIE.htc);
     margin-top:30px;
 }
-#contentsInner .moreBtn a:hover{
+#contentsInner .nextBtn a:hover{
     background:#d4d4d4;
 }
 
@@ -268,11 +267,30 @@
     left: 40px;
     color: #fff;
 }
-#chart_daytimes .count {
-    /*background: url(http://startapp.jp/img/refs/jsfiddle_medium_6628140291.jpg) -20px -20px no-repeat;*/
-    background: url(/images/weather/chart.jpg) -20px -20px no-repeat;
-
+#chart_daytimes .shine {
+    background: url(/images/weather/shine_image.jpg) -20px -20px no-repeat;
 }
+
+#chart_daytimes .rain {
+    background: url(/images/weather/rain_image.jpg) -20px -60px no-repeat;
+}
+
+#chart_daytimes .cloud {
+    background: url(/images/weather/cloud_image.jpg) -20px -20px no-repeat;
+}
+
+#chart_daytimes .snow {
+    background: url(/images/weather/snow_image.jpg) -20px -20px no-repeat;
+}
+
+#chart_daytimes .thunder {
+    background: url(/images/weather/thunder_image.jpg) -20px -60px no-repeat;
+}
+
+#chart_daytimes .mist {
+    background: url(/images/weather/mist_image.jpg) -20px -20px no-repeat;
+}
+
 #chart_daytimes .count em {
     color: #fff;
     color: rgba(255, 255, 255, 0.8);

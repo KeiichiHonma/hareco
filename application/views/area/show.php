@@ -11,7 +11,7 @@ main image
         <div class="gradationRight"></div>
         <div id="copy">
             <div id="innerBox">
-                <h2><?php echo $areas[$area_id]->area_name; ?>エリア</h2>
+                <h2><?php echo $all_areas[$area_id]->area_name; ?>エリア</h2>
                 <!--<h3>幻と現実がぶつかり合う。映画の舞台のようなニューヨークの街。</h3>-->
             </div>
         </div>

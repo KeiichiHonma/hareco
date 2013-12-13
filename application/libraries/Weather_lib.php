@@ -7,6 +7,7 @@ class Weather_lib
     function __construct()
     {
         $this->ci =& get_instance();
+        $this->ci->load->library('tool_lib');
     }
 
     function isShine($weather_result,$precipitation_one_hour)
@@ -229,6 +230,9 @@ class Weather_lib
         }else{
             $futureData['daytime'] = $daytime_future_weather;
         }
+        $daytime_icon = $this->ci->tool_lib->get_icon($futureData['daytime']);
+        //$futureData['icon_image'] = $daytime_icon === FALSE ? $futureData['daytime'] : $daytime_icon;
+        $futureData['daytime_icon_image'] = $daytime_icon === FALSE ? 'icon_weather_01.png' : $daytime_icon;
         $futureData['daytime_number'] = $daytime_future_weather_number;
         $futureData['daytime_second'] = $daytime_future_weather_second;
         $futureData['daytime_second_number'] = $daytime_future_weather_second_number;
@@ -253,6 +257,8 @@ class Weather_lib
         }else{
             $futureData['night'] = $night_future_weather;
         }
+        $night_icon = $this->ci->tool_lib->get_icon($futureData['night']);
+        $futureData['night_icon_image'] = $night_icon === FALSE ? 'icon_weather_01.png' : $night_icon;
         $futureData['night_number'] = $night_future_weather_number;
         $futureData['night_second'] = $night_future_weather_second;
         $futureData['night_second_number'] = $night_future_weather_second_number;
@@ -376,7 +382,6 @@ class Weather_lib
         //平均気温
         $data['feel_temperatures'] = array_count_values($temperature_averages);
         arsort($data['feel_temperatures']);
-        //$data['count_temperature_averages'] = count($data['feel_temperatures']);
     }
     
     function checkCsvRowForNumeric($column){

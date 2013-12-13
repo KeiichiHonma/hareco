@@ -240,11 +240,23 @@
 #contentsInner #outing div.box  {
 	height:125px;
 }
+#contentsInner #recommend {
+	margin-top:5px;
+}
 #contentsInner #recommend div.box { 
+    height:103px;
 	float:left;
 	margin:10px;
 }
-
+#contentsInner #recommend div.box .info { top:39px;left:8px; }
+#contentsInner #recommend div.box .weather{
+	width:35px;
+    margin: 0 auto;
+    /*border: 1px solid #4d4d4d;*/
+}
+#contentsInner #recommend div.box .weather img{
+	width:35px;
+}
 
 
 

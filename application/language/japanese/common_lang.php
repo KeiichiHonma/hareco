@@ -6,6 +6,8 @@ $lang['header_description'] = 'でかけるなら晴れがいい。世界初、�
 $lang['common_header_title'] = '%s｜晴れてよかった！を創る';
 $lang['common_header_keywords'] = '%s,天気,ハレコ,温泉,ゴルフ,テーマパーク,アクティビティ,レジャー,おでかけ';
 
+$lang['holiday_title'] = '次の晴れる連休';
+
 //パンくず
 $lang['topicpath_home'] = 'HOME';
 $lang['topicpath_area'] = 'エリア';

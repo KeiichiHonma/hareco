@@ -7,12 +7,12 @@
 <meta name="description" content="タイ・バンコクのチケットをサイト名で購入！タイ・バンコクのクーポンがとても安い！お得なクーポン/バウチャーサイトです。" />
 </head>
 <body>
-    <h2><?php echo $areas[$area_id]->area_name; ?>晴れの予定</h2>
+    <h2><?php echo $all_areas[$area_id]->area_name; ?>晴れの予定</h2>
     <?php foreach ($futures as $future) : ?>
     <?php echo anchor('date/'.$future->date,$future->date); ?>予想天気：<?php echo $future->daytime; ?><br />
     <?php endforeach; ?>
     <?php if(!empty($springs)) : ?>
-    <h2>[晴れの日に<?php echo $springs[0]->spring_area_name.'-'.$areas[$area_id]->area_name; ?>近辺の温泉へ行く]</h2>
+    <h2>[晴れの日に<?php echo $springs[0]->spring_area_name.'-'.$all_areas[$area_id]->area_name; ?>近辺の温泉へ行く]</h2>
     <dl style="font-size:80%;">
     <?php foreach ($springs as $spring) : ?>
     <dd style="float:left;"><?php echo anchor('spring/show/'.$spring->id,$spring->spring_name); ?></dd>

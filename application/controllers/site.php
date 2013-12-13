@@ -13,62 +13,17 @@ class Site extends MY_Controller
         $this->lang->load('tank_auth');
         $this->lang->load('setting');
         $this->lang->load('site');
-        //$this->data['categories'] = $this->Category_model->getAllCategories();
-        //$this->data['areas'] = $this->Area_model->getAllareas();
+        $this->load->model('Region_model');
+        $this->load->model('Area_model');
+        $this->load->model('Spring_model');
+        $this->load->model('Future_model');
+        $this->load->model('Weather_model');
+        $this->data['all_regions'] = $this->Region_model->getAllregions();
+        $this->data['all_areas'] = $this->Area_model->getAllAreas();
+        //$this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+        $this->data['all_springs'] = $this->Spring_model->getAllSpringsOrderSpringAreaId();
     }
 
-    /**
-     * Register pre user on the site
-     *
-     * @return void
-     */
-    function pre()
-    {
-        $data = array();
-        
-        $this->form_validation->set_rules('email', 'email', "required|xss_clean|htmlspecialchars|strip_tags|valid_email");
-        if(strcasecmp($_SERVER['REQUEST_METHOD'],'POST') === 0){
-            if($this->form_validation->run() == TRUE){
-                //
-                $preData = array(
-                    'email' => $this->input->post('email'),
-                );
-                $email = $preData['email'];
-                $query = $this->db->query("SELECT *
-                                            FROM pre
-                                            WHERE pre.email >= '{$email}'"
-                );
-                if ($query->num_rows() != 0){
-                    print 'registered';
-                    die();
-                }
-
-                $preData['created'] = date("Y-m-d H:i:s", time());
-                $this->db->insert('pre', $preData);
-                $pre_id = $this->db->insert_id();
-                
-                if($pre_id){
-                    $this->_send_email('pre',$preData['email'], $preData);
-                    print 'success';
-                    die();
-                }
-            }
-            print '送信できませんでした。';
-            die();
-        }
-            
-        $this->lang->load('site');
-        $data['csrf_token'] = $this->security->get_csrf_token_name();
-        $data['csrf_hash'] = $this->security->get_csrf_hash();
-
-        //set header title
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('auth_register_title'), $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('auth_register_title'));
-        
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/pre.css')));
-        
-        $this->load->view('site/pre', array_merge($this->data,$data));
-    }
 
     /**
      * company page
@@ -264,9 +219,9 @@ class Site extends MY_Controller
 
     function not_found()
     {
+        $data['bodyId'] = 'ind';
         //set header title
         $data['header_title'] = sprintf('%s [%s]', $this->lang->line('common_title_404_error'), $this->lang->line('header_title'));
-        
 
         //set header title
         $data['header_title'] = sprintf($this->lang->line('common_header_title'), '404 error', $this->config->item('website_name', 'tank_auth'));

@@ -92,12 +92,15 @@ class Tools extends CI_Controller {
     private $csv_data = array();
     
     function doDaily($back_day = 1){
+
         $this->importWeatherBackDay($back_day);
         $this->updateWeatherYesterdayWeather($back_day);//昨日のデータ更新
         $this->createFutureForNextYearDaily($back_day);
+        $this->updateFutureForTomorrow($back_day);
         $this->updateCorrectBackDay($back_day);
         $this->updateSequenceBackDay($back_day);
         $this->updateOddsBackDay($back_day);
+
     }
     
     //昨日の天気結果を取得
@@ -328,6 +331,33 @@ class Tools extends CI_Controller {
                 $futureData[$area->id.$back_day_year_month_day]['date'] = $futureData[$area->id.$back_day_year_month_day]['year'].'-'.$futureData[$area->id.$back_day_year_month_day]['month'].'-'.$futureData[$area->id.$back_day_year_month_day]['day'];
                 $futureData[$area->id.$back_day_year_month_day]['created'] = date("Y-m-d H:i:s", $time);
                 
+                /*
+                実際の結果が欲しいのではなく、予測した未来としての昨日のデータが必要
+                */
+                //yesterday////////////////////////////////
+                $yesterday_future = $this->Future_model->getFutureByAreaIdByDate($area->id,$back_day_yesterday_year_month_day);
+                //daytimne
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime'] = $yesterday_future->daytime;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime_icon_image'] = $yesterday_future->daytime_icon_image;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime_number'] = $yesterday_future->night_number;
+                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_shine'] = $yesterday_future->is_daytime_shine;
+                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_snow'] = $yesterday_future->is_daytime_snow;
+                
+                //night
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_night'] = $yesterday_future->night;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_night_icon_image'] = $yesterday_future->night_icon_image;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_night_number'] = $yesterday_future->night_number;
+                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_shine'] = $yesterday_future->is_night_shine;
+                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_snow'] = $yesterday_future->is_night_snow;
+
+                //初期化用tomorrow///////////////////////////////////////
+                //daytimne
+                $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime'] = '';
+                $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime_icon_image'] = '';
+                $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime_number'] = 0;
+                $futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_shine'] = 9;
+                $futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_snow'] = 9;
+                
                 //holiday
                 $futureData[$area->id.$back_day_year_month_day]['day_of_the_week'] = date("N",mktime(0,0,0,$back_day_month,$back_day_day,$next_year));// 1（月曜日）から 7（日曜日）
                 if(array_key_exists($next_year.'-'.$month_string.'-'.$back_day_day,$holidays)){
@@ -344,6 +374,57 @@ class Tools extends CI_Controller {
         $this->Future_model->insertBatchFuture($futureData);
     }
 
+
+    //翌日情報を指定日の前日レコードに入れ込む
+    function updateFutureForTomorrow($back_day = 1){
+        $time = time();
+        $this->load->model('Area_model');
+        $areas = $this->Area_model->getAllAreasFlipJmaId();
+        $this->load->model('Weather_model');
+        $this->load->model('Future_model');
+        
+        $holidays = null;
+        $sampling_year = $this->CI->config->item('jma_weather_start_year');
+        //指定日の1日前のデータを取得した後、その1日前の予測が可能になるので、-1日する。例）11月1日の0時、10月31日のデータを持ってきたので、翌年の10月31日の予測ができる
+        for ($i = $back_day; $i > 0; $i--){
+            $back_day_string = strval("-".$i." day");
+            $back_day_year_month_day = date("Y/n/d",strtotime($back_day_string));//??日前
+            $back_day_ymd = explode('/',$back_day_year_month_day);
+
+            $next_year = $back_day_ymd[0] + 1;
+            $back_day_month = $back_day_ymd[1];
+            $back_day_day = $back_day_ymd[2];
+            
+            //holiday
+            if(is_null($holidays)) $holidays = $this->weather_lib->get_holidays_this_month($back_day_ymd[0]);
+            $month_string = $back_day_month < 10 ? '0'.$back_day_month : $back_day_month;
+            
+            foreach ($areas as $area){
+                //前日の日付を取得
+                $i_p = $i+1;
+                $back_day_yesterday_string = strval("-".$i_p." day");
+                $back_day_yesterday_year_month_day = date("Y/n/d",strtotime($back_day_yesterday_string));//??日前
+                $back_day_yesterday_ymd = explode('/',$back_day_yesterday_year_month_day);
+
+                $next_year_back_day_yesterday_month = $back_day_yesterday_ymd[1];
+                $next_year_back_day_yesterday_day = $back_day_yesterday_ymd[2];
+
+                $next_year_back_day_future = $this->Future_model->getFutureByAreaIdByDate($area->id,$next_year.'/'.$back_day_month.'/'.$back_day_day);
+                //tomorrow更新//////////////////////////////////////////////////
+                $tomorrowData = array();
+                $tomorrowData['tomorrow_daytime'] = $next_year_back_day_future->daytime;
+                $tomorrowData['tomorrow_daytime_icon_image'] = $next_year_back_day_future->daytime_icon_image;
+                $tomorrowData['tomorrow_daytime_number'] = $next_year_back_day_future->daytime_number;
+                $tomorrowData['is_tomorrow_daytime_shine'] = $next_year_back_day_future->is_daytime_shine;
+                $tomorrowData['is_tomorrow_daytime_snow'] = $next_year_back_day_future->is_daytime_snow;
+                
+                $this->db->where('area_id', $area->id);
+                $this->db->where('date', $next_year.'/'.$next_year_back_day_yesterday_month.'/'.$next_year_back_day_yesterday_day);
+                $this->db->update('futures', $tomorrowData);
+            }
+        }
+    }
+    
     //取得した昨日の結果を元に昨日の予測の正答確認
     function updateCorrectBackDay($back_day = 1){
         $time = time();
@@ -381,6 +462,7 @@ class Tools extends CI_Controller {
         function plus (&$int,$date){
             $int = $int+1;
         }
+        $this->load->model('Area_model');
         $this->load->model('Future_model');
         $areas = $this->Area_model->getAllAreasFlipJmaId();
 

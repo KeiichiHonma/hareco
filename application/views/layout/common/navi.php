@@ -7,37 +7,52 @@ header
     <div id="headerInner" class="cf">
         <h1><a href="#">ハレコ</a></h1>
         <h2>晴れてよかった！を創るレコメンドサービス</h2>
-        <!-- PC用ナビゲーション -->    
+        <!-- PC用ナビゲーション -->
         <ul class="navPc">
-            <li><a href="javascript:void(0)" class="ttl nav03"><span>▼祝日から探す</span></a>
-                <ul>
-                    <?php $i = 0; ?>
-                    <?php foreach($holidays as $holiday_date =>  $holiday_name) : ?>
-                    <?php if($i == 9) break; ?>
-                    <li><a href="/date/show/<?php echo $holiday_date; ?>"><?php echo date('n/j',strtotime('+0 day', strtotime($holiday_date))).' '.$holiday_name; ?></a></li>
+            <li><a href="javascript:void(0)" class="ttl nav04"><span>▼温泉地から探す</span></a>
+                <ul class="menuBox">
+                    <div>
+                    <?php
+                        $i = 0;
+                        $count = count($all_springs);
+                        $before_spring_area_id = '';
+                        $end_dl = FALSE;
+                    ?>
+                    <?php foreach ($all_springs as $spring) : ?>
+                    <?php
+                        if($before_spring_area_id != $spring->spring_area_id){
+                            if($i != 0 || $i != $count) echo '</dl>';
+                            if($i == $count) $end_dl = TRUE;
+                            echo '<dl class="cf"><dt'.($spring->spring_area_id == 5 ? ' class="hakone"' : ' class="spring_area"') .'>'.$spring->spring_area_name.'</dt>';
+                        }
+                        $before_spring_area_id = $spring->spring_area_id;
+                    ?>
+                    <dd style="float:left;"><?php echo anchor('spring/show/'.$spring->id,$spring->spring_name); ?></dd>
+                    <?php if($end_dl) echo '</dl>'; ?>
                     <?php $i++; ?>
                     <?php endforeach; ?>
+                    </div>
                 </ul>
             </li>
             <li><a href="javascript:void(0)" class="ttl nav01"><span>▼エリアから探す</span></a>
-                <ul class="menuCity">
+                <ul class="menuBox">
                     <div>
                         <?php
                             $i = 0;
-                            $count = count($areas);
+                            $count = count($all_areas);
                             $before_region_id = '';
                             $end_dl = FALSE;
                         ?>
-                        <?php foreach ($areas as $area) : ?>
+                        <?php foreach ($all_areas as $area) : ?>
                         <?php
                             if($before_region_id != $area->region_id){
                                 if($i != 0 || $i != $count) echo '</dl>';
                                 if($i == $count) $end_dl = TRUE;
-                                echo '<dl class="cf"><dt>'.$regions[$area->region_id]->region_name.'</dt>';
+                                echo '<dl class="cf"><dt>'.$all_regions[$area->region_id]->region_name.'</dt>';
                             }
                             $before_region_id = $area->region_id;
                         ?>
-                        <dd style="float:left;"><?php echo anchor('area/show'.$area->id,$area->area_name); ?></dd>
+                        <dd style="float:left;"><?php echo anchor('area/show/'.$area->id,$area->area_name); ?></dd>
                         <?php if($end_dl) echo '</dl>'; ?>
                         <?php $i++; ?>
                         <?php endforeach; ?>
@@ -52,15 +67,8 @@ header
             <div id="sidr-right">
                 <ul>
                     <li class="ttl">エリアから探す</li>
-                        <?php foreach($areas as $area) : ?>
+                        <?php foreach($all_areas as $area) : ?>
                         <li><a href="/area/show/<?php echo $area->id; ?>"><?php echo $area->area_name; ?>エリア</a></li>
-                        <?php endforeach; ?>
-                    <li class="ttl">祝日から探す</li>
-                        <?php $i = 0; ?>
-                        <?php foreach($holidays as $holiday_date =>  $holiday_name) : ?>
-                        <?php if($i == 9) break; ?>
-                        <li><a href="/date/show/<?php echo $holiday_date; ?>"><?php echo date('n/j',strtotime('+0 day', strtotime($holiday_date))).' '.$holiday_name; ?></a></li>
-                        <?php $i++; ?>
                         <?php endforeach; ?>
                 </ul>
             </div>
@@ -83,9 +91,9 @@ header
     <?php if(!isset($isIndex)) : ?>
             <div id="searchBox">
                 <div id="searchBoxInner">
-                    <form>
-                        <input type="text" value="どこの晴れをみる？　ex.伊豆、釧路、別府、熱海" class="focus" /><input type="image" src="/images/btn_search_min.png" align="top" alt="検索" class="btnSearch" />
-                    </form>
+                <?php echo form_open('/search','method="get" onsubmit="s_confirm();return false;" id="search"'); ?>
+                    <input type="text" name="keyword" value="<?php echo !empty($keyword) ? $keyword : $this->lang->line('search_box_default'); ?>" class="focus" /><input type="image" src="/images/btn_search_min.png" align="top" alt="検索" class="btnSearch" />
+                <?php echo form_close(); ?>
                 </div>
             </div>
     <?php endif; ?>

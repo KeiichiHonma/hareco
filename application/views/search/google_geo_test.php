@@ -13,45 +13,61 @@
             var keyword = document.getElementById('keyword').value;
             alert(keyword);
             var address = '';
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({
-                address: keyword,
-                region: 'jp'
-            }, function(results, status) {
+              // ジオコーダのコンストラクタ
+              var geocoder = new google.maps.Geocoder();
+
+              // geocodeリクエストを実行。
+              // 第１引数はGeocoderRequest。住所⇒緯度経度座標の変換時はaddressプロパティを入れればOK。
+              // 第２引数はコールバック関数。
+              geocoder.geocode({
+                address: place
+              }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
-                    var bounds = new google.maps.LatLngBounds();
-                    for (var r in results) {
-                        if (results[r].geometry) {
-                            var latlng = results[r].geometry.location;
-                            bounds.extend(latlng);
-                            address = results[r].formatted_address.replace(/^日本, /, '');
-                            $.post("/search/address",{<?php echo $csrf_token; ?>:"<?php echo $csrf_hash; ?>",keyword:keyword,address:address},function(result){
-                                if(result != 'error'){
-                                    alert('search/keyword/'+ encodeURI(keyword)+'/'+result);
-                                    //location.href = 'search/keyword/'+ encodeURI(keyword)+'/'+result;
-                                }else{
-                                    alert(result);
-                                }
-                            });
-                        }
+
+                  // 結果の表示範囲。結果が１つとは限らないので、LatLngBoundsで用意。
+                  var bounds = new google.maps.LatLngBounds();
+
+                  for (var i in results) {
+                    if (results[i].geometry) {
+
+                      // 緯度経度を取得
+                      var latlng = results[i].geometry.location;
+
+                      // 住所を取得(日本の場合だけ「日本, 」を削除)
+                      var address = results[i].formatted_address.replace(/^日本, /, '');
+
+                      // 検索結果地が含まれるように範囲を拡大
+                      bounds.extend(latlng);
+
+                      // あとはご自由に・・・。
+                      new google.maps.InfoWindow({
+                        content: address + "<br>(Lat, Lng) = " + latlng.toString()
+                      }).open(map, new google.maps.Marker({
+                        position: latlng,
+                        map: map
+                      }));
                     }
-                    //map.fitBounds(bounds);
+                  }
+
+                  // 範囲を移動
+                  map.fitBounds(bounds);
+
                 } else if (status == google.maps.GeocoderStatus.ERROR) {
-                    alert("サーバとの通信時に何らかのエラーが発生！");
+                  alert("サーバとの通信時に何らかのエラーが発生！");
                 } else if (status == google.maps.GeocoderStatus.INVALID_REQUEST) {
-                    alert("リクエストに問題アリ！geocode()に渡すGeocoderRequestを確認せよ！！");
+                  alert("リクエストに問題アリ！geocode()に渡すGeocoderRequestを確認せよ！！");
                 } else if (status == google.maps.GeocoderStatus.OVER_QUERY_LIMIT) {
-                    alert("短時間にクエリを送りすぎ！落ち着いて！！");
+                  alert("短時間にクエリを送りすぎ！落ち着いて！！");
                 } else if (status == google.maps.GeocoderStatus.REQUEST_DENIED) {
-                    alert("このページではジオコーダの利用が許可されていない！・・・なぜ！？");
+                  alert("このページではジオコーダの利用が許可されていない！・・・なぜ！？");
                 } else if (status == google.maps.GeocoderStatus.UNKNOWN_ERROR) {
-                    alert("サーバ側でなんらかのトラブルが発生した模様。再挑戦されたし。");
+                  alert("サーバ側でなんらかのトラブルが発生した模様。再挑戦されたし。");
                 } else if (status == google.maps.GeocoderStatus.ZERO_RESULTS) {
-                    alert("見つかりません");
+                  alert("見つかりません");
                 } else {
-                    alert("えぇ～っと・・、バージョンアップ？");
+                  alert("えぇ～っと・・、バージョンアップ？");
                 }
-            });
+              });
         });
     });
 </script>

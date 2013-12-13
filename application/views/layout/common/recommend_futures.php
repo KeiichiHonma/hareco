@@ -1,17 +1,20 @@
+    <div id="guide">
         <?php if($bodyId == 'area'): ?>
+        <h2><?php echo $recommend_futures_title; ?></h2>
         <div id="btnPc">
             <?php echo form_open('/json/futures','method="post" id="futures_search" class="futures_search"'); ?>
                 <dl class="btnPc01 cf gray">
                     <dt>日付：</dt>
                     <dd id="future_searchBox"><input type="text" name="date" value="日付を選択" id="datepicker" /></dd>
                 </dl>
-
+<!--
                 <dl class="btnPc02 radio-group cf">
                     <dt>天気：</dt>
                     <dd><input type="radio" id="shine" name="weather" value="shine" checked /><label for="shine">晴れ</label></dd>
                     <dd><input type="radio" id="rain" name="weather" value="rain" /><label for="rain">雨</label></dd>
                     <dd><input type="radio" id="snow" name="weather" value="snow" /><label for="snow">雪</label></dd>
                 </dl>
+-->
                 <dl class="btnPc03 radio-group cf">
                     <dt>晴数：</dt>
                     <dd><input type="radio" id="sequence1" name="daytime_shine_sequence" value="1" checked /><label for="sequence1">指定なし</label></dd>
@@ -31,6 +34,10 @@
                     <dd><input type="checkbox" id="day_type7" name="dummy[]" value="7" checked="check"/><label for="day_type7">日</label></dd>
                     <dd><input type="checkbox" id="day_type8" name="dummy[]" value="8" checked="check" /><label for="day_type8">祝日</label></dd>
                 </dl>
+                <dl class="btnPc05 cf">
+                <dd>例）土曜日、日曜日の両日とも晴れる日を探したい。　→　[2日連続]ボタンON　+　[土][日]ボタンON</dd>
+                </dl>
+                <input type="hidden" name="sp" id="sp" value="1" />
                 <input type="hidden" name="page" id="page" value="" />
                 <input type="hidden" name="type" value="area" />
                 <input type="hidden" name="day_type" id="day_type" value="" />
@@ -40,7 +47,7 @@
         
         <div id="btnSp">
             <select name="days">
-                <option value="">晴れの数</option>
+                <option value="">晴数</option>
                 <option value="">2日</option>
                 <option value="">3日</option>
                 <option value="">4日</option>
@@ -60,36 +67,37 @@
             </select>
         </div>
         <?php endif; ?>
+        <?php if($bodyId == 'area'): ?><div class="nextBtn" id="next"><a href="javascript:void(0)">次へ ></a></div><?php endif; ?>
         <div id="recommend">
-            <h2><?php echo $recommend_futures_title; ?></h2>
-            <?php if($bodyId == 'area'): ?><div class="moreBtn" id="next"><a href="#">次へ ></a></div><?php endif; ?>
             <div id="boxes">
             <!-- 下段(スマホは非表示) -->
             <?php foreach ($futures as $key => $chunk) : ?>
                 <div class="line<?php if($key >= $this->config->item('sp_display_number')) echo ' undisp'; ?> cf">
+                <?php $i = 1; ?>
                 <?php foreach ($chunk as $future) : ?>
-                    <div class="box">
+                    <div class="box<?php if($i >= 7) echo ' undisp'; ?>">
                         <?php if($leisure_type == 'spring'): ?>
                             <?php if(isset($hotel['HotelID'])): ?>
                                 <a href="<?php echo '/spring/date/'.$springs[0]->id.'/'.$hotel['HotelID'].'/'.$springs[0]->area_id.'/'.$future->date; ?>">
                             <?php else: ?>
                                 <a href="<?php echo '/spring/date/'.$springs[0]->id.'/0/'.$springs[0]->area_id.'/'.$future->date; ?>">
                             <?php endif; ?>
-                        
                         <?php else: ?>
                         <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
                         <?php endif; ?>
                         
-                        <div class="photo"><img src="/images/weather/sunny.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $future->daytime; ?></span></div>
-                        <div class="text">
-                            <div class="date"><?php echo $future->month.'/'.$future->day; ?><?php echo get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$holidays),TRUE); ?></div>
+                        <div class="weather"><img src="/images/weather/icon/<?php echo $future->daytime_icon_image; ?>" alt="<?php echo $future->daytime; ?>" /></div>
+                        <div class="info">
+                            <div class="date"><?php echo $future->month.'/'.$future->day; ?><?php echo get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$all_holidays),TRUE); ?></div>
                             <div class="highTemp">最高気温 <em><?php echo $future->temperature_max; ?>°C</em></div>
                             <div class="lowTemp">最低気温 <em><?php echo $future->temperature_min; ?>°C</em></div>
                         </div>
                         </a>
                     </div>
+                    <?php $i++; ?>
                 <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
             </div>
         </div>
+    </div>

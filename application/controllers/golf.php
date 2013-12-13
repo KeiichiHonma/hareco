@@ -29,7 +29,7 @@ class Golf extends MY_Controller {
         $this->load->library('tank_auth');
         $this->load->model('Future_model');
         $this->load->library('rakuten_lib');
-        $this->data['areas'] = $this->Area_model->getAllAreas();
+        $this->data['all_areas'] = $this->Area_model->getAllAreas();
     }
 
     function area($area_id)

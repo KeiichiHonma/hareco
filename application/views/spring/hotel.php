@@ -60,13 +60,13 @@ contents
                         $jalan_date = $from_ymd[0].$from_ymd[1].$from_ymd[2];
                         $from_datetime = mktime(0,0,0,$from_ymd[1],$from_ymd[2],$from_ymd[0]);
                         $from_display_date = date("n/j",$from_datetime);
-                        $from_youbi = get_day_of_the_week(date("N",$from_datetime),array_key_exists($target_date,$holidays),TRUE);
+                        $from_youbi = get_day_of_the_week(date("N",$from_datetime),array_key_exists($target_date,$all_holidays),TRUE);
                         
                         $to_datetime = $from_datetime + 86400;
                         //$from_ymd = explode('-',$target_date);
                         //$from_datetime = mktime(0,0,0,$from_ymd[1],$from_ymd[2],$from_ymd[0]);
                         $to_display_date = date("n/j",$to_datetime);
-                        $to_youbi = get_day_of_the_week(date("N",$to_datetime),array_key_exists(date("Y-m-d",$to_datetime),$holidays),TRUE);
+                        $to_youbi = get_day_of_the_week(date("N",$to_datetime),array_key_exists(date("Y-m-d",$to_datetime),$all_holidays),TRUE);
                         
                         //使用する画像決定
                         $count = count($plan['PlanPicture']);//最大3

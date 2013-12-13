@@ -36,9 +36,10 @@ class Spring extends MY_Controller {
         $this->load->model('Weather_model');
         $this->load->library('weather_lib');
         $this->load->library('jalan_lib');
-        $this->data['regions'] = $this->Region_model->getAllregions();
-        $this->data['areas'] = $this->Area_model->getAllAreas();
-        $this->data['holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+        $this->data['all_regions'] = $this->Region_model->getAllregions();
+        $this->data['all_areas'] = $this->Area_model->getAllAreas();
+        $this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+        $this->data['all_springs'] = $this->Spring_model->getAllSpringsOrderSpringAreaId();
     }
 
     function index()
@@ -48,14 +49,14 @@ class Spring extends MY_Controller {
 
         //温泉地一覧///////////////////////////////////////////////////////////////////////////
         $this->load->model('Todoufuken_model');
-        $this->data['springs'] = $this->Spring_model->getAllSpringsOrderSpringAreaId();
+        //$this->data['springs'] = $this->Spring_model->getAllSpringsOrderSpringAreaId();
 
-        $data['spring_slide'] =array_rand($this->data['springs'],5);
+        $data['spring_slide'] =array_rand($this->data['all_springs'],5);
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
 
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/jquery-ui-1.10.3.custom.css','css/add.css','css/add_sp.css')));
-        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js','js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
         $this->load->view('spring/index', array_merge($this->data,$data));
     }
 
@@ -96,9 +97,9 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery-ui-1.10.3.custom.css','css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
-            'http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js',
+            
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
@@ -182,9 +183,9 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery-ui-1.10.3.custom.css','css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
-            'http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js',
+            
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
@@ -221,13 +222,13 @@ class Spring extends MY_Controller {
         $data['from_ymd'] = explode('-',$date);
         $data['from_datetime'] = mktime(0,0,0,$data['from_ymd'][1],$data['from_ymd'][2],$data['from_ymd'][0]);
         $data['from_display_date'] = date("n/j",$data['from_datetime']);
-        $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['holidays']),TRUE);
+        $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
         $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
         $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
         
         $data['to_datetime'] = $data['from_datetime'] + 86400;
         $data['to_display_date'] = date("n/j",$data['to_datetime']);
-        $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['holidays']),TRUE);
+        $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
 
         //未来データ
         $data['week_futures'] = $this->Future_model->getFuturesByAreaIdByDateForWeek($spring->area_id,$date);
@@ -330,13 +331,13 @@ class Spring extends MY_Controller {
         $data['from_ymd'] = explode('-',$date);
         $data['from_datetime'] = mktime(0,0,0,$data['from_ymd'][1],$data['from_ymd'][2],$data['from_ymd'][0]);
         $data['from_display_date'] = date("n/j",$data['from_datetime']);
-        $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['holidays']),TRUE);
+        $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
         $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
         $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
         
         $data['to_datetime'] = $data['from_datetime'] + 86400;
         $data['to_display_date'] = date("n/j",$data['to_datetime']);
-        $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['holidays']),TRUE);
+        $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
 
 
         
@@ -388,9 +389,9 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery-ui-1.10.3.custom.css','css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
-            'http://ajax.googleapis.com/ajax/libs/jqueryui/1/i18n/jquery.ui.datepicker-ja.min.js',
+            
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',

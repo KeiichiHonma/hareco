@@ -27,7 +27,7 @@ $(function(){
     /*- スライダー */
     $('#slider').bxSlider({
         auto:true,
-        speed:3000,
+        speed:10000,
         mode: 'fade',
         hideControlOnEnd:false,
         pager:false,

@@ -360,7 +360,7 @@ contents
 
         <div id="recommend">
             <h2><?php echo $springs[0]->spring_name; ?>の休日プラン</h2>
-            <div class="moreBtn" id="next"><a href="#">次へ ></a></div>
+            <div class="nextBtn" id="next"><a href="#">次へ ></a></div>
             <div id="boxes">
             <!-- 下段(スマホは非表示) -->
             <?php foreach ($etc_futures as $key => $chunk) : ?>
@@ -370,7 +370,7 @@ contents
                         <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
                         <div class="photo"><img src="/images/weather/sunny.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $future->daytime; ?></span></div>
                         <div class="text">
-                            <div class="date"><?php echo $future->month.'/'.$future->day; ?><?php echo get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$holidays),TRUE); ?></div>
+                            <div class="date"><?php echo $future->month.'/'.$future->day; ?><?php echo get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$all_holidays),TRUE); ?></div>
                             <div class="highTemp">最高気温 <em><?php echo $future->temperature_max; ?>°C</em></div>
                             <div class="lowTemp">最低気温 <em><?php echo $future->temperature_min; ?>°C</em></div>
                         </div>

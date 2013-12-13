@@ -10,7 +10,6 @@ class Devtools extends CI_Controller {
         }
         $this->load->library('tank_auth');
         $this->load->library('weather_lib');
-        
         //connect database
         $this->load->database();
 
@@ -23,7 +22,6 @@ class Devtools extends CI_Controller {
     //dev exe///////////////////////////////////////////////////////////////////////////////////////////
     //過去データ取り込み
     function importWeatherForDesignated(){
-        $this->load->model('Area_model');
         $areas = $this->Area_model->getAllAreasFlipJmaId();
         $this->load->model('Weather_model');
 
@@ -277,118 +275,153 @@ class Devtools extends CI_Controller {
         $this->load->model('Future_model');
         
         //全area,指定日を実行
-        $year = 2014;
-        $target_month = 11;
-        $end_day = 27;
+        $target_year = 2013;
+        $target_month = 12;
+        $end_day = 10;//14時前はマイナス1
         $sampling_year = $this->CI->config->item('jma_weather_start_year');//1993 or 1967
         
-        $holidays = $this->weather_lib->get_holidays_this_month($year);
+        $holidays = $this->weather_lib->get_holidays_this_month($target_year);
         print date("y/n/d/H:i:s")."\n";
         foreach ($areas as $area){
-            $yesterday_weather = array('night'=>'','night_number'=>0,'is_night_shine'=>0,'is_night_snow'=>0);
-            for($month=1;$month<=$target_month;$month++){
-                $today_month = $month;
-                $lastday = date("t", mktime(0,0,0,$month,1,$year));
-                $month_string = $month < 10 ? '0'.$month : $month;
-                for($day=1;$day <= $lastday;$day++){
-                    if($year == 2014 && $month == 11 && $day == $end_day ) break;
-                    $day_string = $day < 10 ? '0'.$day : $day;
-                    $today_day = $day;
-                    
-                    //想定前日の日付を取得
-                    if($month == 1 && $day == 1){
-                        $yesterday_year = $year - 2;
-                        $yesterday_month = 12;
-                        $yesterday_day = 31;
-                    }elseif($day == 1){
-                        $yesterday_year = $year -1;
-                        $yesterday_month = $month - 1;
-                        $yesterday_day = date("t", mktime(0,0,0,$yesterday_month,1,$yesterday_year));
-                    }else{
-                        $yesterday_year = $year -1;
-                        $yesterday_month = $month;
-                        $yesterday_day = $day - 1;
-                    }
-
-                    //前日の実際の結果を取得
-                    $real_yesterday_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$yesterday_year,$yesterday_month,$yesterday_day);
-                    $real_yesterday_night = $real_yesterday_weather->night;//昨日の夜の天気
-                    
-                    //先頭の天気文字で始まる過去データを使用する
-                    $head = $this->weather_lib->changeWeatherHeadString($real_yesterday_night);
-                    $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadByMonthByDay($area->id,$head,$today_month,$today_day,$sampling_year);
-
-                    //空の場合、サンプリングの数が5つに満たない場合は全体の統計予測で
-                    if(empty($month_day_weathers) || count($month_day_weathers) < 3){
-                        $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByMonthByDay($area->id,$today_month,$today_day);
-                    }
-                    //未来データ生成
-                    if(!$is_update){
-                        $weather = $this->weather_lib->getFutureWeather($month_day_weathers,$sampling_year);//1993 or 1967
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day] = $weather;
-                        //yesterday
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['yesterday_night'] = $yesterday_weather['night'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['yesterday_night_number'] = $yesterday_weather['night_number'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
-                        $yesterday_weather = $weather;//次のために
+            $yesterday_batch_index = FALSE;
+            for ($year=$target_year;$year<=2014;$year++){
+                $yesterday_weather = array('daytime'=>'','daytime_icon_image'=>'','daytime_number'=>0,'is_daytime_shine'=>0,'is_daytime_snow'=>0,'night'=>'','night_icon_image'=>'','night_number'=>0,'is_night_shine'=>0,'is_night_snow'=>0);
+                for($month=1;$month<=$target_month;$month++){
+                    $today_month = $month;
+                    $lastday = date("t", mktime(0,0,0,$month,1,$year));
+                    $month_string = $month < 10 ? '0'.$month : $month;
+                    for($day=1;$day <= $lastday;$day++){
+                        if($year == 2014 && $month == 12 && $day == $end_day ) break;
+                        $day_string = $day < 10 ? '0'.$day : $day;
+                        $today_day = $day;
                         
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['region_id'] = $area->region_id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['todoufuken_id'] = $area->todoufuken_id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['area_id'] = $area->id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['jma_prec_no'] = $area->jma_prec_no;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['jma_block_no'] = $area->jma_block_no;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['year'] = $year;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['month'] = $today_month;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['day'] = $today_day;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['date'] = $futureData[$area->id.$year.'-'.$month.'-'.$day]['year'].'-'.$futureData[$area->id.$year.'-'.$month.'-'.$day]['month'].'-'.$futureData[$area->id.$year.'-'.$month.'-'.$day]['day'];
-
-                        //holiday
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
-                        if(array_key_exists($year.'-'.$month_string.'-'.$day_string,$holidays)){
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 2;//1土日 2祝日
-                        }elseif ($futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] == 6 || $futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] == 7){
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 1;//1土日 2祝日
+                        //想定前日の日付を取得
+                        if($month == 1 && $day == 1){
+                            $yesterday_year = $year - 2;
+                            $yesterday_month = 12;
+                            $yesterday_day = 31;
+                        }elseif($day == 1){
+                            $yesterday_year = $year -1;
+                            $yesterday_month = $month - 1;
+                            $yesterday_day = date("t", mktime(0,0,0,$yesterday_month,1,$yesterday_year));
                         }else{
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 0;
+                            $yesterday_year = $year -1;
+                            $yesterday_month = $month;
+                            $yesterday_day = $day - 1;
                         }
 
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['created'] = date("Y-m-d H:i:s", $time);
-                        //ここで正答チェックしてしまう
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_correct'] = 9;
-                        if($year == 2013 && $today_month <= 11 ){
-                            if($today_month == 11 && $today_day >= 14){
-                            
-                            }else{
-                                //指定年月日の過去データ取得
-                                $year_month_day_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$year,$today_month,$today_day);
-                                //昼の天気で正答確認
-                                $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_correct'] =  $this->weather_lib->isCorrect($futureData[$area->id.$year.'-'.$month.'-'.$day]['daytime'],$year_month_day_weather->daytime) ? 0 : 1;
-                            }
+                        //前日の実際の結果を取得
+                        $real_yesterday_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$yesterday_year,$yesterday_month,$yesterday_day);
+                        $real_yesterday_night = $real_yesterday_weather->night;//昨日の夜の天気
+                        
+                        //先頭の天気文字で始まる過去データを使用する
+                        $head = $this->weather_lib->changeWeatherHeadString($real_yesterday_night);
+                        $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByHeadByMonthByDay($area->id,$head,$today_month,$today_day,$sampling_year);
+
+                        //空の場合、サンプリングの数が5つに満たない場合は全体の統計予測で
+                        if(empty($month_day_weathers) || count($month_day_weathers) < 3){
+                            $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByMonthByDay($area->id,$today_month,$today_day);
                         }
-                    }else{
-                        //update
-                        $futureData = $this->weather_lib->getFutureWeather($month_day_weathers);
-                        
-                        $futureData['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
-                        $futureData['region_id'] = $area->region_id;
-                        $futureData['todoufuken_id'] = $area->todoufuken_id;
-                        $futureData['area_id'] = $area->id;
-                        $futureData['jma_prec_no'] = $area->jma_prec_no;
-                        $futureData['jma_block_no'] = $area->jma_block_no;
-                        
-                        $futureData['year'] = $year;
-                        $futureData['month'] = $today_month;
-                        $futureData['day'] = $today_day;
-                        $futureData['date'] = $futureData['year'].'-'.$futureData['month'].'-'.$futureData['day'];
-                        $futureData['created'] = date("Y-m-d H:i:s", $time);
-                        
-                        $this->Future_model->updateFuture($area->id,$year,$month,$day,$futureData);
-                        $futureData = array();
-                        print $area->area_name.$year.'-'.$month.'-'.$day."\n";
+                        //未来データ生成
+                        if(!$is_update){
+                            $batch_index = $area->id.$year.'-'.$month.'-'.$day;
+                            $weather = $this->weather_lib->getFutureWeather($month_day_weathers,$sampling_year);//1993 or 1967
+                            $futureData[$batch_index] = $weather;
+
+                            //tomorrow///////////////////////////////////////
+                            //daytimne
+                            if($yesterday_batch_index !== FALSE){
+                                $futureData[$yesterday_batch_index]['tomorrow_daytime'] = $weather['daytime'];
+                                $futureData[$yesterday_batch_index]['tomorrow_daytime_icon_image'] = $weather['daytime_icon_image'];
+                                $futureData[$yesterday_batch_index]['tomorrow_daytime_number'] = $weather['night_number'];
+                                $futureData[$yesterday_batch_index]['is_tomorrow_daytime_shine'] = $weather['is_daytime_shine'];
+                                $futureData[$yesterday_batch_index]['is_tomorrow_daytime_snow'] = $weather['is_daytime_snow'];
+                            }
+                            $yesterday_batch_index = $batch_index;//次のために
+
+                            //yesterday////////////////////////////////
+                            //daytimne
+                            $futureData[$batch_index]['yesterday_daytime'] = $yesterday_weather['daytime'];
+                            $futureData[$batch_index]['yesterday_daytime_icon_image'] = $yesterday_weather['daytime_icon_image'];
+                            $futureData[$batch_index]['yesterday_daytime_number'] = $yesterday_weather['night_number'];
+                            $futureData[$batch_index]['is_yesterday_daytime_shine'] = $yesterday_weather['is_daytime_shine'];
+                            $futureData[$batch_index]['is_yesterday_daytime_snow'] = $yesterday_weather['is_daytime_snow'];
+                            
+                            //night
+                            $futureData[$batch_index]['yesterday_night'] = $yesterday_weather['night'];
+                            $futureData[$batch_index]['yesterday_night_icon_image'] = $yesterday_weather['night_icon_image'];
+                            $futureData[$batch_index]['yesterday_night_number'] = $yesterday_weather['night_number'];
+                            $futureData[$batch_index]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
+                            $futureData[$batch_index]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
+                            $yesterday_weather = $weather;//次のために
+                            
+                            
+                            $futureData[$batch_index]['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
+                            $futureData[$batch_index]['region_id'] = $area->region_id;
+                            $futureData[$batch_index]['todoufuken_id'] = $area->todoufuken_id;
+                            $futureData[$batch_index]['area_id'] = $area->id;
+                            $futureData[$batch_index]['jma_prec_no'] = $area->jma_prec_no;
+                            $futureData[$batch_index]['jma_block_no'] = $area->jma_block_no;
+                            $futureData[$batch_index]['year'] = $year;
+                            $futureData[$batch_index]['month'] = $today_month;
+                            $futureData[$batch_index]['day'] = $today_day;
+                            $futureData[$batch_index]['date'] = $futureData[$batch_index]['year'].'-'.$futureData[$batch_index]['month'].'-'.$futureData[$batch_index]['day'];
+
+                            //初期化用tomorrow///////////////////////////////////////
+                            //daytimne
+                            $futureData[$batch_index]['tomorrow_daytime'] = '';
+                            $futureData[$batch_index]['tomorrow_daytime_icon_image'] = '';
+                            $futureData[$batch_index]['tomorrow_daytime_number'] = 0;
+                            $futureData[$batch_index]['is_tomorrow_daytime_shine'] = 9;
+                            $futureData[$batch_index]['is_tomorrow_daytime_snow'] = 9;
+
+                            //holiday
+                            $futureData[$batch_index]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
+                            if(array_key_exists($year.'-'.$month_string.'-'.$day_string,$holidays)){
+                                $futureData[$batch_index]['holiday'] = 2;//1土日 2祝日
+                            }elseif ($futureData[$batch_index]['day_of_the_week'] == 6 || $futureData[$batch_index]['day_of_the_week'] == 7){
+                                $futureData[$batch_index]['holiday'] = 1;//1土日 2祝日
+                            }else{
+                                $futureData[$batch_index]['holiday'] = 0;
+                            }
+
+                            $futureData[$batch_index]['created'] = date("Y-m-d H:i:s", $time);
+                            //ここで正答チェックしてしまう
+                            $futureData[$batch_index]['is_correct'] = 9;
+                            if($year == 2013 && $today_month <= 11 ){
+                                if($today_month == 11 && $today_day >= 14){
+                                
+                                }else{
+                                    //指定年月日の過去データ取得
+                                    $year_month_day_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$year,$today_month,$today_day);
+                                    //昼の天気で正答確認
+                                    $futureData[$batch_index]['is_correct'] =  $this->weather_lib->isCorrect($futureData[$batch_index]['daytime'],$year_month_day_weather->daytime) ? 0 : 1;
+                                }
+                            }
+                        }else{
+                            //update
+                            $futureData = $this->weather_lib->getFutureWeather($month_day_weathers);
+                            
+                            $futureData['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
+                            $futureData['region_id'] = $area->region_id;
+                            $futureData['todoufuken_id'] = $area->todoufuken_id;
+                            $futureData['area_id'] = $area->id;
+                            $futureData['jma_prec_no'] = $area->jma_prec_no;
+                            $futureData['jma_block_no'] = $area->jma_block_no;
+                            
+                            $futureData['year'] = $year;
+                            $futureData['month'] = $today_month;
+                            $futureData['day'] = $today_day;
+                            $futureData['date'] = $futureData['year'].'-'.$futureData['month'].'-'.$futureData['day'];
+                            $futureData['created'] = date("Y-m-d H:i:s", $time);
+                            
+                            $this->Future_model->updateFuture($area->id,$year,$month,$day,$futureData);
+                            $futureData = array();
+                            print $area->area_name.$year.'-'.$month.'-'.$day."\n";
+                        }
                     }
                 }
+
             }
             if(!$is_update){
                 $this->Future_model->insertBatchFuture($futureData);
@@ -407,15 +440,15 @@ class Devtools extends CI_Controller {
         $this->load->model('Future_model');
         
         $year = 2013;
-        $target_month = 11;
-        $end_day = 27;
+        $target_month = 12;
+        $end_day = 10;
         foreach ($areas as $area){
             for($month=1;$month<=$target_month;$month++){
                 $today_month = $month;
                 $lastday = date("t", mktime(0,0,0,$month,1,$year));
                 
                 for($day=1;$day <= $lastday;$day++){
-                    if($year == 2013 && $month == 11 && $day == $end_day ) break;
+                    if($year == 2013 && $month == 12 && $day == $end_day ) break;
                     $today_day = $day;
                     //指定年月日の過去データ取得
                     $year_month_day_weather = $this->Weather_model->getWeatherByAreaIdByYearByMonthByDay($area->id,$year,$today_month,$today_day);
@@ -504,6 +537,7 @@ class Devtools extends CI_Controller {
         function plus (&$int,$date){
             $int = $int+1;
         }
+        $this->load->model('Area_model');
         $this->load->model('Future_model');
         $areas = $this->Area_model->getAllAreasFlipJmaId();
         foreach ($areas as $area){
@@ -726,37 +760,37 @@ class Devtools extends CI_Controller {
                     
                     if(!$is_update){
                         $weather = $this->weather_lib->getFutureWeather($month_day_weathers,$this->CI->config->item('jma_weather_start_year'));//1993
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day] = $weather;
+                        $futureData[$batch_index] = $weather;
                         
                         //yesterday
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['yesterday_night'] = $yesterday_weather['night'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['yesterday_night_number'] = $yesterday_weather['night_number'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
+                        $futureData[$batch_index]['yesterday_night'] = $yesterday_weather['night'];
+                        $futureData[$batch_index]['yesterday_night_number'] = $yesterday_weather['night_number'];
+                        $futureData[$batch_index]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
+                        $futureData[$batch_index]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
                         $yesterday_weather = $weather;//次のために
                         
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['region_id'] = $area->region_id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['todoufuken_id'] = $area->todoufuken_id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['area_id'] = $area->id;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['jma_prec_no'] = $area->jma_prec_no;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['jma_block_no'] = $area->jma_block_no;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['year'] = $year;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['month'] = $today_month;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['day'] = $today_day;
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['date'] = $futureData[$area->id.$year.'-'.$month.'-'.$day]['year'].'-'.$futureData[$area->id.$year.'-'.$month.'-'.$day]['month'].'-'.$futureData[$area->id.$year.'-'.$month.'-'.$day]['day'];
+                        $futureData[$batch_index]['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
+                        $futureData[$batch_index]['region_id'] = $area->region_id;
+                        $futureData[$batch_index]['todoufuken_id'] = $area->todoufuken_id;
+                        $futureData[$batch_index]['area_id'] = $area->id;
+                        $futureData[$batch_index]['jma_prec_no'] = $area->jma_prec_no;
+                        $futureData[$batch_index]['jma_block_no'] = $area->jma_block_no;
+                        $futureData[$batch_index]['year'] = $year;
+                        $futureData[$batch_index]['month'] = $today_month;
+                        $futureData[$batch_index]['day'] = $today_day;
+                        $futureData[$batch_index]['date'] = $futureData[$batch_index]['year'].'-'.$futureData[$batch_index]['month'].'-'.$futureData[$batch_index]['day'];
 
                         //holiday
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
+                        $futureData[$batch_index]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
                         if(array_key_exists($year.'-'.$month_string.'-'.$day_string,$holidays)){
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 2;//1土日 2祝日
-                        }elseif ($futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] == 6 || $futureData[$area->id.$year.'-'.$month.'-'.$day]['day_of_the_week'] == 7){
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 1;//1土日 2祝日
+                            $futureData[$batch_index]['holiday'] = 2;//1土日 2祝日
+                        }elseif ($futureData[$batch_index]['day_of_the_week'] == 6 || $futureData[$batch_index]['day_of_the_week'] == 7){
+                            $futureData[$batch_index]['holiday'] = 1;//1土日 2祝日
                         }else{
-                            $futureData[$area->id.$year.'-'.$month.'-'.$day]['holiday'] = 0;
+                            $futureData[$batch_index]['holiday'] = 0;
                         }
 
-                        $futureData[$area->id.$year.'-'.$month.'-'.$day]['created'] = date("Y-m-d H:i:s", $time);
+                        $futureData[$batch_index]['created'] = date("Y-m-d H:i:s", $time);
                     }else{
                         $futureData = $this->weather_lib->getFutureWeather($month_day_weathers);
                         

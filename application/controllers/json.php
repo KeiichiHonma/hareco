@@ -32,15 +32,18 @@ class Json extends MY_Controller {
         $this->load->model('Future_model');
         $this->load->model('Weather_model');
         $this->load->library('weather_lib');
-        $this->data['areas'] = $this->Area_model->getAllAreas();
-        $this->data['holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+        $this->data['all_areas'] = $this->Area_model->getAllAreas();
+        $this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
     }
 
     function futures()
     {
-        sleep(1);
-        
-        $type = isset($_POST['type']) && strlen($_POST['type']) > 0 ? $_POST['type'] : 'area';
+        //sleep(1);
+        /*
+        spの場合は画面表示6個になります。
+        */
+        $sp = isset($_POST['sp']) && is_numeric($_POST['sp']) ? $_POST['sp'] : 1;
+        $type = isset($_POST['type']) && strlen($_POST['type']) > 0 ? ($sp == 1 ? $_POST['type'] : 'sp' ) : 'area';
         $object_id = 1;
         if(isset($_POST['area_id']) && is_numeric($_POST['area_id'])) $object_id = $_POST['area_id'];
 
@@ -72,13 +75,16 @@ class Json extends MY_Controller {
             $html = '';
             $chunk = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
             foreach ($chunk as $key => $futures){
-                $html .= '<div class="line0'.$key.' cf">';
+                //$html .= '<div class="line0'.$key.' cf">';
+                $html .= '<div class="line'.($key >= $this->config->item('sp_display_number') ? ' undisp' : '').' cf">';
                 foreach ($futures as $future){
                         $html .= '<div class="box">';
                             $html .= '<a href="/area/date/'.$future->area_id.'/'.$future->date.'">';
-                            $html .= '<div class="photo"><img src="/images/weather/sunny.jpg" alt="" /><div class="shadow">&nbsp;</div><span>'.$future->daytime.'</span></div>';
-                            $html .= '<div class="text">';
-                                $html .= '<div class="date">'.$future->month.'/'.$future->day.get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$this->data['holidays']),TRUE).'</div>';
+                            //$html .= '<div class="photo"><img src="/images/weather/sunny.jpg" alt="" /><div class="shadow">&nbsp;</div><span>'.$future->daytime.'</span></div>';
+                            $html .= '<div class="weather"><img src="/images/weather/icon/'.$future->daytime_icon_image.'" alt="'. $future->daytime.'" /></div>';
+                            
+                            $html .= '<div class="info">';
+                                $html .= '<div class="date">'.$future->month.'/'.$future->day.get_day_of_the_week($future->day_of_the_week,array_key_exists($future->date,$this->data['all_holidays']),TRUE).'</div>';
                                 $html .= '<div class="highTemp">最高気温 <em>'.$future->temperature_max.'°C</em></div>';
                                 $html .= '<div class="lowTemp">最低気温 <em>'.$future->temperature_min.'°C</em></div>';
                             $html .= '</div>';

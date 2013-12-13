@@ -20,15 +20,15 @@ main image
         <h2>温泉ガイド</h2>
         <div id="searchBox">
             <div id="searchBoxInner">
-                <ul class="menuCity">
+                <ul class="menuBox">
                     <div>
                         <?php
                             $i = 0;
-                            $count = count($springs);
+                            $count = count($all_springs);
                             $before_spring_area_id = '';
                             $end_dl = FALSE;
                         ?>
-                        <?php foreach ($springs as $spring) : ?>
+                        <?php foreach ($all_springs as $spring) : ?>
                         <?php
                             if($before_spring_area_id != $spring->spring_area_id){
                                 if($i != 0 || $i != $count) echo '</dl>';
@@ -37,7 +37,7 @@ main image
                             }
                             $before_spring_area_id = $spring->spring_area_id;
                         ?>
-                        <dd style="float:left;"><?php echo anchor('spring/show'.$spring->id,$spring->spring_name); ?></dd>
+                        <dd style="float:left;"><?php echo anchor('spring/show/'.$spring->id,$spring->spring_name); ?></dd>
                         <?php if($end_dl) echo '</dl>'; ?>
                         <?php $i++; ?>
                         <?php endforeach; ?>

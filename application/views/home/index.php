@@ -9,9 +9,7 @@ main image
 <!--
 #ind #mainImage .photo01{ background-image:url(images/slide/tokyo.jpg); }
 #ind #mainImage .photo02{ background-image:url(images/slide/spring.jpg); }
-#ind #mainImage .photo03{ background-image:url(images/slide/golf.jpg); }
-#ind #mainImage .photo04{ background-image:url(images/slide/holiday.jpg); }
-#ind #mainImage .photo05{ background-image:url(images/slide/snow.jpg); }
+
 -->
 </style>
 <div id="mainImage">
@@ -23,7 +21,7 @@ main image
         <div id="searchBox">
             <div id="searchBoxInner">
                 <?php echo form_open('/search','method="get" onsubmit="s_confirm();return false;" id="search"'); ?>
-                    <input type="text" name="keyword" value="<?php echo $this->lang->line('search_box_default') ?>" class="focus" /><input type="text" name="date" value="日付を選択" id="datepicker" /><input type="image" src="images/btn_search.png" align="top" alt="検索" class="btnSearch" />
+                    <input type="text" name="keyword" value="<?php echo $this->lang->line('search_box_default'); ?>" class="focus" /><input type="text" name="date" value="日付を選択" id="datepicker" /><input type="image" src="images/btn_search.png" align="top" alt="検索" class="btnSearch" />
                 <?php echo form_close(); ?>
             </div>
         </div>
@@ -33,14 +31,14 @@ main image
         <div class="boxPhoto photo01">
             <div class="boxInner">
                 <div class="minWeather cf">
-                    <h4>箱根温泉</h4>
+                    <h4>東京エリア晴れる予測の連休</h4>
                     <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="東京" class="icon" /></div>
-                        <div class="date">10/20</div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area']->daytime_icon_image; ?>" alt="<?php echo $slides['area']->daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area']->date)); ?></div>
                     </div>
                     <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="晴れのち曇り" class="icon" /></div>
-                        <div class="date">10/21</div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area']->tomorrow_daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area']->date)+86400); ?></div>
                     </div>
                 </div>
             </div>
@@ -49,67 +47,18 @@ main image
         <div class="boxPhoto photo02">
             <div class="boxInner">
                 <div class="minWeather cf">
-                    <h4>鬼怒川温泉</h4>
+                    <h4>箱根温泉晴れる予測の連休</h4>
                     <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="東京" class="icon" /></div>
-                        <div class="date">10/20</div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->daytime_icon_image; ?>" alt="<?php echo $slides['spring']->daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['spring']->date)); ?></div>
                     </div>
                     <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="晴れのち曇り" class="icon" /></div>
-                        <div class="date">10/21</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 画像03 -->
-        <div class="boxPhoto photo03">
-            <div class="boxInner">
-                <div class="minWeather cf">
-                    <h4>東京ディズニーランド</h4>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="東京" class="icon" /></div>
-                        <div class="date">10/20</div>
-                    </div>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="晴れのち曇り" class="icon" /></div>
-                        <div class="date">10/21</div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['spring']->tomorrow_daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['spring']->date)+86400); ?></div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- 画像04 -->
-        <div class="boxPhoto photo04">
-            <div class="boxInner">
-                <div class="minWeather cf">
-                    <h4>熱海</h4>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="東京" class="icon" /></div>
-                        <div class="date">10/20</div>
-                    </div>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="晴れのち曇り" class="icon" /></div>
-                        <div class="date">10/21</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- 画像05 -->
-        <div class="boxPhoto photo05">
-            <div class="boxInner">
-                <div class="minWeather cf">
-                    <h4>札幌</h4>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="東京" class="icon" /></div>
-                        <div class="date">10/20</div>
-                    </div>
-                    <div class="box">
-                        <div class="icon"><img src="images/icon_minWeather_01.png" alt="晴れのち曇り" class="icon" /></div>
-                        <div class="date">10/21</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
     </div>
 </div>
 </div>
@@ -127,11 +76,11 @@ contents
 <?php
     $start_datetime = strtotime("+8 day");
     $start_date = date("Y-n-j",$start_datetime);
-    $start_date_string = date("n/j",$start_datetime).get_day_of_the_week(date("N",$start_datetime),array_key_exists($start_date,$holidays),TRUE);
+    $start_date_string = date("n/j",$start_datetime).get_day_of_the_week(date("N",$start_datetime),array_key_exists($start_date,$all_holidays),TRUE);
 
-    $end_datetime = strtotime("+9 day");
+    $end_datetime = strtotime("+14 day");
     $end_date = date("Y-n-j",$end_datetime);
-    $end_date_string = date("n/j",$end_datetime).get_day_of_the_week(date("N",$end_datetime),array_key_exists($end_date,$holidays),TRUE);
+    $end_date_string = date("n/j",$end_datetime).get_day_of_the_week(date("N",$end_datetime),array_key_exists($end_date,$all_holidays),TRUE);
 ?>
 <?php
     $i = 1;
@@ -159,8 +108,8 @@ contents
 </style>
 
 
-            <h2><?php echo $start_date_string; ?>～<?php echo $end_date_string; ?>の天気予想 </h2>
-            <table>
+            <h2><?php echo $start_date_string; ?>～<?php echo $end_date_string; ?>の未来天気予想 </h2>
+            <table class="weather_index">
                 <tr class="title">
                     <th class="cell01">日付</th>
                     <td class="<?php echo $class_array[1]; ?>"><?php echo $futures[0]->month.'/'.$futures[0]->day.get_day_of_the_week($futures[0]->day_of_the_week,FALSE,FALSE) ?></td>
@@ -172,7 +121,7 @@ contents
                     <td class="<?php echo $class_array[7]; ?>"><?php echo $futures[0]->month.'/'.$futures[6]->day.get_day_of_the_week($futures[6]->day_of_the_week,FALSE,FALSE) ?></td>
                 </tr>
                 <tr>
-                <th class="cell02"><?php echo $areas[$futures[0]->area_id]->area_name; ?></th>
+                <th class="cell02"><?php echo $all_areas[$futures[0]->area_id]->area_name; ?></th>
                 <?php
                     $td_number = 1;
                     $count = count($futures);
@@ -182,17 +131,17 @@ contents
                         <?php $td_number = 1; ?>
                         </tr>
                         <tr>
-                        <th class="cell02"><?php echo $areas[$futures[$index]->area_id]->area_name; ?></th>
+                        <th class="cell02"><?php echo $all_areas[$futures[$index]->area_id]->area_name; ?></th>
                     <?php endif; ?>
 
-                    <td class="<?php echo $class_array[$td_number]; ?>"><?php echo $futures[$index]->daytime; ?></td>
+                    <td class="<?php echo $class_array[$td_number]; ?>"><img src="images/weather/icon/<?php echo $futures[$index]->daytime_icon_image; ?>" alt="<?php echo $futures[$index]->daytime; ?>" class="icon" /><br /><?php echo $futures[$index]->daytime; ?></td>
                     <?php $td_number++; ?>
                 <?php endfor; ?>
             </table>
         </div>
 
         <div id="guide">
-            <h2>おでかけチャンス！[晴]予測連休</em></h2>
+            <h2>おでかけチャンス！<?php echo $this->lang->line('holiday_title'); ?></em></h2>
             <?php foreach ($million_city_holiday_futures as $key => $chunk) : ?>
                 <div class="line<?php if($key >= $this->config->item('sp_display_number')) echo ' undisp'; ?> cf">
                 <?php foreach ($chunk as $million_city_holiday_future) : ?>
@@ -203,14 +152,14 @@ contents
                     ?>
                     
                     <div class="box">
-                        <a href="<?php echo 'area/show/'.$million_city_holiday_future->area_id; ?>">
-                        <div class="photo"><img src="images/area/<?php echo $million_city_holiday_future->area_id; ?>.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $areas[$million_city_holiday_future->area_id]->area_name; ?></span></div>
-                        <div class="icon"><img src="images/icon_weather_01.png" alt="<?php echo $million_city_holiday_future->daytime; ?>" /></div>
+                        <a href="<?php echo 'area/date/'.$million_city_holiday_future->area_id.'/'.$million_city_holiday_future->date; ?>">
+                        <div class="photo"><img src="images/area/<?php echo $million_city_holiday_future->area_id; ?>.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $all_areas[$million_city_holiday_future->area_id]->area_name; ?></span></div>
+                        <div class="icon"><img src="images/weather/icon/b_<?php echo $million_city_holiday_future->daytime_icon_image; ?>" alt="<?php echo $million_city_holiday_future->daytime; ?>" /></div>
                         <div class="text">
                             <div class="date">
-                            <?php echo $million_city_holiday_future->month.'/'.$million_city_holiday_future->day; ?><?php echo get_day_of_the_week($million_city_holiday_future->day_of_the_week,array_key_exists($million_city_holiday_future->date,$holidays),TRUE); ?>
+                            <?php echo $million_city_holiday_future->month.'/'.$million_city_holiday_future->day; ?><?php echo get_day_of_the_week($million_city_holiday_future->day_of_the_week,array_key_exists($million_city_holiday_future->date,$all_holidays),TRUE); ?>
                             ～
-                            <?php echo date("n/j",$to_time) ?><?php echo get_day_of_the_week(date("N",$to_time),array_key_exists($to_ymd,$holidays),TRUE); ?>
+                            <?php echo date("n/j",$to_time) ?><?php echo get_day_of_the_week(date("N",$to_time),array_key_exists($to_ymd,$all_holidays),TRUE); ?>
                             </div>
                             <div class="catch"><?php echo $million_city_holiday_future->holiday_sequence; ?>日連続晴れ予想</div>
                         </div>
@@ -219,7 +168,7 @@ contents
                 <?php endforeach; ?>
                 </div>
             <?php endforeach; ?>
-            <div class="allGuideBtn"><a href="#">全エリアの[晴]予測連休</a></div>
+            <div class="allGuideBtn"><a href="/area/holiday">全エリア<?php echo $this->lang->line('holiday_title'); ?></a></div>
 <?php $this->load->view('layout/common/leisure_guide'); ?>
                 <div class="howtoBox cf">
                     <h3><span>ハレコの使い方</span></h3>
