@@ -49,19 +49,28 @@ class Json extends MY_Controller {
 
         //書式：2012/01/01
         $start_date = null;//指定なし。直近
-        if( isset($_POST['date']) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $_POST['date'])){
+        if($sp == 1){
+            $date = $_POST['date'];
+        }else{
+            $date = $_POST['sp_date'];
+        }
+        if( isset($date) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)){
             $start_datetime = strtotime("+8 day");
-            $ymd = explode('/',$_POST['date']);
+            $ymd = explode('/',$date);
             if($start_datetime > mktime(0,0,0,$ymd[1],$ymd[2],$ymd[0])){
                 $start_date = date("Y-n-j",$start_datetime);
             }else{
-                $start_date = str_replace('/','-',$_POST['date']);
+                $start_date = str_replace('/','-',$date);
             }
         }
-        
         $page = isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 1;
         $weather = isset($_POST['weather']) && strlen($_POST['weather']) > 0 ? $_POST['weather'] : 'shine';
-        $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
+        if($sp == 1){
+            $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
+        }else{
+            $daytime_shine_sequence = isset($_POST['sp_daytime_shine_sequence']) && is_numeric($_POST['sp_daytime_shine_sequence']) ? $_POST['sp_daytime_shine_sequence'] : 1;
+        }
+        
         //day type
         $day_type = array('type'=>'multi','value'=>array(6,7,8));//土日祝日
         if( isset($_POST['day_type']) && !empty($_POST['day_type']) ){

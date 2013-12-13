@@ -9,7 +9,7 @@ main image
 <!--
 #ind #mainImage .photo01{ background-image:url(images/slide/tokyo.jpg); }
 #ind #mainImage .photo02{ background-image:url(images/slide/spring.jpg); }
-
+#ind #mainImage .photo03{ background-image:url(images/slide/sapporo.jpg); }
 -->
 </style>
 <div id="mainImage">
@@ -33,12 +33,12 @@ main image
                 <div class="minWeather cf">
                     <h4>東京エリア晴れる予測の連休</h4>
                     <div class="box">
-                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area']->daytime_icon_image; ?>" alt="<?php echo $slides['area']->daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area']->date)); ?></div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][30]->date)); ?></div>
                     </div>
                     <div class="box">
-                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area']->tomorrow_daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area']->date)+86400); ?></div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->tomorrow_daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][30]->date)+86400); ?></div>
                     </div>
                 </div>
             </div>
@@ -55,6 +55,22 @@ main image
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['spring']->tomorrow_daytime; ?>" class="icon" /></div>
                         <div class="date"><?php echo date("n/j",strtotime($slides['spring']->date)+86400); ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 画像03 -->
+        <div class="boxPhoto photo03">
+            <div class="boxInner">
+                <div class="minWeather cf">
+                    <h4>札幌エリア晴れる予測の連休</h4>
+                    <div class="box">
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][4]->date)); ?></div>
+                    </div>
+                    <div class="box">
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->tomorrow_daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][4]->date)+86400); ?></div>
                     </div>
                 </div>
             </div>
@@ -140,10 +156,32 @@ contents
             </table>
         </div>
 
+            <div class="howtoBox cf">
+                <h3><span>ハレコの使い方</span></h3>
+                
+                <div class="step step01">
+                    <h4>1.お出かけ場所を決める</h4>
+                    <p>行きたい温泉や家の近くの場所を選びます。</p>
+                </div>
+                <div class="step step02">
+                    <h4>2.晴れの提案を受ける</h4>
+                    <p>ハレコは各エリアの未来に晴れる日程を提案します。</p>
+                </div>
+                <div class="step step03">
+                    <h4>3.晴れる予定を選択</h4>
+                    <p>晴れる日を選んだらおでかけの予定を立ててください。</p>
+                </div>
+                <div class="step step04">
+                    <h4>4.晴れてよかった！</h4>
+                    <p>晴れの日程でおでかけすることができましたね！</p>
+                </div>
+            </div>
+
         <div id="guide">
+
             <h2>おでかけチャンス！<?php echo $this->lang->line('holiday_title'); ?></em></h2>
             <?php foreach ($million_city_holiday_futures as $key => $chunk) : ?>
-                <div class="line<?php if($key >= $this->config->item('sp_display_number')) echo ' undisp'; ?> cf">
+                <div class="line cf">
                 <?php foreach ($chunk as $million_city_holiday_future) : ?>
                     <?php
                         $from_time = mktime(0,0,0,$million_city_holiday_future->month,$million_city_holiday_future->day,$million_city_holiday_future->year);
@@ -170,26 +208,6 @@ contents
             <?php endforeach; ?>
             <div class="allGuideBtn"><a href="/area/holiday">全エリア<?php echo $this->lang->line('holiday_title'); ?></a></div>
 <?php $this->load->view('layout/common/leisure_guide'); ?>
-                <div class="howtoBox cf">
-                    <h3><span>ハレコの使い方</span></h3>
-                    
-                    <div class="step step01">
-                        <h4>1.お出かけ場所を決める</h4>
-                        <p>行きたい温泉や家の近くの場所を選びます。</p>
-                    </div>
-                    <div class="step step02">
-                        <h4>2.晴れの提案を受ける</h4>
-                        <p>ハレコは各エリアの未来に晴れる日程を提案します。</p>
-                    </div>
-                    <div class="step step03">
-                        <h4>3.晴れる予定を選択</h4>
-                        <p>晴れる日を選んだらおでかけの予定を立ててください。</p>
-                    </div>
-                    <div class="step step04">
-                        <h4>4.晴れてよかった！</h4>
-                        <p>晴れの日程でおでかけすることができましたね！</p>
-                    </div>
-                </div>
         </div>
     </div>
 </div>

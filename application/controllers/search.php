@@ -194,7 +194,15 @@ class Search extends MY_Controller
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $data['keyword'].$data_etc_string.$data['date']);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $data['keyword'].$data_etc_string.$data['date']);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/slimmenu.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             
             'js/jquery.form.js',
@@ -202,7 +210,8 @@ class Search extends MY_Controller
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
             'js/future.js',
-            'js/Chart.js'
+            'js/Chart.js',
+            'js/jquery.slimmenu.min.js'
         )));
 
         $this->load->view("search/keyword/$show_page", array_merge($this->data,$data));

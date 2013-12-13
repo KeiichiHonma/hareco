@@ -31,7 +31,6 @@ $(function(){
 
 });
 function uploadFormResponse(responseText, statusText){
-    //console.log(responseText);
     if(responseText == 'error'){
         $("#breadcrumbs-three").hide();
     }else{
@@ -59,7 +58,7 @@ $(function(){
     var $pageValue = 1;
     
     //クリックした要素にクラス割り当てる
-    $('#next').live('click',function() {
+    $('.nextBtn').live('click',function() {
         var w = $(window).width();if (w <= 640) $("#sp").val(0);
         $pageValue = $pageValue + 1;
         $("#page").val($pageValue);
@@ -99,7 +98,7 @@ $(function(){
         $("#futures_search").submit();
     });
 
-//ラジオボタン
+    //ラジオボタン
     var radio = $('dl.radio-group');
     $('input', radio).css({'opacity': '0'})
     //checkedだったら最初からチェックする
@@ -121,5 +120,47 @@ $(function(){
         $("#day_type").val($dayArray.join(","));
         $("#futures_search").submit();
     });
+    
+    //sp///////////////////////////////////////////////
+    $('.spSearchMenu li.radio').click(function(){
+        $(this).children('input[type="radio"]').prop('checked','checked');
+    });
 
+    $('.spSearchMenu li input[type="checkbox"]').each(function(){
+        var $dayArray = new Array();
+        if ($(this).attr('checked') == 'checked') {
+            $dayArray.push( $(this).val() );
+        }
+    });
+
+    $('.spSearchMenu li input[type="checkbox"]').click(function(){
+        var self = $(this);
+        var id = self.attr('id');
+        if( self.prop('checked') ){
+            self.prop('checked','');
+            var index = $.inArray($("#"+id).val(), $dayArray);
+            $dayArray.splice(index,1);
+        }else{
+            self.prop('checked','checked');
+            $dayArray.push( $("#"+id).val() );
+        }
+    });
+    $('.spSearchMenu li.checkbox').click(function(){
+        var parent = $(this).children('input[type="checkbox"]');
+        var id = parent.attr('id');
+        if( parent.prop('checked') ){
+            parent.prop('checked','');
+            var index = $.inArray($("#"+id).val(), $dayArray);
+            $dayArray.splice(index,1);
+        }else{
+            parent.prop('checked','checked');
+            $dayArray.push( $("#"+id).val() );
+        }
+    });
+    $('#search').live('click',function() {
+        var w = $(window).width();if (w <= 640) $("#sp").val(0);
+        $("#page").val($pageValue);
+        $("#day_type").val($dayArray.join(","));
+        $("#futures_search").submit();
+    });
 });

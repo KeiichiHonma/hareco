@@ -341,7 +341,7 @@ contents
 
 <?php $this->load->view('layout/common/recommend_futures'); ?>
 
-        <div id="backnumber">
+        <div id="backnumber" class="undisp">
             <h2><?php echo $backnumber_title; ?></h2>
             <table>
                 <tr><th rowspan="4">日</th><th colspan="2">気圧(hPa)</th><th rowspan="2" colspan="3">降水量(mm)</th><th rowspan="2" colspan="3">気温(℃)</th><th rowspan="2" colspan="2">湿度(％)</th><th rowspan="2" colspan="5">風向・風速(m/s)</th><th rowspan="4">日照<br>時間<br>(h)</th><th rowspan="2" colspan="2">雪(cm)</th><th rowspan="2" colspan="2">天気概況</th></tr>

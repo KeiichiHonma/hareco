@@ -208,6 +208,13 @@ ul.menuBox dd a:hover {
 #breadcrumbInner span a:hover{
 	background:url(../images/bg_breadcrumb_on.png) 0 0 repeat-x;
 }
+#breadcrumbInner span p.news{
+	display:block;
+	height:40px;
+	color:#fff;
+	font-weight:bold;
+	padding:10px 18px 0;
+}
 #breadcrumb #searchBox {
 	float:right;
 	padding-top:7px;
@@ -905,7 +912,8 @@ ul.menuBox dd a:hover {
 }
 
 #contentsInner .howtoBox{
-	margin-top:52px;
+	margin-top:0px;
+    margin-bottom:20px;
 }
 
 #contentsInner .howtoBox h3{
@@ -993,7 +1001,7 @@ ul.menuBox dd a:hover {
 	padding:10px 10px;
 }
 
-#btnPc dl.btnPc01, #btnPc dl.btnPc03 {
+#btnPc dl.btnPc02, #btnPc dl.btnPc04 {
 	background:#f9f9f9;
 }
 

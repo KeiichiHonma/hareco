@@ -97,14 +97,23 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/slimmenu.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
-            'js/future.js'
+            'js/future.js',
+            'js/jquery.slimmenu.min.js'
         )));
         $this->load->view('spring/show', array_merge($this->data,$data));
     }
@@ -183,14 +192,23 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/slimmenu.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
-            'js/future.js'
+            'js/future.js',
+            'js/jquery.slimmenu.min.js'
         )));
         $this->load->view('spring/hotel', array_merge($this->data,$data));
     }

@@ -85,7 +85,11 @@ header
         <div id="breadcrumbInner" class="cf">
             <?php if(isset($topicpaths)) : ?>
             <?php foreach ($topicpaths as $key => $topicpath) : ?>
+                <?php if(strcasecmp($key,'news') == 0): ?>
+                <span><p class="news"><?php echo $topicpath[1]; ?></p></span>
+                <?php else: ?>
                 <span><?php echo is_null($topicpath[0]) ? $topicpath[1] :  anchor($topicpath[0], $topicpath[1]); ?></span>
+                <?php endif; ?>
             <?php endforeach; ?>
             <?php endif; ?>
     <?php if(!isset($isIndex)) : ?>

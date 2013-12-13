@@ -33,12 +33,6 @@ class Home extends MY_Controller
      */
     function index()
     {
-/*
-$this->load->library('tool_lib');
-$test = $this->tool_lib->get_icon('大雪後一時晴');
-var_dump($test);
-die();
-*/
         $data['isHome'] = TRUE;
         $data['isIndex'] = TRUE;
         $data['bodyId'] = 'ind';
@@ -62,7 +56,9 @@ die();
         ゴルフ場
         ・15 隨縁カントリークラブセンチュリー富士コース（山梨）
         */
-        $data['slides']['area'] = $million_city_holiday_futures[30];//東京
+        $data['slides']['area'][30] = $million_city_holiday_futures[30];//東京
+        $data['slides']['area'][4] = $million_city_holiday_futures[4];//札幌
+        
         $spring_id = 17;
         $spring_slide = $this->Future_model->getSpringFuturesGoupByAreaByHolidayBySequenceForSlide($spring_id);
         $data['slides']['spring'] = $spring_slide[0];
@@ -78,9 +74,10 @@ die();
         $start_date = null;//指定なし。直近
         $futuresData = $this->Future_model->getFutures('index', null, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $data['futures'] = $futuresData['data'];
-
-
         
+        //news
+        $data['topicpaths']['news'] = array('#','2013/12/24世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」をリリースしました！ ');
+
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js')));
         $this->load->view('home/index', array_merge($this->data,$data));

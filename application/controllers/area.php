@@ -45,7 +45,8 @@ class Area extends MY_Controller {
     {
         $data['csrf_token'] = $this->security->get_csrf_token_name();
         $data['csrf_hash'] = $this->security->get_csrf_hash();
-        $this->load->view('search/google_geo_test', $data);
+        //$this->load->view('search/google_geo_test', $data);
+        $this->load->view('area/test', $data);
     }
 
     function index()
@@ -100,13 +101,22 @@ class Area extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->data['all_areas'][$area_id]->area_name);
         
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/slimmenu.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
-            'js/future.js'
+            'js/future.js',
+            'js/jquery.slimmenu.min.js'
         )));
 
         $this->load->view('area/show', array_merge($this->data,$data));
@@ -182,16 +192,23 @@ class Area extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->data['all_areas'][$area_id]->area_name);
         
-        //$this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/add.css','css/add_sp.css')));
-        //$this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/scrolltop.js','js/Chart.js')));
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/slimmenu.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             'js/jquery.form.js',
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
             'js/future.js',
-            'js/Chart.js'
+            'js/Chart.js',
+            'js/jquery.slimmenu.min.js'
         )));
         $this->load->view('area/date', array_merge($this->data,$data));
     }
