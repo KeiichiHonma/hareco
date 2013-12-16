@@ -86,7 +86,21 @@
 	position:absolute;
 	background: url(../images/gradation_right.png) right 0 no-repeat;
 }
-
+#ind #slideImage .big_gradationLeft {
+	width:200px;
+	height:1238px;
+	z-index:100;
+	position:absolute;
+	background: url(../images/big_gradation_left.png) 0 0 no-repeat;
+}
+#ind #slideImage .big_gradationRight {
+	width:200px;
+	height:1238px;
+	z-index:100;
+	right:0;
+	position:absolute;
+	background: url(../images/big_gradation_right.png) right 0 no-repeat;
+}
 /* under image size for display
 ------------------------------------------------------------------*/
 @media only screen and (max-width: 1560px){

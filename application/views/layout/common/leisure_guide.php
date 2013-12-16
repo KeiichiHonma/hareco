@@ -14,7 +14,7 @@
                     </div>
                     <!-- ガイド03 -->
                     <div class="box">
-                        <a href="#"><div class="photo"><img src="/images/photo_outing_03.jpg" alt="" /><span>空港</span></div></a>
+                        <a href="/airport/"><div class="photo"><img src="/images/photo_outing_03.jpg" alt="" /><span>空港</span></div></a>
                     </div>
                     <!-- ガイド04 -->
                     <div class="box">

@@ -35,6 +35,7 @@ class Home extends MY_Controller
     {
         $data['isHome'] = TRUE;
         $data['isIndex'] = TRUE;
+        $data['isSlide'] = TRUE;
         $data['bodyId'] = 'ind';
 
         /*

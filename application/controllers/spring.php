@@ -44,7 +44,8 @@ class Spring extends MY_Controller {
 
     function index()
     {
-        $data['isIndex'] = TRUE;
+        $data['isSlide'] = TRUE;
+        $data['isBigSlide'] = TRUE;
         $data['bodyId'] = 'ind';
 
         //温泉地一覧///////////////////////////////////////////////////////////////////////////

@@ -122,18 +122,18 @@ $(function(){
     });
     
     //sp///////////////////////////////////////////////
-    $('.spSearchMenu li.radio').click(function(){
+    $('.navSp li.radio').click(function(){
         $(this).children('input[type="radio"]').prop('checked','checked');
     });
 
-    $('.spSearchMenu li input[type="checkbox"]').each(function(){
+    $('.navSp li input[type="checkbox"]').each(function(){
         var $dayArray = new Array();
         if ($(this).attr('checked') == 'checked') {
             $dayArray.push( $(this).val() );
         }
     });
 
-    $('.spSearchMenu li input[type="checkbox"]').click(function(){
+    $('.navSp li input[type="checkbox"]').click(function(){
         var self = $(this);
         var id = self.attr('id');
         if( self.prop('checked') ){
@@ -145,7 +145,7 @@ $(function(){
             $dayArray.push( $("#"+id).val() );
         }
     });
-    $('.spSearchMenu li.checkbox').click(function(){
+    $('.navSp li.checkbox').click(function(){
         var parent = $(this).children('input[type="checkbox"]');
         var id = parent.attr('id');
         if( parent.prop('checked') ){
@@ -157,10 +157,14 @@ $(function(){
             $dayArray.push( $("#"+id).val() );
         }
     });
-    $('#search').live('click',function() {
+    $('.navSp li.searchBtn').live('click',function() {
+         $.sidr('close', 'sidr-left');
         var w = $(window).width();if (w <= 640) $("#sp").val(0);
         $("#page").val($pageValue);
         $("#day_type").val($dayArray.join(","));
         $("#futures_search").submit();
+    });
+    $('.navSp li.close').live('click',function() {
+         $.sidr('close', 'sidr-left');
     });
 });

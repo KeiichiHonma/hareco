@@ -59,6 +59,7 @@
 #header .navSp .ttl:hover{
 	border-top: 1px solid #4d4d4d;
 }
+
 #breadcrumb #searchBox {
 	display:none;
 }
@@ -310,8 +311,47 @@
 	font-weight:bold;
 	font-size:16px;
 }
+#btnSp .navSp {
+    display:block;
+}
+#btnSp .navSp span{
 
+    display:block;
+}
+#btnSp .navSp span a{
+    font-size:16px;
+}
+#btnSp .navSp .ttl{
+    background:#505050;
+    padding-left:10px;
+    height:30px;
+    line-height: 30px;
+}
 
+#btnSp .navSp .ttl:hover{
+    border-top: 1px solid #4d4d4d;
+}
+
+#btnSp .navSp .date input{
+    width:95%;
+    background:#ffffff;
+    margin:5px;
+    color:#333333;
+}
+
+#btnSp .navSp .searchBtn{
+    cursor:pointer;
+	background:#ffbd1f;
+	padding-left:10px;
+	height:30px;
+	line-height: 30px;
+}
+#btnSp .navSp .close{
+    background:#505050;
+    padding-left:10px;
+    height:30px;
+    line-height: 30px;
+}
 /* city page
 --------------------------------------------------*/
 #weather { width:100%; }

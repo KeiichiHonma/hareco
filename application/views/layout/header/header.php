@@ -23,7 +23,7 @@
 <!--[if lte IE 9]><script type="text/javascript" src="js/textshadow.js"></script><![endif]--> 
 <script type="text/javascript">
 $(function(){
-    <?php if(isset($isIndex)) : ?>
+    <?php if(isset($isSlide)) : ?>
     /*- スライダー */
     $('#slider').bxSlider({
         auto:true,
@@ -33,7 +33,11 @@ $(function(){
         pager:false,
         captions: false
     });
+    <?php if(isset($isBigSlide)) : ?>
+    $('#slider').append('<div class="big_gradationLeft"></div><div class="big_gradationRight"></div>');
+    <?php else: ?>
     $('#slider').append('<div class="gradationLeft"></div><div class="gradationRight"></div>');
+    <?php endif; ?>
     <?php endif; ?>
     /* 検索ボックス */
     $(".focus").focus(function(){

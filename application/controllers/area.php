@@ -51,7 +51,8 @@ class Area extends MY_Controller {
 
     function index()
     {
-        $data['isIndex'] = TRUE;
+        $data['isSlide'] = TRUE;
+        $data['isBigSlide'] = TRUE;
         $data['bodyId'] = 'ind';
 
         $data['area_slide'] =array_rand($this->data['all_areas'],5);
@@ -105,10 +106,11 @@ class Area extends MY_Controller {
             'css/future.css',
             'css/add.css',
             'css/add_sp.css',
-            'css/slimmenu.css',
+            //'css/slimmenu.css',
             'css/calendar/default.css',
             'css/calendar/default.date.css',
-            'css/calendar/default.time.css'
+            'css/calendar/default.time.css',
+            //'css/jquery.sidr_w.light.css'
         )));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
             'js/jquery.form.js',
@@ -116,7 +118,8 @@ class Area extends MY_Controller {
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
             'js/future.js',
-            'js/jquery.slimmenu.min.js'
+            //'js/jquery.sidr_w.min.js'
+            //'js/jquery.slimmenu.min.js'
         )));
 
         $this->load->view('area/show', array_merge($this->data,$data));

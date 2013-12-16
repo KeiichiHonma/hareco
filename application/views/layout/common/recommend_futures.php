@@ -40,39 +40,41 @@
         </div>
         
         <div id="btnSp">
-            <ul class="slimmenu spSearchMenu">
-                <li class="head">日付</li>
-                <li><input id="spDate" name="sp_date" type="text" placeholder="日付を選択してください" value="" /></li>
-                
-                <li class="head">晴数</li>
-                <li class="radio"><input type="radio" id="sp_sequence1" name="sp_daytime_shine_sequence" value="1" checked />指定なし</li>
-                <li class="radio"><input type="radio" id="sp_sequence2" name="sp_daytime_shine_sequence" value="2" />2日連続</li>
-                <li class="radio"><input type="radio" id="sp_sequence3" name="sp_daytime_shine_sequence" value="3" />3日連続</li>
-                <li class="radio"><input type="radio" id="sp_sequence4" name="sp_daytime_shine_sequence" value="4" />4日連続</li>
-                
-                <li class="head">曜日</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type0" name="dummy[]" value="0" />指定なし</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type1" name="dummy[]" value="1" />月</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type2" name="dummy[]" value="2" />火</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type3" name="dummy[]" value="3" />水</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type4" name="dummy[]" value="4" />木</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type5" name="dummy[]" value="5" />金</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type6" name="dummy[]" value="6" checked="check" />土</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type7" name="dummy[]" value="7" checked="check"/>日</li>
-                <li class="checkbox"><input type="checkbox" id="sp_day_type8" name="dummy[]" value="8" checked="check" />祝日</li>
-                
-                <li><div class="searchBtn" id="search"><a href="javascript:void(0)">検索する</a></div></li>
-            </ul>
+            <div class="navSp">
+                <span><a id="left-menu" href="javascript:void(0)">▼検索条件を変更する</a></span>
+                <div id="sidr-left">
+                    <ul>
+                    <li class="ttl">日付</li>
+                    <li class="date"><input id="spDate" name="sp_date" type="text" placeholder="日付を選択してください" value="" /></li>
+                    
+                    <li class="ttl">晴数</li>
+                    <li class="radio"><input type="radio" id="sp_sequence1" name="sp_daytime_shine_sequence" value="1" checked />指定なし</li>
+                    <li class="radio"><input type="radio" id="sp_sequence2" name="sp_daytime_shine_sequence" value="2" />2日連続</li>
+                    <li class="radio"><input type="radio" id="sp_sequence3" name="sp_daytime_shine_sequence" value="3" />3日連続</li>
+                    <li class="radio"><input type="radio" id="sp_sequence4" name="sp_daytime_shine_sequence" value="4" />4日連続</li>
+                    
+                    <li class="ttl">曜日</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type0" name="dummy[]" value="0" />指定なし</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type1" name="dummy[]" value="1" />月</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type2" name="dummy[]" value="2" />火</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type3" name="dummy[]" value="3" />水</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type4" name="dummy[]" value="4" />木</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type5" name="dummy[]" value="5" />金</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type6" name="dummy[]" value="6" checked="check" />土</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type7" name="dummy[]" value="7" checked="check"/>日</li>
+                    <li class="checkbox"><input type="checkbox" id="sp_day_type8" name="dummy[]" value="8" checked="check" />祝日</li>
+                    
+                    <li class="searchBtn">検索する</li>
+                    <li class="close">閉じる</li>
+                    </ul>
+                </div>
+            </div>
+
             <script>
-            $('ul.slimmenu').slimmenu(
-            {
-                resizeWidth: '800',
-                collapserTitle: '検索条件変更',
-                easingEffect:'easeInOutQuint',
-                animSpeed:'medium',
-                indentChildren: true,
-                childrenIndenter: '&raquo;'
-            });
+                $('#left-menu').sidr({
+                  name: 'sidr-left',
+                  side: 'left'
+                });
             </script>
         </div>
         
