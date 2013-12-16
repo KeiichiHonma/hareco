@@ -110,6 +110,8 @@
                             <?php else: ?>
                                 <a href="<?php echo '/spring/date/'.$springs[0]->id.'/0/'.$springs[0]->area_id.'/'.$future->date; ?>">
                             <?php endif; ?>
+                        <?php elseif($leisure_type == 'airport'): ?>
+                        <a href="<?php echo '/airport/date/'.$future->area_id.'/'.$future->date; ?>">
                         <?php else: ?>
                         <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
                         <?php endif; ?>

@@ -12,7 +12,7 @@ main image
 #ind #mainImage .photo03{ background-image:url(images/slide/sapporo.jpg); }
 -->
 </style>
-<div id="mainImage">
+<div id="mainImage" class="home">
 <div id="mainImageInner">
     <!-- キャッチコピー/検索ボックス -->
     <div id="copy">
@@ -26,11 +26,15 @@ main image
             </div>
         </div>
     </div>
+
     <div id="slider">
         <!-- 画像01 -->
         <div class="boxPhoto photo01">
+            
             <div class="boxInner">
+                <div class="desc cf">ハレコは過去50年の過去データを元に、独自の天気予測エンジンを開発して未来の天気を予測しています。</div>
                 <div class="minWeather cf">
+                    <a href="<?php echo 'area/date/'.$slides['area'][30]->area_id.'/'.$slides['area'][30]->date; ?>">
                     <h4>東京エリア晴れる予測の連休</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->daytime; ?>" class="icon" /></div>
@@ -40,13 +44,18 @@ main image
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->tomorrow_daytime; ?>" class="icon" /></div>
                         <div class="date"><?php echo date("n/j",strtotime($slides['area'][30]->date)+86400); ?></div>
                     </div>
+                    </a>
                 </div>
             </div>
+            
         </div>
+        
         <!-- 画像02 -->
         <div class="boxPhoto photo02">
             <div class="boxInner">
+                <div class="desc cf">1周間以上先の天気の予測正答確率は50%が限界と言われています。<br />ハレコでは6割を超える予測が可能な天気予測エンジンを開発しました。</div>
                 <div class="minWeather cf">
+                
                     <h4>箱根温泉晴れる予測の連休</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->daytime_icon_image; ?>" alt="<?php echo $slides['spring']->daytime; ?>" class="icon" /></div>
@@ -62,6 +71,7 @@ main image
         <!-- 画像03 -->
         <div class="boxPhoto photo03">
             <div class="boxInner">
+                <div class="desc cf">6割を高いか低いかを判断するのはユーザー様自身です。<br />絶対に晴れて欲しいおでかけやイベント等の計画の1つの指標にしてください。</div>
                 <div class="minWeather cf">
                     <h4>札幌エリア晴れる予測の連休</h4>
                     <div class="box">
@@ -87,6 +97,27 @@ contents
 -->
 <div id="contents">
     <div id ="contentsInner">
+
+        <div class="howtoBox cf">
+            <h3><span>ハレコの使い方</span></h3>
+            
+            <div class="step step01">
+                <h4>1.お出かけ場所を決める</h4>
+                <p>行きたい場所や温泉、家の近くの公園等でかける場所を選びます。</p>
+            </div>
+            <div class="step step02">
+                <h4>2.晴れの提案を受ける</h4>
+                <p>ハレコは各エリアの未来に晴れる日程を提案します。</p>
+            </div>
+            <div class="step step03">
+                <h4>3.晴れる予定を選択</h4>
+                <p>晴れる日を選んだらおでかけの予定を立ててください。</p>
+            </div>
+            <div class="step step04">
+                <h4>4.晴れてよかった！</h4>
+                <p>晴れの日程でおでかけすることができましたね！</p>
+            </div>
+        </div>
 
         <div id="weather">
 <?php
@@ -155,27 +186,6 @@ contents
                 <?php endfor; ?>
             </table>
         </div>
-
-            <div class="howtoBox cf">
-                <h3><span>ハレコの使い方</span></h3>
-                
-                <div class="step step01">
-                    <h4>1.お出かけ場所を決める</h4>
-                    <p>行きたい温泉や家の近くの場所を選びます。</p>
-                </div>
-                <div class="step step02">
-                    <h4>2.晴れの提案を受ける</h4>
-                    <p>ハレコは各エリアの未来に晴れる日程を提案します。</p>
-                </div>
-                <div class="step step03">
-                    <h4>3.晴れる予定を選択</h4>
-                    <p>晴れる日を選んだらおでかけの予定を立ててください。</p>
-                </div>
-                <div class="step step04">
-                    <h4>4.晴れてよかった！</h4>
-                    <p>晴れの日程でおでかけすることができましたね！</p>
-                </div>
-            </div>
 
         <div id="guide">
 

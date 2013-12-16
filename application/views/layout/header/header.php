@@ -27,11 +27,13 @@ $(function(){
     /*- スライダー */
     $('#slider').bxSlider({
         auto:true,
-        speed:6000,
+        speed:5000,
+        pause:5000,
         mode: 'fade',
         hideControlOnEnd:false,
         pager:false,
-        captions: false
+        captions: false,
+        autoHover:true
     });
     <?php if(isset($isBigSlide)) : ?>
     $('#slider').append('<div class="big_gradationLeft"></div><div class="big_gradationRight"></div>');

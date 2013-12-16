@@ -37,7 +37,10 @@ class Home extends MY_Controller
         $data['isIndex'] = TRUE;
         $data['isSlide'] = TRUE;
         $data['bodyId'] = 'ind';
-
+        
+        //確率
+        $this->load->model('Odds_model');
+        $data['odds'] = $this->Odds_model->getOddsByMaxId();
         /*
         連休提案
         百万都市を表示

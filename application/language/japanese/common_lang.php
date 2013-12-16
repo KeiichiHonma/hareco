@@ -12,6 +12,7 @@ $lang['holiday_title'] = '次の晴れる連休';
 $lang['topicpath_home'] = 'HOME';
 $lang['topicpath_area'] = 'エリア';
 $lang['topicpath_spring'] = '温泉';
+$lang['topicpath_airport'] = '空港';
 
 $lang['search_box_default'] = 'どちらにおでかけですか？　ex.箱根温泉、札幌、ニセコ';
 

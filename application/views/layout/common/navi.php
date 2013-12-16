@@ -75,14 +75,15 @@ header
         </div>
     <?php if(isset($isHome)) : ?>
         <div id="cloud">
-            <h3>予測正解率</h3>
-            <span>67%</span>
+            <h3>予測正答率</h3>
+            <span><?php echo $odds->percentage; ?>%</span>
         </div>
     <?php endif; ?>
     </div>
     <!-- パンクズ -->
     <div id="breadcrumb" class="scrolltop">
         <div id="breadcrumbInner" class="cf">
+            <?php if(isset($isIndex)) : ?><div class="undisp"><?php endif; ?>
             <?php if(isset($topicpaths)) : ?>
             <?php foreach ($topicpaths as $key => $topicpath) : ?>
                 <?php if(strcasecmp($key,'news') == 0): ?>
@@ -91,6 +92,7 @@ header
                 <span><?php echo is_null($topicpath[0]) ? $topicpath[1] :  anchor($topicpath[0], $topicpath[1]); ?></span>
                 <?php endif; ?>
             <?php endforeach; ?>
+            <?php if(isset($isIndex)) : ?></div><?php endif; ?>
             <?php endif; ?>
     <?php if(!isset($isIndex)) : ?>
             <div id="searchBox">

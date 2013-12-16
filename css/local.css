@@ -307,6 +307,8 @@ ul.menuBox dd a:hover {
 	line-height:120%;
 }
 
+
+
 #ind #mainImage #copy h3 {
 	color:#fff;
 	font-family:"Lucida Grande", "segoe UI", "ヒラギノ丸ゴ ProN W4","Hiragino Maru Gothic ProN",Meiryo, Arial, sans-serif;
@@ -393,6 +395,26 @@ ul.menuBox dd a:hover {
 	margin:0 auto;
 }
 
+#ind #mainImage .desc{
+	position:absolute;
+	top:780px;
+	left:0;	
+	background:#000;
+	width:300px;
+	padding:10px;
+	border-radius: 5px;
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;
+    /*opacity: 0.5; */
+    /*background:url(../images/bg_minweather.png) 0 0 repeat;*/
+    background-color: rgba(0, 0, 0, 0.6);
+    color:#fff;
+    font-size:16px;
+    /*font-weight:bold;*/
+    text-align:left;
+    line-height:150%;
+}
+
 #ind #mainImage .minWeather{
 	position:absolute;
 	top:780px;
@@ -411,6 +433,16 @@ ul.menuBox dd a:hover {
     font-weight:bold;
     font-size:24px;
 }
+
+/* A */
+#ind #mainImage .minWeather a {
+	color: #ffffff;
+	text-decoration: none;
+}
+#ind #mainImage .minWeather a:hover {
+	opacity: 0.7;
+}
+
 #ind .minWeather h4 {
 	text-align:left;
 	margin-bottom:8px;
@@ -547,8 +579,15 @@ ul.menuBox dd a:hover {
 	margin-top:250px;
 	margin-bottom:10px;
 	line-height:120%;
-}
 
+}
+#mainImage.sub h2 span {
+	background:url(../images/bg_minweather.png) 0 0 repeat;
+	padding:0px 8px;
+	border-radius: 5px;
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;
+}
 #mainImage.sub h2 em{
 	font-size:30px;
 	font-style:normal;

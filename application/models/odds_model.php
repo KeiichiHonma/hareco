@@ -64,6 +64,17 @@ class Odds_model extends CI_Model
         return array();
     }
 
+    function getOddsByMaxId()
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE id = (SELECT MAX(id) FROM {$this->table_name})"
+        );
+
+        if ($query->num_rows() == 1) return $query->row();
+        return array();
+    }
+
     function getOddsesOrder($order, $page)
     {
         $result = array();
