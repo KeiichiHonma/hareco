@@ -30,7 +30,7 @@ contents
                         $to_ymd = date("Y-m-d",$to_time);
                     ?>
                     <div class="box" style="margin-bottom:20px;">
-                        <a href="<?php echo 'area/date/'.$holiday_future->area_id.'/'.$holiday_future->date; ?>">
+                        <a href="<?php echo '/area/date/'.$holiday_future->area_id.'/'.$holiday_future->date; ?>">
                         <div class="photo"><img src="/images/area/<?php echo $holiday_future->area_id; ?>.jpg" alt="" /><div class="shadow">&nbsp;</div><span><?php echo $all_areas[$holiday_future->area_id]->area_name; ?></span></div>
                         <div class="icon"><img src="/images/icon_weather_01.png" alt="<?php echo $holiday_future->daytime; ?>" /></div>
                         <div class="text">
