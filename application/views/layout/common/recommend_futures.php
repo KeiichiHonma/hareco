@@ -7,22 +7,24 @@
                     <dt>日付：</dt>
                     <dd id="future_searchBox"><input type="text" name="date" value="日付を選択" id="datepicker" /></dd>
                 </dl>
-<!--
+
                 <dl class="btnPc02 radio-group cf">
                     <dt>天気：</dt>
-                    <dd><input type="radio" id="shine" name="weather" value="shine" checked /><label for="shine">晴れ</label></dd>
-                    <dd><input type="radio" id="rain" name="weather" value="rain" /><label for="rain">雨</label></dd>
-                    <dd><input type="radio" id="snow" name="weather" value="snow" /><label for="snow">雪</label></dd>
+                    <dd><input type="radio" id="weather9" name="weather" value="9" /><label for="weather9">指定なし</label></dd>
+                    <dd><input type="radio" id="weather0" name="weather" value="0" checked /><label for="weather0">晴</label></dd>
+                    <dd><input type="radio" id="weather1" name="weather" value="1" /><label for="weather1">雨</label></dd>
+                    <dd><input type="radio" id="weather2" name="weather" value="2" /><label for="weather2">曇</label></dd>
+                    <dd><input type="radio" id="weather3" name="weather" value="3" /><label for="weather3">雷</label></dd>
+                    <dd><input type="radio" id="weather4" name="weather" value="4" /><label for="weather4">雪</label></dd>
                 </dl>
--->
-                <dl class="btnPc02 radio-group cf">
+                <dl class="btnPc03 radio-group cf">
                     <dt>晴数：</dt>
                     <dd><input type="radio" id="sequence1" name="daytime_shine_sequence" value="1" checked /><label for="sequence1">指定なし</label></dd>
                     <dd><input type="radio" id="sequence2" name="daytime_shine_sequence" value="2" /><label for="sequence2">2日連続</label></dd>
                     <dd><input type="radio" id="sequence3" name="daytime_shine_sequence" value="3" /><label for="sequence3">3日連続</label></dd>
                     <dd><input type="radio" id="sequence4" name="daytime_shine_sequence" value="4" /><label for="sequence4">4日連続</label></dd>
                 </dl>
-                <dl class="btnPc03 check-group cf gray">
+                <dl class="btnPc04 check-group cf gray">
                     <dt>曜日：</dt>
                     <dd><input type="checkbox" id="day_type0" name="dummy[]" value="0" /><label for="day_type0">指定なし</label></dd>
                     <dd><input type="checkbox" id="day_type1" name="dummy[]" value="1" /><label for="day_type1">月</label></dd>
@@ -46,7 +48,15 @@
                     <ul>
                     <li class="ttl">日付</li>
                     <li class="date"><input id="spDate" name="sp_date" type="text" placeholder="日付を選択してください" value="" /></li>
-                    
+
+                    <li class="ttl">天気</li>
+                    <li><input type="radio" id="sp_weather9" name="sp_weather" value="9" />指定なし</li>
+                    <li><input type="radio" id="sp_weather0" name="sp_weather" value="0" checked />晴</li>
+                    <li><input type="radio" id="sp_weather1" name="sp_weather" value="1" />雨</li>
+                    <li><input type="radio" id="sp_weather2" name="sp_weather" value="2" />曇</li>
+                    <li><input type="radio" id="sp_weather3" name="sp_weather" value="3" />雷</li>
+                    <li><input type="radio" id="sp_weather4" name="sp_weather" value="4" />雪</li>
+
                     <li class="ttl">晴数</li>
                     <li class="radio"><input type="radio" id="sp_sequence1" name="sp_daytime_shine_sequence" value="1" checked />指定なし</li>
                     <li class="radio"><input type="radio" id="sp_sequence2" name="sp_daytime_shine_sequence" value="2" />2日連続</li>

@@ -21,7 +21,7 @@ header
                     <?php foreach ($all_springs as $spring) : ?>
                     <?php
                         if($before_spring_area_id != $spring->spring_area_id){
-                            if($i != 0 || $i != $count) echo '</dl>';
+                            if($i != 0 && $i != $count) echo '</dl>';
                             if($i == $count) $end_dl = TRUE;
                             echo '<dl class="cf"><dt'.($spring->spring_area_id == 5 ? ' class="hakone"' : ' class="spring_area"') .'>'.$spring->spring_area_name.'</dt>';
                         }
@@ -46,7 +46,7 @@ header
                         <?php foreach ($all_areas as $area) : ?>
                         <?php
                             if($before_region_id != $area->region_id){
-                                if($i != 0 || $i != $count) echo '</dl>';
+                                if($i != 0 && $i != $count) echo '</dl>';
                                 if($i == $count) $end_dl = TRUE;
                                 echo '<dl class="cf"><dt>'.$all_regions[$area->region_id]->region_name.'</dt>';
                             }
@@ -67,9 +67,13 @@ header
             <div id="sidr-right">
                 <ul>
                     <li class="ttl">エリアから探す</li>
-                        <?php foreach($all_areas as $area) : ?>
-                        <li><a href="/area/show/<?php echo $area->id; ?>"><?php echo $area->area_name; ?>エリア</a></li>
-                        <?php endforeach; ?>
+                    <?php foreach($all_areas as $area) : ?>
+                    <li><a href="/area/show/<?php echo $area->id; ?>"><?php echo $area->area_name; ?>エリア</a></li>
+                    <?php endforeach; ?>
+                    <li class="ttl">温泉地から探す</li>
+                    <?php foreach($all_springs as $spring) : ?>
+                    <li><a href="/spring/show/<?php echo $spring->id; ?>"><?php echo $spring->spring_name; ?></a></li>
+                    <?php endforeach; ?>
                 </ul>
             </div>
         </div>

@@ -30,7 +30,7 @@ contents
 }
 -->
 </style>
-            <h2><?php echo $display_date; ?>の天気予報</h2>
+            <h2><?php echo $display_date; ?>の天気予想</h2>
             <table>
                 <tr class="title">
                     <th class="cell01">日付</th>
@@ -51,7 +51,10 @@ contents
                     <th class="cell02">天気(夜)</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><img src="/images/weather/icon/<?php echo $week_futures[$index]->night_icon_image; ?>" alt="<?php echo $week_futures[$index]->night; ?>" class="icon" /></td><?php endfor; ?>
                 </tr>
                 <tr>
-                    <th class="cell02">気温</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><?php echo $week_futures[$index]->temperature_max.'°C/'.$week_futures[$index]->temperature_min.'°C'; ?></td><?php endfor; ?>
+                    <th class="cell02">気温</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>">
+                            <div class="highTemp">最高気温 <em><?php echo $week_futures[$index]->temperature_max; ?>°C</em></div>
+                            <div class="lowTemp">最低気温 <em><?php echo $week_futures[$index]->temperature_min; ?>°C</em></div>
+                    </td><?php endfor; ?>
                 </tr>
             </table>
         </div>

@@ -10,6 +10,123 @@ class Weather_lib
         $this->ci->load->library('tool_lib');
     }
 
+    function getFutureWeather($month_day_weathers,$year = 1967){
+        $is_rains = array();
+        $is_snows = array();
+        foreach ($month_day_weathers as $month_day_weather){
+            if($month_day_weather->year >= $year){
+                $daytimes[] = $month_day_weather->daytime;
+                $nights[] = $month_day_weather->night;
+                $temperature_maxes[] = $month_day_weather->temperature_max;
+                $temperature_mins[] = $month_day_weather->temperature_min;
+                if($month_day_weather->is_rain == 0) $is_rains[] = 0;
+                if($month_day_weather->is_snow == 0) $is_snows[] = 0;
+            }
+        }
+
+        //昼の天気予想
+        $array_count = array_count_values($daytimes);
+        arsort($array_count);
+
+        $f = array_slice($array_count, 0, 1);
+        $s = array_slice($array_count, 1, 2);
+        
+        $daytime_future_weather = key($f);
+        $daytime_future_weather_number = reset($f);
+
+        $daytime_future_weather_second = key($s);
+        $daytime_future_weather_second_number = reset($s);
+
+        if($daytime_future_weather == '降水なし'){
+            $futureData['daytime'] = '晴';
+        }elseif($daytime_future_weather == '降水あり'){
+            $futureData['daytime'] = '雨';
+        }else{
+            $futureData['daytime'] = $daytime_future_weather;
+        }
+        $daytime_icon_no = $this->ci->tool_lib->get_icon($futureData['daytime']);//icon_weather_01.png
+        $futureData['daytime_icon_image'] = $daytime_icon_no === FALSE ? 'icon_weather_01.png' : 'icon_weather_'.$daytime_icon_no.'.png';
+        $futureData['daytime_number'] = $daytime_future_weather_number;
+        $futureData['daytime_second'] = $daytime_future_weather_second;
+        $futureData['daytime_second_number'] = $daytime_future_weather_second_number;
+        $futureData['daytime_type'] = $this->getWetherNumber($daytime_icon_no);
+
+
+        //夜の天気予報
+        $array_count = array_count_values($nights);
+        arsort($array_count);
+        $f = array_slice($array_count, 0, 1);
+        $s = array_slice($array_count, 1, 2);
+        
+        $night_future_weather = key($f);
+        $night_future_weather_number = reset($f);
+        
+        $night_future_weather_second = key($s);
+        $night_future_weather_second_number = reset($s);
+        
+        if($night_future_weather == '降水なし'){
+            $futureData['night'] = '晴';
+        }elseif($night_future_weather == '降水あり'){
+            $futureData['night'] = '雨';
+        }else{
+            $futureData['night'] = $night_future_weather;
+        }
+        $night_icon = $this->ci->tool_lib->get_icon($futureData['night']);
+        //$futureData['night_icon_image'] = $night_icon === FALSE ? 'icon_weather_01.png' : $night_icon;
+        $futureData['night_icon_image'] = $night_icon === FALSE ? 'icon_weather_01.png' : 'icon_weather_'.$night_icon.'.png';
+        $futureData['night_number'] = $night_future_weather_number;
+        $futureData['night_second'] = $night_future_weather_second;
+        $futureData['night_second_number'] = $night_future_weather_second_number;
+        $futureData['night_type'] = $this->getWetherNumber($night_icon);
+        //$futureData['is_night_shine'] = $this->isShine($night_future_weather,0) ? 0 : 1;
+        
+        //最高気温
+        $futureData['temperature_max'] = round(array_sum($temperature_maxes) / count($temperature_maxes));
+        
+        //最低気温
+        $futureData['temperature_min'] = round(array_sum($temperature_mins) / count($temperature_mins));
+        
+        $weather_sample_count = date("Y",time()) - $this->ci->config->item('jma_weather_start_year');
+        //降水確率
+        $futureData['rain_percentage'] = round(count($is_rains) / $weather_sample_count * 100);
+
+        //降雪確率
+        $futureData['snow_percentage'] = round(count($is_snows) / $weather_sample_count * 100);
+
+        return $futureData;
+    }
+    
+    function getWetherNumber($icon_number){
+        //晴れグループ
+        $shine_icon = array('01','07','08','09','10','11','32','33','34','35','36');
+        //雨グループ
+        $rain_icon = array('02','12','13','14','15','16','37','38','39','40','41');
+        //曇グループ
+        $cloud_icon = array('03','17','18','19','20','21','42','43','44','45','46');
+        //雷グループ
+        $thunder_icon = array('04','27','28','29','30','31','52','53','54','55','56');
+        //雪グループ
+        $snow_icon = array('05','22','23','24','25','26','47','48','49','50','51');
+        //霧グループ
+        $mist_icon = array('06','57','58','59','60','61','62','63','64','65','66');
+        
+        if(in_array($icon_number,$shine_icon)){
+            return 0;//shine
+        }elseif(in_array($icon_number,$rain_icon)){
+            return 1;//rain
+        }elseif(in_array($icon_number,$cloud_icon)){
+            return 2;//cloud
+        }elseif(in_array($icon_number,$thunder_icon)){
+            return 3;//thunder
+        }elseif(in_array($icon_number,$snow_icon)){
+            return 4;//snow
+        }elseif(in_array($icon_number,$mist_icon)){
+            return 5;//mist
+        }else{
+            return 9;
+        }
+    }
+
     function isShine($weather_result,$precipitation_one_hour)
     {
         //雨（1時間に1ミリ以上）じゃない
@@ -194,94 +311,6 @@ class Weather_lib
             return '雪';
         }
         return mb_substr($string, 0, 1);
-    }
-
-    function getFutureWeather($month_day_weathers,$year = 1967){
-        $is_rains = array();
-        $is_snows = array();
-        foreach ($month_day_weathers as $month_day_weather){
-            if($month_day_weather->year >= $year){
-                $daytimes[] = $month_day_weather->daytime;
-                $nights[] = $month_day_weather->night;
-                $temperature_maxes[] = $month_day_weather->temperature_max;
-                $temperature_mins[] = $month_day_weather->temperature_min;
-                if($month_day_weather->is_rain == 0) $is_rains[] = 0;
-                if($month_day_weather->is_snow == 0) $is_snows[] = 0;
-            }
-        }
-
-        //昼の天気予想
-        $array_count = array_count_values($daytimes);
-        arsort($array_count);
-
-        $f = array_slice($array_count, 0, 1);
-        $s = array_slice($array_count, 1, 2);
-        
-        $daytime_future_weather = key($f);
-        $daytime_future_weather_number = reset($f);
-
-        $daytime_future_weather_second = key($s);
-        $daytime_future_weather_second_number = reset($s);
-
-        if($daytime_future_weather == '降水なし'){
-            $futureData['daytime'] = '晴';
-        }elseif($daytime_future_weather == '降水あり'){
-            $futureData['daytime'] = '雨';
-        }else{
-            $futureData['daytime'] = $daytime_future_weather;
-        }
-        $daytime_icon = $this->ci->tool_lib->get_icon($futureData['daytime']);
-        //$futureData['icon_image'] = $daytime_icon === FALSE ? $futureData['daytime'] : $daytime_icon;
-        $futureData['daytime_icon_image'] = $daytime_icon === FALSE ? 'icon_weather_01.png' : $daytime_icon;
-        $futureData['daytime_number'] = $daytime_future_weather_number;
-        $futureData['daytime_second'] = $daytime_future_weather_second;
-        $futureData['daytime_second_number'] = $daytime_future_weather_second_number;
-        $futureData['is_daytime_shine'] = $this->isShine($daytime_future_weather,0) ? 0 : 1;
-
-        //夜の天気予報
-        $array_count = array_count_values($nights);
-        arsort($array_count);
-        $f = array_slice($array_count, 0, 1);
-        $s = array_slice($array_count, 1, 2);
-        
-        $night_future_weather = key($f);
-        $night_future_weather_number = reset($f);
-        
-        $night_future_weather_second = key($s);
-        $night_future_weather_second_number = reset($s);
-        
-        if($night_future_weather == '降水なし'){
-            $futureData['night'] = '晴';
-        }elseif($night_future_weather == '降水あり'){
-            $futureData['night'] = '雨';
-        }else{
-            $futureData['night'] = $night_future_weather;
-        }
-        $night_icon = $this->ci->tool_lib->get_icon($futureData['night']);
-        $futureData['night_icon_image'] = $night_icon === FALSE ? 'icon_weather_01.png' : $night_icon;
-        $futureData['night_number'] = $night_future_weather_number;
-        $futureData['night_second'] = $night_future_weather_second;
-        $futureData['night_second_number'] = $night_future_weather_second_number;
-        $futureData['is_night_shine'] = $this->isShine($night_future_weather,0) ? 0 : 1;
-        
-        //最高気温
-        $futureData['temperature_max'] = round(array_sum($temperature_maxes) / count($temperature_maxes));
-        
-        //最低気温
-        $futureData['temperature_min'] = round(array_sum($temperature_mins) / count($temperature_mins));
-        
-        $weather_sample_count = date("Y",time()) - $this->ci->config->item('jma_weather_start_year');
-        //降水確率
-        $futureData['rain_percentage'] = round(count($is_rains) / $weather_sample_count * 100);
-
-        //降雪確率
-        $futureData['snow_percentage'] = round(count($is_snows) / $weather_sample_count * 100);
-        
-        //雪
-        $futureData['is_daytime_snow'] = $this->isStringSnow($daytime_future_weather,0) && $futureData['snow_percentage'] >= 60  ? 0 : 1;
-        $futureData['is_night_snow'] = $this->isStringSnow($night_future_weather,0) && $futureData['snow_percentage'] >= 60  ? 0 : 1;
-
-        return $futureData;
     }
 
     function get_holidays_this_month($year){

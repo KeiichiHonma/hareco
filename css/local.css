@@ -289,7 +289,11 @@ ul.menuBox dd a:hover {
 	top:0;
 	left:0;	
 }
-
+/*
+#ind #mainImage .photo01{ background-image:url(../images/slide/tokyo.jpg); }
+#ind #mainImage .photo02{ background-image:url(../images/slide/spring.jpg); }
+#ind #mainImage .photo03{ background-image:url(../images/slide/sapporo.jpg); }
+*/
 #ind #mainImage #copy {
 	position:absolute;
 	top:108px;
@@ -380,7 +384,7 @@ ul.menuBox dd a:hover {
 }
 
 #ind #mainImage .boxPhoto {
-	width:2000px;
+	width:100%;
 	height:460px;
 	background-repeat:no-repeat;
 	background-position:center center;
@@ -682,6 +686,8 @@ ul.menuBox dd a:hover {
 }
 #contentsInner .line { margin-bottom:20px;}
 
+#contentsInner .highTemp em { color:#fc4747;font-style:normal;}
+#contentsInner .lowTemp em { color:#26aadb;font-style:normal;}
 
 #contentsInner div.box {
 	position:relative;
@@ -827,7 +833,7 @@ ul.menuBox dd a:hover {
 #contentsInner #recommend {
 	margin-top:40px;
 }
-
+#contentsInner #recommend .empty { color:#fc4747;}
 #contentsInner #recommend div.box { 
 	height:138px;
 	width:117px;
@@ -900,8 +906,7 @@ ul.menuBox dd a:hover {
     left:8px;
 }
 #contentsInner #recommend div.box em {font-style:normal;}
-#contentsInner #recommend div.box .highTemp em { color:#fc4747;}
-#contentsInner #recommend div.box .lowTemp em { color:#26aadb;}
+
 
 
 

@@ -8,11 +8,11 @@ class Devtools extends CI_Controller {
         if ( ! $this->input->is_cli_request() )     {
             //die('Permission denied.');
         }
+
         $this->load->library('tank_auth');
         $this->load->library('weather_lib');
         //connect database
         $this->load->database();
-
     }
     
     private $handleTagList = array('td');
@@ -277,7 +277,7 @@ class Devtools extends CI_Controller {
         //全area,指定日を実行
         $target_year = 2013;
         $target_month = 12;
-        $end_day = 10;//14時前はマイナス1
+        $end_day = 16;//14時前はマイナス1
         $sampling_year = $this->CI->config->item('jma_weather_start_year');//1993 or 1967
         
         $holidays = $this->weather_lib->get_holidays_this_month($target_year);
@@ -285,7 +285,8 @@ class Devtools extends CI_Controller {
         foreach ($areas as $area){
             $yesterday_batch_index = FALSE;
             for ($year=$target_year;$year<=2014;$year++){
-                $yesterday_weather = array('daytime'=>'','daytime_icon_image'=>'','daytime_number'=>0,'is_daytime_shine'=>0,'is_daytime_snow'=>0,'night'=>'','night_icon_image'=>'','night_number'=>0,'is_night_shine'=>0,'is_night_snow'=>0);
+                //$yesterday_weather = array('daytime'=>'','daytime_icon_image'=>'','daytime_number'=>0,'is_daytime_shine'=>0,'is_daytime_snow'=>0,'night'=>'','night_icon_image'=>'','night_number'=>0,'is_night_shine'=>0,'is_night_snow'=>0);
+                $yesterday_weather = array('daytime'=>'','daytime_icon_image'=>'','daytime_number'=>0,'daytime_type'=>9,'night'=>'','night_icon_image'=>'','night_number'=>0,'night_type'=>9);
                 for($month=1;$month<=$target_month;$month++){
                     $today_month = $month;
                     $lastday = date("t", mktime(0,0,0,$month,1,$year));
@@ -334,8 +335,7 @@ class Devtools extends CI_Controller {
                                 $futureData[$yesterday_batch_index]['tomorrow_daytime'] = $weather['daytime'];
                                 $futureData[$yesterday_batch_index]['tomorrow_daytime_icon_image'] = $weather['daytime_icon_image'];
                                 $futureData[$yesterday_batch_index]['tomorrow_daytime_number'] = $weather['night_number'];
-                                $futureData[$yesterday_batch_index]['is_tomorrow_daytime_shine'] = $weather['is_daytime_shine'];
-                                $futureData[$yesterday_batch_index]['is_tomorrow_daytime_snow'] = $weather['is_daytime_snow'];
+                                $futureData[$yesterday_batch_index]['tomorrow_daytime_type'] = $weather['daytime_type'];
                             }
                             $yesterday_batch_index = $batch_index;//次のために
 
@@ -343,16 +343,14 @@ class Devtools extends CI_Controller {
                             //daytimne
                             $futureData[$batch_index]['yesterday_daytime'] = $yesterday_weather['daytime'];
                             $futureData[$batch_index]['yesterday_daytime_icon_image'] = $yesterday_weather['daytime_icon_image'];
-                            $futureData[$batch_index]['yesterday_daytime_number'] = $yesterday_weather['night_number'];
-                            $futureData[$batch_index]['is_yesterday_daytime_shine'] = $yesterday_weather['is_daytime_shine'];
-                            $futureData[$batch_index]['is_yesterday_daytime_snow'] = $yesterday_weather['is_daytime_snow'];
+                            $futureData[$batch_index]['yesterday_daytime_number'] = $yesterday_weather['daytime_number'];
+                            $futureData[$batch_index]['yesterday_daytime_type'] = $yesterday_weather['daytime_type'];
                             
                             //night
                             $futureData[$batch_index]['yesterday_night'] = $yesterday_weather['night'];
                             $futureData[$batch_index]['yesterday_night_icon_image'] = $yesterday_weather['night_icon_image'];
                             $futureData[$batch_index]['yesterday_night_number'] = $yesterday_weather['night_number'];
-                            $futureData[$batch_index]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
-                            $futureData[$batch_index]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
+                            $futureData[$batch_index]['yesterday_night_type'] = $yesterday_weather['night_type'];
                             $yesterday_weather = $weather;//次のために
                             
                             
@@ -372,8 +370,7 @@ class Devtools extends CI_Controller {
                             $futureData[$batch_index]['tomorrow_daytime'] = '';
                             $futureData[$batch_index]['tomorrow_daytime_icon_image'] = '';
                             $futureData[$batch_index]['tomorrow_daytime_number'] = 0;
-                            $futureData[$batch_index]['is_tomorrow_daytime_shine'] = 9;
-                            $futureData[$batch_index]['is_tomorrow_daytime_snow'] = 9;
+                            $futureData[$batch_index]['tomorrow_daytime_type'] = 9;
 
                             //holiday
                             $futureData[$batch_index]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
@@ -551,7 +548,7 @@ class Devtools extends CI_Controller {
             foreach ($futures as $future){
 
                 //昼の天気
-                if($future->is_daytime_shine == 0){
+                if($future->daytime_type == 0){
                     if( !array_key_exists($future->date,$daytime_shine_date_list) ){
                         $daytime_shine_date_list[$future->date] = 0;
                     }
@@ -569,7 +566,7 @@ class Devtools extends CI_Controller {
                 }
                 
                 //夜の天気
-                if($future->is_night_shine == 0){
+                if($future->night_type == 0){
                     if( !array_key_exists($future->date,$night_shine_date_list) ){
                         $night_shine_date_list[$future->date] = 0;
                     }
@@ -731,96 +728,5 @@ class Devtools extends CI_Controller {
         }
         return empty($_line) ? false : $_csv_data;
     }
-/*
-    function createFutureForOldDesignated($is_update = FALSE){
-        $time = time();
-        $this->load->model('Area_model');
-        $areas = $this->Area_model->getAllAreasFlipJmaId();
-        $this->load->model('Weather_model');
-        $this->load->model('Future_model');
-        
-        //全area,指定日を実行
-        $year = 2013;
-        $target_month = 12;
-        
-        $holidays = $this->weather_lib->get_holidays_this_month($year);
-        print date("y/n/d/H:i:s")."\n";
-        foreach ($areas as $area){
-            $yesterday_weather = array('night'=>'','night_number'=>0,'is_night_shine'=>0,'is_night_snow'=>0);
-            for($month=1;$month<=$target_month;$month++){
-                $today_month = $month;
-                $lastday = date("t", mktime(0,0,0,$month,1,$year));
-                $month_string = $month < 10 ? '0'.$month : $month;
-                for($day=1;$day <= $lastday;$day++){
-                    if($year == 2014 && $month == 11 && $day == 13 ) break;
-                    $day_string = $day < 10 ? '0'.$day : $day;
-                    $today_day = $day;
-                    //未来データ生成
-                    $month_day_weathers = $this->Weather_model->getWeatherByAreaIdByMonthByDay($area->id,$today_month,$today_day);
-                    
-                    if(!$is_update){
-                        $weather = $this->weather_lib->getFutureWeather($month_day_weathers,$this->CI->config->item('jma_weather_start_year'));//1993
-                        $futureData[$batch_index] = $weather;
-                        
-                        //yesterday
-                        $futureData[$batch_index]['yesterday_night'] = $yesterday_weather['night'];
-                        $futureData[$batch_index]['yesterday_night_number'] = $yesterday_weather['night_number'];
-                        $futureData[$batch_index]['is_yesterday_night_shine'] = $yesterday_weather['is_night_shine'];
-                        $futureData[$batch_index]['is_yesterday_night_snow'] = $yesterday_weather['is_night_snow'];
-                        $yesterday_weather = $weather;//次のために
-                        
-                        $futureData[$batch_index]['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
-                        $futureData[$batch_index]['region_id'] = $area->region_id;
-                        $futureData[$batch_index]['todoufuken_id'] = $area->todoufuken_id;
-                        $futureData[$batch_index]['area_id'] = $area->id;
-                        $futureData[$batch_index]['jma_prec_no'] = $area->jma_prec_no;
-                        $futureData[$batch_index]['jma_block_no'] = $area->jma_block_no;
-                        $futureData[$batch_index]['year'] = $year;
-                        $futureData[$batch_index]['month'] = $today_month;
-                        $futureData[$batch_index]['day'] = $today_day;
-                        $futureData[$batch_index]['date'] = $futureData[$batch_index]['year'].'-'.$futureData[$batch_index]['month'].'-'.$futureData[$batch_index]['day'];
-
-                        //holiday
-                        $futureData[$batch_index]['day_of_the_week'] = date("N",mktime(0,0,0,$month,$day,$year));// 1（月曜日）から 7（日曜日）
-                        if(array_key_exists($year.'-'.$month_string.'-'.$day_string,$holidays)){
-                            $futureData[$batch_index]['holiday'] = 2;//1土日 2祝日
-                        }elseif ($futureData[$batch_index]['day_of_the_week'] == 6 || $futureData[$batch_index]['day_of_the_week'] == 7){
-                            $futureData[$batch_index]['holiday'] = 1;//1土日 2祝日
-                        }else{
-                            $futureData[$batch_index]['holiday'] = 0;
-                        }
-
-                        $futureData[$batch_index]['created'] = date("Y-m-d H:i:s", $time);
-                    }else{
-                        $futureData = $this->weather_lib->getFutureWeather($month_day_weathers);
-                        
-                        $futureData['code'] = $area->region_id.'_'.$area->todoufuken_id.'_'.$area->id.'_'.$area->jma_block_no.'_'.$year.'_'.$today_month.'_'.$today_day;
-                        $futureData['region_id'] = $area->region_id;
-                        $futureData['todoufuken_id'] = $area->todoufuken_id;
-                        $futureData['area_id'] = $area->id;
-                        $futureData['jma_prec_no'] = $area->jma_prec_no;
-                        $futureData['jma_block_no'] = $area->jma_block_no;
-                        
-                        $futureData['year'] = $year;
-                        $futureData['month'] = $today_month;
-                        $futureData['day'] = $today_day;
-                        $futureData['date'] = $futureData['year'].'-'.$futureData['month'].'-'.$futureData['day'];
-                        $futureData['created'] = date("Y-m-d H:i:s", $time);
-                        
-                        $this->Future_model->updateFuture($area->id,$year,$month,$day,$futureData);
-                        $futureData = array();
-                        print $area->area_name.$year.'-'.$month.'-'.$day."\n";
-                    }
-                }
-            }
-            if(!$is_update){
-                $this->Future_model->insertBatchFuture($futureData);
-                $futureData = array();
-                print $area->area_name."\n";
-            }
-        }
-        print date("y/n/d/H:i:s")."\n";
-    }
-*/
 }
 ?>

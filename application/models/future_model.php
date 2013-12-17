@@ -9,7 +9,7 @@ class Future_model extends CI_Model
 {
     var $CI;
     private $table_name            = 'futures';
-    private $columns = "id, code, date, year, month, day, region_id,  todoufuken_id, area_id, daytime_icon_image, night_icon_image, tomorrow_daytime_icon_image, daytime,night,tomorrow_daytime,is_daytime_shine,daytime_number,daytime_shine_sequence,night,is_night_shine,night_shine_sequence,yesterday_night,is_yesterday_night_shine , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence";
+    private $columns = "id, code, date, year, month, day, region_id,  todoufuken_id, area_id, daytime_icon_image, night_icon_image, tomorrow_daytime_icon_image, daytime,night,tomorrow_daytime,daytime_type,daytime_number,daytime_shine_sequence,night,night_type,night_shine_sequence,yesterday_night,yesterday_night_type , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence";
     private $start_datetime;
     private $start_date;
     /*
@@ -40,10 +40,10 @@ class Future_model extends CI_Model
     //top slide
     function getSpringFuturesGoupByAreaByHolidayBySequenceForSlide($spring_id,$holiday = 1,$holiday_sequence = 2,$shine_sequence = 2)
     {
-        $query = $this->db->query("SELECT {$this->table_name}.id AS id,{$this->table_name}.area_id AS area_id, date, springs.id AS spring_id, springs.spring_name, daytime_icon_image, night_icon_image, tomorrow_daytime_icon_image, daytime,night,tomorrow_daytime,is_daytime_shine,daytime_number,daytime_shine_sequence,night,is_night_shine,night_shine_sequence,yesterday_night,is_yesterday_night_shine , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence
+        $query = $this->db->query("SELECT {$this->table_name}.id AS id,{$this->table_name}.area_id AS area_id, date, springs.id AS spring_id, springs.spring_name, daytime_icon_image, night_icon_image, tomorrow_daytime_icon_image, daytime,night,tomorrow_daytime,daytime_type,daytime_number,daytime_shine_sequence,night,night_type,night_shine_sequence,yesterday_night,yesterday_night_type , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence
                                     FROM {$this->table_name}
                                     INNER JOIN springs ON {$this->table_name}.area_id = springs.area_id
-                                    WHERE is_daytime_shine = 0 AND date > '{$this->start_date}' AND springs.id = ? AND holiday >= ? AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
+                                    WHERE daytime_type = 0 AND date > '{$this->start_date}' AND springs.id = ? AND holiday >= ? AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
                                     GROUP BY area_id"
         , array($spring_id,$holiday,$holiday_sequence,$shine_sequence)
         );
@@ -57,7 +57,7 @@ class Future_model extends CI_Model
     {
         $query = $this->db->query("SELECT {$this->columns}
                                     FROM {$this->table_name}
-                                    WHERE daytime='晴' AND is_daytime_shine = 0 AND holiday >= 1 AND date > '{$this->start_date}' AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
+                                    WHERE daytime='晴' AND daytime_type = 0 AND holiday >= 1 AND date > '{$this->start_date}' AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
                                     AND ( {$this->million_city_query} )
                                     GROUP BY area_id"
         , array($holiday_sequence,$shine_sequence)
@@ -73,7 +73,7 @@ class Future_model extends CI_Model
     {
         $query = $this->db->query("SELECT {$this->columns}
                                     FROM {$this->table_name}
-                                    WHERE daytime='晴' AND is_daytime_shine = 0 AND holiday >= 1 AND date > '{$this->start_date}' AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
+                                    WHERE daytime='晴' AND daytime_type = 0 AND holiday >= 1 AND date > '{$this->start_date}' AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
                                     GROUP BY area_id
                                     ORDER BY {$this->table_name}.region_id,{$this->table_name}.area_id ASC"
         , array($holiday_sequence,$shine_sequence)
@@ -104,12 +104,19 @@ class Future_model extends CI_Model
                 $perPageCount = $this->CI->config->item('paging_count_per_recommend_page');
                 $offset = $perPageCount * ($page - 1);
                 $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
+                
                 if($weather == 'shine'){
-                    $and_cond[] = "is_daytime_shine = 0";
+                    $and_cond[] = "daytime_type = 0";
                 }elseif($weather == 'rain'){
-                    $and_cond[] = "is_rain = 0";
+                    $and_cond[] = "daytime_type = 1";
+                }elseif($weather == 'cloud'){
+                    $and_cond[] = "daytime_type = 2";
+                }elseif($weather == 'thunder'){
+                    $and_cond[] = "daytime_type = 3";
                 }elseif($weather == 'snow'){
-                    $and_cond[] = "is_daytime_snow = 0";
+                    $and_cond[] = "daytime_type = 4";
+                }elseif($weather == 'mist'){
+                    $and_cond[] = "daytime_type = 5";
                 }
             break;
             case 'sp':
@@ -117,17 +124,22 @@ class Future_model extends CI_Model
                 $offset = $perPageCount * ($page - 1);
                 $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
                 if($weather == 'shine'){
-                    $and_cond[] = "is_daytime_shine = 0";
+                    $and_cond[] = "daytime_type = 0";
                 }elseif($weather == 'rain'){
-                    $and_cond[] = "is_rain = 0";
+                    $and_cond[] = "daytime_type = 1";
+                }elseif($weather == 'cloud'){
+                    $and_cond[] = "daytime_type = 2";
+                }elseif($weather == 'thunder'){
+                    $and_cond[] = "daytime_type = 3";
                 }elseif($weather == 'snow'){
-                    $and_cond[] = "is_daytime_snow = 0";
+                    $and_cond[] = "daytime_type = 4";
+                }elseif($weather == 'mist'){
+                    $and_cond[] = "daytime_type = 5";
                 }
             break;
         }
-        
-        //晴れの連続数
-        if(!is_null($daytime_shine_sequence)){
+        //晴れの連続数 晴れ指定の時のみ
+        if(!is_null($daytime_shine_sequence) && $weather == 'shine'){
             //$and_cond[] = "holiday_sequence {$sequence}";
             $and_cond[] = "daytime_shine_sequence {$daytime_shine_sequence}";
         }
@@ -173,7 +185,6 @@ class Future_model extends CI_Model
                                     ORDER BY {$this->table_name}.{$order}
                                     LIMIT {$offset},{$perPageCount}"
         );
-
         if ($query->num_rows() != 0) {
             $result['data'] = $query->result();
             $query = $this->db->query("SELECT FOUND_ROWS() as count");
@@ -203,7 +214,7 @@ class Future_model extends CI_Model
         }
         $query = $this->db->query("SELECT SQL_CALC_FOUND_ROWS {$this->columns}
                                     FROM {$this->table_name}
-                                    WHERE is_daytime_shine = 0 AND date > '{$this->start_date}' AND {$this->table_name}.area_id = ?
+                                    WHERE daytime_type = 0 AND date > '{$this->start_date}' AND {$this->table_name}.area_id = ?
                                     ORDER BY {$this->table_name}.{$order}
                                     LIMIT {$offset},{$perPageCount}"
         , array($area_id,$sequence)

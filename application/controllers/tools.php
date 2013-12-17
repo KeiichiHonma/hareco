@@ -340,23 +340,26 @@ class Tools extends CI_Controller {
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime'] = $yesterday_future->daytime;
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime_icon_image'] = $yesterday_future->daytime_icon_image;
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime_number'] = $yesterday_future->night_number;
-                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_shine'] = $yesterday_future->is_daytime_shine;
-                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_snow'] = $yesterday_future->is_daytime_snow;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_daytime_type'] = $yesterday_future->daytime_type;
+                //$futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_shine'] = $yesterday_future->is_daytime_shine;
+                //$futureData[$area->id.$back_day_year_month_day]['is_yesterday_daytime_snow'] = $yesterday_future->is_daytime_snow;
                 
                 //night
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_night'] = $yesterday_future->night;
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_night_icon_image'] = $yesterday_future->night_icon_image;
                 $futureData[$area->id.$back_day_year_month_day]['yesterday_night_number'] = $yesterday_future->night_number;
-                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_shine'] = $yesterday_future->is_night_shine;
-                $futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_snow'] = $yesterday_future->is_night_snow;
+                $futureData[$area->id.$back_day_year_month_day]['yesterday_night_type'] = $yesterday_future->night_type;
+                //$futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_shine'] = $yesterday_future->is_night_shine;
+                //$futureData[$area->id.$back_day_year_month_day]['is_yesterday_night_snow'] = $yesterday_future->is_night_snow;
 
                 //初期化用tomorrow///////////////////////////////////////
                 //daytimne
                 $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime'] = '';
                 $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime_icon_image'] = '';
                 $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime_number'] = 0;
-                $futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_shine'] = 9;
-                $futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_snow'] = 9;
+                $futureData[$area->id.$back_day_year_month_day]['tomorrow_daytime_type'] = 9;
+                //$futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_shine'] = 9;
+                //$futureData[$area->id.$back_day_year_month_day]['is_tomorrow_daytime_snow'] = 9;
                 
                 //holiday
                 $futureData[$area->id.$back_day_year_month_day]['day_of_the_week'] = date("N",mktime(0,0,0,$back_day_month,$back_day_day,$next_year));// 1（月曜日）から 7（日曜日）
@@ -415,8 +418,9 @@ class Tools extends CI_Controller {
                 $tomorrowData['tomorrow_daytime'] = $next_year_back_day_future->daytime;
                 $tomorrowData['tomorrow_daytime_icon_image'] = $next_year_back_day_future->daytime_icon_image;
                 $tomorrowData['tomorrow_daytime_number'] = $next_year_back_day_future->daytime_number;
-                $tomorrowData['is_tomorrow_daytime_shine'] = $next_year_back_day_future->is_daytime_shine;
-                $tomorrowData['is_tomorrow_daytime_snow'] = $next_year_back_day_future->is_daytime_snow;
+                $tomorrowData['tomorrow_daytime_type'] = $next_year_back_day_future->daytime_type;
+                //$tomorrowData['is_tomorrow_daytime_shine'] = $next_year_back_day_future->is_daytime_shine;
+                //$tomorrowData['is_tomorrow_daytime_snow'] = $next_year_back_day_future->is_daytime_snow;
                 
                 $this->db->where('area_id', $area->id);
                 $this->db->where('date', $next_year.'/'.$next_year_back_day_yesterday_month.'/'.$next_year_back_day_yesterday_day);

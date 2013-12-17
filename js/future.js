@@ -31,6 +31,7 @@ $(function(){
 
 });
 function uploadFormResponse(responseText, statusText){
+    //console.log(responseText);
     if(responseText == 'error'){
         $("#breadcrumbs-three").hide();
     }else{

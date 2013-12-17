@@ -6,6 +6,74 @@
 /* 640px以下 for Smart Phone
 ------------------------------------------------------------------*/
 @media only screen and (max-width: 640px){
+/* slideImage top page
+--------------------------------------------------*/
+#ind #slideImage {
+	text-align:center;
+	width:100%;
+	height:200px;
+	margin:0 auto !important;
+	background-size:auto 70% !important;
+	top:0;
+}
+
+#ind #slider {
+	display:none;
+}
+
+#ind #slideImage .boxPhoto {
+	background-size:auto 100% !important;
+}
+
+#ind #slideImage .gradationLeft {
+	display:none;
+}
+#ind #slideImage .gradationRight {
+	display:none;
+}
+
+#ind #slideImage #copy {
+	position:absolute;
+	top:60px;
+}
+#ind #slideImage #copy h2 {
+	font-size:20px;
+	margin-bottom:16px;
+}
+#ind #slideImage #copy h3 {
+	display:none;
+}
+#ind #slideImage #searchBox {
+	padding:6px;
+    width:282px;
+}
+#ind #slideImage #searchBox .focus{
+	width:260px;
+	padding:0 10px;
+	font-size:11px;
+    border:none;
+    margin-right:0;
+} 
+#ind #slideImage #searchBox .btnSearch {
+	display:none;
+}
+
+#ind #slideImage #searchBox #datepicker { display:none; }
+
+#ind #slideImage img.photo{
+	display:block;
+	position:relative;
+	width:auto;
+	height:200px;
+	margin:0 auto;	
+}
+#ind #slideImage .boxInner{
+	display:none;
+}
+#ind #slideImage .minWeather{
+	display:none;
+}
+
     input[type="checkbox"] {
         -webkit-transform: scale(1.3);
         transform: scale(1.3);
