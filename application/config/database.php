@@ -53,28 +53,28 @@ switch (ENVIRONMENT)
         $db['default']['hostname'] = 'localhost';
         $db['default']['username'] = 'db_mirai_tenki';
         $db['default']['password'] = 'kyeoisihcihoi';
-        $db['default']['database'] = 'mirai_tenki';
+        $db['default']['database'] = 'hareco';
     break;
 
     case 'testing':
         $db['default']['hostname'] = 'mysql465.db.sakura.ne.jp';
-        $db['default']['username'] = 'hachione';
-        $db['default']['password'] = 'kyeoisihcihoi_83yy3e8sv9';
-        $db['default']['database'] = 'hachione_balloooooon';
+        $db['default']['username'] = 'db_mirai_tenki';
+        $db['default']['password'] = 'kyeoisihcihoi';
+        $db['default']['database'] = 'hareco';
     break;
 
     case 'production':
         $db['default']['hostname'] = 'localhost';
-        $db['default']['username'] = 'db_balloooooon';
+        $db['default']['username'] = 'db_mirai_tenki';
         $db['default']['password'] = 'kyeoisihcihoi';
-        $db['default']['database'] = 'balloooooon';
+        $db['default']['database'] = 'hareco';
     break;
 
     default:
         $db['default']['hostname'] = 'localhost';
-        $db['default']['username'] = 'db_balloooooon';
+        $db['default']['username'] = 'db_mirai_tenki';
         $db['default']['password'] = 'kyeoisihcihoi';
-        $db['default']['database'] = 'balloooooon';
+        $db['default']['database'] = 'hareco';
 }
 
 $db['default']['dbdriver'] = 'mysql';

@@ -18,20 +18,21 @@ class Tools extends CI_Controller {
 
     public function sitemap()
     {
+
         try {
-            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap.xml';
+            $file= '/usr/local/apache2/htdocs/hareco/sitemap.xml';
             $this->_get_sitemap_data('main');
             $this->_make_file($file,$this->sitemap_line);
 
-            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_area_date.xml';
+            $file= '/usr/local/apache2/htdocs/hareco/sitemap_area_date.xml';
             $this->_get_sitemap_data('area_date');
             $this->_make_file($file,$this->sitemap_line);
 
-            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_spring_date.xml';
+            $file= '/usr/local/apache2/htdocs/hareco/sitemap_spring_date.xml';
             $this->_get_sitemap_data('spring_date');
             $this->_make_file($file,$this->sitemap_line);
 
-            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_airport_date.xml';
+            $file= '/usr/local/apache2/htdocs/hareco/sitemap_airport_date.xml';
             $this->_get_sitemap_data('airport_date');
             $this->_make_file($file,$this->sitemap_line);
 
