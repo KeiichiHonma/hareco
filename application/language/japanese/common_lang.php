@@ -10,6 +10,7 @@ $lang['holiday_title'] = '次の晴れる連休';
 
 //パンくず
 $lang['topicpath_home'] = 'HOME';
+$lang['topicpath_about'] = 'ハレコについて';
 $lang['topicpath_area'] = 'エリア';
 $lang['topicpath_spring'] = '温泉';
 $lang['topicpath_airport'] = '空港';

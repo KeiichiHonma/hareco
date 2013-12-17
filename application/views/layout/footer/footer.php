@@ -14,7 +14,7 @@ footer
                     <li><a href="/airport/">空港</a></li>
                 </ul>
                 <ul class="cf">
-                    <li><a href="/about/">ハレコについて</a></li>
+                    <li><a href="/site/about/">ハレコについて</a></li>
                     <li><a href="http://www.jalan.net/jw/jwp0000/jww0001.do">じゃらん Web サービス</a></li>
                     
                 </ul>

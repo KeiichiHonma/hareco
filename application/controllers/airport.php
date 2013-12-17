@@ -54,6 +54,10 @@ class Airport extends MY_Controller {
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/airport/',$this->lang->line('topicpath_airport'));
 
+        $data['header_title'] = sprintf($this->lang->line('airport_header_title'), $this->lang->line('topicpath_airport'), $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('airport_header_keywords'), $this->lang->line('topicpath_airport'));
+        $data['header_description'] = sprintf($this->lang->line('airport_header_description'), $this->lang->line('topicpath_airport'));
+
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
         $this->load->view('airport/index', array_merge($this->data,$data));

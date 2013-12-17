@@ -50,11 +50,14 @@ class Spring extends MY_Controller {
 
         //温泉地一覧///////////////////////////////////////////////////////////////////////////
         $this->load->model('Todoufuken_model');
-        //$this->data['springs'] = $this->Spring_model->getAllSpringsOrderSpringAreaId();
 
         $data['spring_slide'] =array_rand($this->data['all_springs'],5);
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
+
+        $data['header_title'] = sprintf($this->lang->line('spring_header_title'), $this->lang->line('topicpath_spring'), $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $this->lang->line('topicpath_spring'));
+        $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $this->lang->line('topicpath_spring'));
 
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
