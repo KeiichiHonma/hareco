@@ -15,6 +15,32 @@ class Tools extends CI_Controller {
         $this->load->database();
 
     }
+
+    public function sitemap()
+    {
+        try {
+            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap.xml';
+            $this->_get_sitemap_data('main');
+            $this->_make_file($file,$this->sitemap_line);
+
+            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_area_date.xml';
+            $this->_get_sitemap_data('area_date');
+            $this->_make_file($file,$this->sitemap_line);
+
+            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_spring_date.xml';
+            $this->_get_sitemap_data('spring_date');
+            $this->_make_file($file,$this->sitemap_line);
+
+            $file= $_SERVER['DOCUMENT_ROOT'].'/sitemap_airport_date.xml';
+            $this->_get_sitemap_data('airport_date');
+            $this->_make_file($file,$this->sitemap_line);
+
+            print 'Sitemap: update success';
+        } catch (Exception $e) { 
+            print 'Error: ' . $e->getMessage();
+        }
+    }
+
 /*
 天気データの仕様
 　・気象庁発表のデータは14時に確定データがでる。14時すぎに更新
@@ -281,7 +307,7 @@ class Tools extends CI_Controller {
         $this->load->model('Future_model');
         
         $holidays = null;
-        $sampling_year = $this->CI->config->item('jma_weather_start_year');
+        $sampling_year = $this->config->item('jma_weather_start_year');
         //指定日の1日前のデータを取得した後、その1日前の予測が可能になるので、-1日する。例）11月1日の0時、10月31日のデータを持ってきたので、翌年の10月31日の予測ができる
         for ($i = $back_day; $i > 0; $i--){
             $back_day_string = strval("-".$i." day");
@@ -387,7 +413,7 @@ class Tools extends CI_Controller {
         $this->load->model('Future_model');
         
         $holidays = null;
-        $sampling_year = $this->CI->config->item('jma_weather_start_year');
+        $sampling_year = $this->config->item('jma_weather_start_year');
         //指定日の1日前のデータを取得した後、その1日前の予測が可能になるので、-1日する。例）11月1日の0時、10月31日のデータを持ってきたので、翌年の10月31日の予測ができる
         for ($i = $back_day; $i > 0; $i--){
             $back_day_string = strval("-".$i." day");
@@ -494,7 +520,7 @@ class Tools extends CI_Controller {
             
             foreach ($futures as $future){
                 //昼の天気
-                if($future->is_daytime_shine == 0){
+                if($future->daytime_type == 0){
                     if($day == 0){
                         //過去指定日が晴だったらロールバックして更新しないといけない
                         $is_daytime_old_update = TRUE;
@@ -515,7 +541,7 @@ class Tools extends CI_Controller {
                 }
 
                 //夜の天気
-                if($future->is_night_shine == 0){
+                if($future->night_type == 0){
                     if($day == 0){
                         //過去指定日が晴だったらロールバックして更新しないといけない
                         $is_night_old_update = TRUE;
@@ -667,6 +693,110 @@ class Tools extends CI_Controller {
         }
         $this->Region_model->insertBatchRegionsOdds($regionsOddsData);
         $this->Area_model->insertBatchAreasOdds($areasOddsData);
+    }
+
+    function _get_sitemap_data($type = 'main'){
+        $domain = 'hareco.jp';
+        $start_year = 2013;
+        $today_year = date("Y",time());
+        $end_year = $today_year+1;
+        $target_month = date("n",time());
+        
+        $this->load->helper('url');
+        
+        $this->load->model('Region_model');
+        $this->load->model('Area_model');
+        $this->load->model('Spring_model');
+        $this->load->model('Future_model');
+        $this->lang->load('setting');
+        
+        $this->sitemap_line = null;
+        $this->sitemap_line .= '<?xml version="1.0" encoding="UTF-8" ?>'."\n";
+        $this->sitemap_line .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+        
+        if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/');
+        
+        //areas
+        if($type == 'main'){
+            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/area/');
+            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/area/holiday');
+        }
+        $areas = $this->Area_model->getAllAreas();
+        foreach ($areas as $index => $area) {
+            if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/area/show/'.$area->id);
+            if($type == 'area_date'){
+                for ($year=$start_year;$year<=$end_year;$year++){
+                    for($month=1;$month<=$target_month;$month++){
+                        $lastday = date("t", mktime(0,0,0,$month,1,$year));
+                        $month_string = $month < 10 ? '0'.$month : $month;
+                        for($day=1;$day <= $lastday;$day++){
+                            $day_string = $day < 10 ? '0'.$day : $day;
+                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/area/date/'.$area->id.'/'.$year.'-'.$month_string.'-'.$day_string);
+                        }
+                    }
+                }
+            }
+        }
+
+        //springs
+        if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/spring/');
+        $springs = $this->Spring_model->getAllSprings();
+        foreach ($springs as $index => $spring) {
+            if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/spring/show/'.$spring->id);
+            if($type == 'spring_date'){
+                for ($year=$start_year;$year<=$end_year;$year++){
+                    for($month=1;$month<=$target_month;$month++){
+                        $lastday = date("t", mktime(0,0,0,$month,1,$year));
+                        $month_string = $month < 10 ? '0'.$month : $month;
+                        for($day=1;$day <= $lastday;$day++){
+                            $day_string = $day < 10 ? '0'.$day : $day;
+                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/spring/date/'.$spring->id.'/'.$year.'-'.$month_string.'-'.$day_string);
+                        }
+                    }
+                }
+            }
+        }
+
+        //airports
+        if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/airport/');
+        $this->load->model('Airport_model');
+        $airports = $this->Airport_model->getAllAirports();
+        foreach ($airports as $index => $airport) {
+            if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/airport/show/'.$airport->id);
+            if($type == 'airport_date'){
+                for ($year=$start_year;$year<=$end_year;$year++){
+                    for($month=1;$month<=$target_month;$month++){
+                        $lastday = date("t", mktime(0,0,0,$month,1,$year));
+                        $month_string = $month < 10 ? '0'.$month : $month;
+                        for($day=1;$day <= $lastday;$day++){
+                            $day_string = $day < 10 ? '0'.$day : $day;
+                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/airport/date/'.$airport->id.'/'.$year.'-'.$month_string.'-'.$day_string);
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->sitemap_line .= '</urlset>';
+    }
+
+    function _make_sitemap_url($url,$lastmod = null,$changefreq = 'weekly'){
+        $string = '';
+        $string .= '    <url>'."\n";
+        $string .= '        <loc>'.$url.'</loc>'."\n";
+        if($lastmod != null) $string .= '        <lastmod>'.$lastmod.'</lastmod>'."\n";
+        if($changefreq != null) $string .= '        <changefreq>'.$changefreq.'</changefreq>'."\n";
+        $string .= '    </url>'."\n";
+        return $string;
+    }
+    function _make_file($file,$data){
+        umask(0);
+        $file=trim($file);
+        $file_dat=fopen($file,"w+");
+        flock($file_dat, LOCK_EX);
+        fputs($file_dat, $data);
+        flock($file_dat, LOCK_UN);
+        chmod($file,0666);
     }
 }
 ?>

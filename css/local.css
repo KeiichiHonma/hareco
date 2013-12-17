@@ -273,6 +273,12 @@ ul.menuBox dd a:hover {
 
 /* mainImage : index page
 --------------------------------------------------*/
+#ind .topNavPc {
+	display:block;
+}
+#ind .topNavSp {
+	display:none;
+}
 #ind #mainImage {
 	text-align:center;
 	width:100% !important;
@@ -418,6 +424,9 @@ ul.menuBox dd a:hover {
     text-align:left;
     line-height:150%;
 }
+#ind #mainImage .desc img{
+    float:left;
+}
 
 #ind #mainImage .minWeather{
 	position:absolute;
@@ -426,7 +435,8 @@ ul.menuBox dd a:hover {
 	background:#000;
 	width:auto;
 	padding-top:15px;
-	padding-left:30px;
+	padding-left:15px;
+    padding-right:15px;
 	padding-bottom:15px;
 	 border-radius: 10px;
     -webkit-border-radius: 10px;  
@@ -449,9 +459,13 @@ ul.menuBox dd a:hover {
 
 #ind .minWeather h4 {
 	text-align:left;
-	margin-bottom:8px;
+	margin-bottom:3px;
 	font-size:18px;
 	font-weight:bold;
+    text-decoration: underline;
+    line-height:24px;
+    background:url(../images/compass.png) 0px 12px no-repeat;
+    padding-left:24px;
 }
 
 #ind .minWeather .box {

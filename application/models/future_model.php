@@ -266,11 +266,10 @@ class Future_model extends CI_Model
         $ymd = explode('-',$date);
         $time = mktime(0,0,0,$ymd[1],$ymd[2],$ymd[0]);
         $cond = '';
-
         if( $this->start_datetime < $time && ($time - $this->start_datetime) <= 86400*3 ){//予想開始日から3日以内の場合はstart_dateを使用
             $cond = "date >= '{$this->start_date}'";
         }else{//天気予報が出している日付+今日を含む過去の日付又は、通常日付
-            $base = date("Y-m-d",$time - 86400*3);
+            $base = date("Y-m-d",$time - (86400*3));
             $cond = "date >= '{$base}'";
         }
         $query = $this->db->query("SELECT *

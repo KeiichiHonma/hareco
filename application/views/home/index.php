@@ -12,7 +12,7 @@ main image
 #ind #mainImage .photo03{ background-image:url(images/slide/sapporo.jpg); }
 -->
 </style>
-<div id="mainImage" class="home">
+<div id="mainImage">
 <div id="mainImageInner">
     <!-- キャッチコピー/検索ボックス -->
     <div id="copy">
@@ -32,17 +32,18 @@ main image
         <div class="boxPhoto photo01">
             
             <div class="boxInner">
-                <div class="desc cf">ハレコは過去50年の過去データを元に、独自の天気予測エンジンを開発して未来の天気を予測しています。</div>
+                <div class="desc cf"><img src="images/information.png" alt="" />ハレコは過去50年の過去データを元に、独自の天気予測エンジンを開発して未来の天気を予測しています。</div>
                 <div class="minWeather cf">
+                    <?php $tokyo_datetime = strtotime($slides['area'][30]->date); ?>
                     <a href="<?php echo 'area/date/'.$slides['area'][30]->area_id.'/'.$slides['area'][30]->date; ?>">
-                    <h4>東京エリア晴れる予測の連休</h4>
+                    <h4>東京エリアの天気を予測<br />2日連続で晴れる連休は<?php echo date("n月j日",$tokyo_datetime); ?>-<?php echo date("n月j日",$tokyo_datetime+86400); ?>です</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][30]->date)); ?></div>
+                        <div class="date"><?php echo date("n/j",$tokyo_datetime); ?></div>
                     </div>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][30]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][30]->tomorrow_daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][30]->date)+86400); ?></div>
+                        <div class="date"><?php echo date("n/j",$tokyo_datetime+86400); ?></div>
                     </div>
                     </a>
                 </div>
@@ -53,17 +54,17 @@ main image
         <!-- 画像02 -->
         <div class="boxPhoto photo02">
             <div class="boxInner">
-                <div class="desc cf">1周間以上先の天気の予測正答確率は50%が限界と言われています。<br />ハレコでは6割を超える予測が可能な天気予測エンジンを開発しました。</div>
+                <div class="desc cf"><img src="images/information.png" alt="" />1周間以上先の天気の予測正答確率は50%が限界と言われています。<br />ハレコでは6割を超える予測が可能な天気予測エンジンを開発しました。</div>
                 <div class="minWeather cf">
-                
-                    <h4>箱根温泉晴れる予測の連休</h4>
+                    <?php $hakone_datetime = strtotime($slides['spring']->date); ?>
+                    <h4>箱根温泉の天気を予測<br />2日連続で晴れる連休は<?php echo date("n月j日",$hakone_datetime); ?>-<?php echo date("n月j日",$hakone_datetime+86400); ?>です</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->daytime_icon_image; ?>" alt="<?php echo $slides['spring']->daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['spring']->date)); ?></div>
+                        <div class="date"><?php echo date("n/j",$hakone_datetime); ?></div>
                     </div>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['spring']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['spring']->tomorrow_daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['spring']->date)+86400); ?></div>
+                        <div class="date"><?php echo date("n/j",$hakone_datetime+86400); ?></div>
                     </div>
                 </div>
             </div>
@@ -71,16 +72,17 @@ main image
         <!-- 画像03 -->
         <div class="boxPhoto photo03">
             <div class="boxInner">
-                <div class="desc cf">6割を高いか低いかを判断するのはユーザー様自身です。<br />絶対に晴れて欲しいおでかけやイベント等の計画の1つの指標にしてください。</div>
+                <div class="desc cf"><img src="images/information.png" alt="" />6割を高いか低いかを判断するのはユーザー様自身です。<br />絶対に晴れて欲しいおでかけやイベント等の計画の1つの指標にしてください。</div>
                 <div class="minWeather cf">
-                    <h4>札幌エリア晴れる予測の連休</h4>
+                    <?php $sapporo_datetime = strtotime($slides['area'][4]->date); ?>
+                    <h4>札幌エリアの天気を予測<br />2日連続で晴れる連休は<?php echo date("n月j日",$sapporo_datetime); ?>-<?php echo date("n月j日",$sapporo_datetime+86400); ?>です</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][4]->date)); ?></div>
+                        <div class="date"><?php echo date("n/j",$sapporo_datetime); ?></div>
                     </div>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->tomorrow_daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",strtotime($slides['area'][4]->date)+86400); ?></div>
+                        <div class="date"><?php echo date("n/j",$sapporo_datetime+86400); ?></div>
                     </div>
                 </div>
             </div>

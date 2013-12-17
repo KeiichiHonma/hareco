@@ -17,33 +17,9 @@ main image
     <!-- キャッチコピー/検索ボックス -->
     <div id="copy">
         <h2>エリアガイド</h2>
-        <div id="searchBox">
-            <div id="searchBoxInner">
-                <ul class="menuBox">
-                    <div>
-                        <?php
-                            $i = 0;
-                            $count = count($all_areas);
-                            $before_region_id = '';
-                            $end_dl = FALSE;
-                        ?>
-                        <?php foreach ($all_areas as $area) : ?>
-                        <?php
-                            if($before_region_id != $area->region_id){
-                                if($i != 0 || $i != $count) echo '</dl>';
-                                if($i == $count) $end_dl = TRUE;
-                                echo '<dl class="cf"><dt>'.$all_regions[$area->region_id]->region_name.'</dt>';
-                            }
-                            $before_region_id = $area->region_id;
-                        ?>
-                        <dd style="float:left;"><?php echo anchor('area/show/'.$area->id,$area->area_name); ?></dd>
-                        <?php if($end_dl) echo '</dl>'; ?>
-                        <?php $i++; ?>
-                        <?php endforeach; ?>
-                    </div>
-                </ul>
-
-            </div>
+        <h3>各エリアの天気予測から、晴れの日にお出かけ</h3>
+        <div class="topNavPc">
+<?php $this->load->view('layout/parts/area_navi'); ?>
         </div>
     </div>
     <div id="slider">
@@ -70,6 +46,7 @@ main image
     </div>
 </div>
 </div>
+
 <!--
 //////////////////////////////////////////////////////////////////////////////
 contents
@@ -77,6 +54,10 @@ contents
 -->
 <div id="contents">
     <div id ="contentsInner">
+        <!-- スマホ用ナビゲーション -->
+        <div class="topNavSp">
+<?php $this->load->view('layout/parts/area_navi'); ?>
+        </div>
         <div id="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>
         </div>

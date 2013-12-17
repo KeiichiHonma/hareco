@@ -35,12 +35,12 @@ contents
                 <tr class="title">
                     <th class="cell01">日付</th>
                     <td class="<?php echo $class_array[1]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[0]->day.get_day_of_the_week($week_futures[0]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[2]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[1]->day.get_day_of_the_week($week_futures[1]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[3]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[2]->day.get_day_of_the_week($week_futures[2]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[4]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[3]->day.get_day_of_the_week($week_futures[3]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[5]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[4]->day.get_day_of_the_week($week_futures[4]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[6]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[5]->day.get_day_of_the_week($week_futures[5]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[7]; ?>"><?php echo $week_futures[0]->month.'/'.$week_futures[6]->day.get_day_of_the_week($week_futures[6]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[2]; ?>"><?php echo $week_futures[1]->month.'/'.$week_futures[1]->day.get_day_of_the_week($week_futures[1]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[3]; ?>"><?php echo $week_futures[2]->month.'/'.$week_futures[2]->day.get_day_of_the_week($week_futures[2]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[4]; ?>"><?php echo $week_futures[3]->month.'/'.$week_futures[3]->day.get_day_of_the_week($week_futures[3]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[5]; ?>"><?php echo $week_futures[4]->month.'/'.$week_futures[4]->day.get_day_of_the_week($week_futures[4]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[6]; ?>"><?php echo $week_futures[5]->month.'/'.$week_futures[5]->day.get_day_of_the_week($week_futures[5]->day_of_the_week,FALSE,FALSE) ?></td>
+                    <td class="<?php echo $class_array[7]; ?>"><?php echo $week_futures[6]->month.'/'.$week_futures[6]->day.get_day_of_the_week($week_futures[6]->day_of_the_week,FALSE,FALSE) ?></td>
                 </tr>
                 <?php $count = count($week_futures); ?>
                 <tr>

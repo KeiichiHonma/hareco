@@ -17,18 +17,21 @@
 	top:0;
 }
 
-#ind #slider {
-	display:none;
+#ind #slideImage .boxPhoto {
+	width:100%;
+	height:200px;
+	overflow:hidden;
+	top:0;
 }
 
 #ind #slideImage .boxPhoto {
 	background-size:auto 100% !important;
 }
 
-#ind #slideImage .gradationLeft {
+#ind #slideImage .big_gradationLeft {
 	display:none;
 }
-#ind #slideImage .gradationRight {
+#ind #slideImage .big_gradationRight {
 	display:none;
 }
 
@@ -37,28 +40,40 @@
 	top:60px;
 }
 #ind #slideImage #copy h2 {
-	font-size:20px;
-	margin-bottom:16px;
+	color:#fff;
+	font-family:"Lucida Grande", "segoe UI", "ヒラギノ丸ゴ ProN W4","Hiragino Maru Gothic ProN",Meiryo, Arial, sans-serif;
+	font-size:27px;
+	text-shadow: 0px 3px 3px #333; 
+	margin-bottom:0px;
+	line-height:120%;
 }
 #ind #slideImage #copy h3 {
-	display:none;
+	color:#fff;
+	font-family:"Lucida Grande", "segoe UI", "ヒラギノ丸ゴ ProN W4","Hiragino Maru Gothic ProN",Meiryo, Arial, sans-serif;
+	font-size:12px;
+	text-shadow: 0px 3px 3px #333;
+	line-height:120%;
 }
-#ind #slideImage #searchBox {
+#ind #searchBox {
+    background-color: rgba(0, 0, 0, 0.8);
 	padding:6px;
-    width:282px;
+    width:266px;
+	border-radius: 5px;
+    -webkit-border-radius: 5px;  
+    -moz-border-radius: 5px;
 }
-#ind #slideImage #searchBox .focus{
+#ind #searchBox .focus{
 	width:260px;
 	padding:0 10px;
 	font-size:11px;
     border:none;
     margin-right:0;
 } 
-#ind #slideImage #searchBox .btnSearch {
+#ind #searchBox .btnSearch {
 	display:none;
 }
 
-#ind #slideImage #searchBox #datepicker { display:none; }
+#ind #searchBox #datepicker { display:none; }
 
 #ind #slideImage img.photo{
 	display:block;
@@ -85,26 +100,6 @@
         margin-right:0.5em;
     }
     #contentsInner .nextBtn { margin-right:0px; }
-
-    .spSearchMenu li {
-        font-size:14px;
-        padding: 7px;
-        color:#666666;
-        background:#f9f9f9;
-        border-bottom: 1px solid #eaeaea;
-    }
-    .spSearchMenu li.head {
-        font-weight: bold;
-    }
-    .spSearchMenu li.radio {
-        cursor:pointer;
-    }
-    .spSearchMenu li.checkbox {
-        cursor:pointer;
-    }
-    .spSearchMenu li label{
-        width:100%;
-    }
 
     #contentsInner #history { { width:100%; }
     

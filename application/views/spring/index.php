@@ -18,33 +18,9 @@ main image
     <!-- キャッチコピー/検索ボックス -->
     <div id="copy">
         <h2>温泉ガイド</h2>
-        <div id="searchBox">
-            <div id="searchBoxInner">
-                <ul class="menuBox">
-                    <div>
-                        <?php
-                            $i = 0;
-                            $count = count($all_springs);
-                            $before_spring_area_id = '';
-                            $end_dl = FALSE;
-                        ?>
-                        <?php foreach ($all_springs as $spring) : ?>
-                        <?php
-                            if($before_spring_area_id != $spring->spring_area_id){
-                                if($i != 0 || $i != $count) echo '</dl>';
-                                if($i == $count) $end_dl = TRUE;
-                                echo '<dl class="cf"><dt'.($spring->spring_area_id == 5 ? ' class="hakone"' : ' class="spring_area"') .'>'.$spring->spring_area_name.'</dt>';
-                            }
-                            $before_spring_area_id = $spring->spring_area_id;
-                        ?>
-                        <dd style="float:left;"><?php echo anchor('spring/show/'.$spring->id,$spring->spring_name); ?></dd>
-                        <?php if($end_dl) echo '</dl>'; ?>
-                        <?php $i++; ?>
-                        <?php endforeach; ?>
-                    </div>
-                </ul>
-
-            </div>
+        <h3>温泉地の天気予測から、晴れの日に温泉に行く</h3>
+        <div class="topNavPc">
+<?php $this->load->view('layout/parts/spring_navi'); ?>
         </div>
     </div>
     <div id="slider">
@@ -79,6 +55,10 @@ contents
 -->
 <div id="contents">
     <div id ="contentsInner">
+        <!-- スマホ用ナビゲーション -->
+        <div class="topNavSp">
+<?php $this->load->view('layout/parts/spring_navi'); ?>
+        </div>
         <div id="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>
         </div>
