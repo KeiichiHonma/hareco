@@ -74,19 +74,13 @@ $(function(){
             $(this).fadeTo("fast", 1.0);
         }
     });
-/*
-    $("a img, div.box").hover(function(){
-       $(this).fadeTo("fast", 0.7);
-    },function(){
-       $(this).fadeTo("fast", 1.0);
-    });
-*/
+
     /* IE8 background-size対策 */
     jQuery('#cloud,#header h1 a,#header h2, #header .navPc li a.ttl').css({backgroundSize: "cover"});
 });
 
 function s_confirm () {
-    if($(".focus").val() != '' || $(".focus").val() != "<?php echo $this->lang->line('search_box_default') ?>") $('#search').submit();
+    if($(".focus").val() != '' && $(".focus").val() != "<?php echo $this->lang->line('search_box_default') ?>") $('#search').submit();
 }
 </script>
 </head>
