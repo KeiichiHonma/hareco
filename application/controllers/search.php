@@ -34,8 +34,10 @@ class Search extends MY_Controller
     {
         $data = array();
 
-        if(!isset($_GET['keyword'])) show_404();
+        if(!isset($_GET['keyword']) || $_GET['keyword'] == '') show_404();
         $data['keyword'] = $_GET['keyword'];
+        $data['strim_keyword'] = char_count_strimwidth($_GET['keyword'],10);
+
         $data['date'] = '';
         $data_etc_string = '';
         $data_etc_url = '';
@@ -138,7 +140,7 @@ class Search extends MY_Controller
             $data['area_id'] = $area_id;
             $data['search_type'] = 'search';//sp
             $data['search_object_id'] = $area_id;//sp
-            $data['search_keyword'] = $data['keyword'];//sp
+            $data['search_keyword'] = $data['strim_keyword'];//sp
             
             //ここから表示画面の分岐
             if(!empty($data['date'])){//日付がある場合
@@ -157,7 +159,7 @@ class Search extends MY_Controller
                 $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
 
                 //共通タイトル
-                $this->weather_lib->getTitlesForDate($data,$data['keyword']);
+                $this->weather_lib->getTitlesForDate($data,$data['strim_keyword']);
 
                 //未来データ
                 $data['week_futures'] = $this->Future_model->getFuturesByAreaIdByDateForWeek($area_id,$data['date']);
@@ -180,13 +182,14 @@ class Search extends MY_Controller
                 $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
                 
                 //温泉
-                $data['plan_title'] = $data['keyword'].'-'.date("n月j日",$data['from_datetime']).'の温泉プラン';
+                $data['stop_line'] = 2;
+                $data['plan_title'] = $data['strim_keyword'].'-'.date("n月j日",$data['from_datetime']).'の温泉プラン';
                 $this->jalan_lib->makeSpringsPlansByAreaIdByDate($data,$area_id,$data['date']);
                 $data['use_image_type'] = 'hotel';//ホテル画像の方が映える
-                $data['stop_line'] = 2;
+                
             }else{//キーワードだけ
                 $show_page = 'show';
-                $data['recommend_futures_title'] = $data['keyword'].'の'.$this->lang->line('recommend_futures_title_default');
+                $data['recommend_futures_title'] = $data['strim_keyword'].'の'.$this->lang->line('recommend_futures_title_default');
                 //デフォルト
                 $orderExpression = "date ASC";
                 $page = 1;
@@ -198,7 +201,7 @@ class Search extends MY_Controller
                 $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
 
                 //じゃらんホテル
-                $data['hotel_title'] = '晴れの日に'.$data['keyword'].'近辺の温泉へ行く';
+                $data['hotel_title'] = '晴れの日に'.$data['strim_keyword'].'近辺の温泉へ行く';
                 $this->jalan_lib->makeSpringsHotelsByAreaId($data,$area_id);
                 $data['stop_line'] = 2;
             }
@@ -206,7 +209,7 @@ class Search extends MY_Controller
         }
         
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
-        $data['topicpaths'][] = array('/search?keyword='.urlencode($data['keyword']).$data_etc_url,$data['keyword'].$data_etc_string.$data['date']);
+        $data['topicpaths'][] = array('/search?keyword='.urlencode($data['keyword']).$data_etc_url,$data['strim_keyword'].$data_etc_string.$data['date']);
         
         //set header title
         $data['header_title'] = sprintf($this->lang->line('spring_header_title'), $data['keyword'].$data_etc_string.$data['date'], $this->config->item('website_name', 'tank_auth'));

@@ -101,7 +101,7 @@ contents
     <div id ="contentsInner">
 
         <div class="howtoBox cf">
-            <h3><span>ハレコの使い方</span></h3>
+            <h3 class="center_dot"><span>ハレコの使い方</span></h3>
             
             <div class="step step01">
                 <h4>1.お出かけ場所を決める</h4>

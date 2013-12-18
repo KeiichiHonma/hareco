@@ -30,6 +30,14 @@
 	width:95%;
 	margin-left:5px;
 }
+#breadcrumbInner span p.news{
+	display:block;
+    width:280px;
+	height:40px;
+	color:#fff;
+	font-weight:normal;
+	padding:0px 5px 0;
+}
 #header .navSp {
 	display:block;
 }

@@ -24,22 +24,40 @@ class Jalan_lib
 
     function makeSpringsHotelsByAreaId(&$data,$area_id){
         //温泉
-        $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id);
+        $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id,TRUE);
 
         //温泉地の数で挙動を変える。箱根エリアの温泉等
-        if(count($data['springs']) > 2){
-            //s_areaで
-            $s_area_hotelss = $this->getHotelsBySAreaId($data['springs'][0]->jalan_s_area);
-            if(!empty($s_area_hotelss)){
-                $data['s_area_hotels'] = array_chunk($s_area_hotelss,3);
-            }
-        }elseif(!empty($data['springs'])){
-            foreach ($data['springs'] as $spring){
-                //o_areaで取得
-                $o_area_hotels = $this->getHotelsByOAreaId($spring->jalan_o_area);
-                if(!empty($o_area_hotels)){
-                    $data['o_area_hotels'][$spring->id] = array_chunk($o_area_hotels,3);
+        if(!empty($data['springs'])){
+            if(count($data['springs']) == 1){
+                //指定日、s_areaで空いているプランを表示
+                $index = key($data['springs']);
+                $data['spring'] = $data['springs'][$index];
+                $s_area_hotelss = $this->getHotelsBySAreaId($data['springs'][$index]->jalan_s_area);
+                if(!empty($s_area_hotelss)){
+                    $data['s_area_hotels'] = array_chunk($s_area_hotelss,3);
                 }
+            }else{
+                //対応の温泉が2つ以上ある。ランダムに2つ取り出す
+                $data['stop_line'] = 1;//lineを1つで停止
+                $rand = array_rand($data['springs'],2);
+                //o_areaで取得
+                $o_area_hotels = $this->getHotelsByOAreaId($data['springs'][$rand[0]]->jalan_o_area);
+                if(!empty($o_area_hotels)){
+                    $data['o_area_hotels'][$data['springs'][$rand[0]]->id] = array_chunk($o_area_hotels,3);
+                }
+                $o_area_hotels = $this->getHotelsByOAreaId($data['springs'][$rand[1]]->jalan_o_area);
+                if(!empty($o_area_hotels)){
+                    $data['o_area_hotels'][$data['springs'][$rand[1]]->id] = array_chunk($o_area_hotels,3);
+                }
+/*
+                foreach ($data['springs'] as $spring){
+                    //o_areaで取得
+                    $o_area_hotels = $this->getHotelsByOAreaId($spring->jalan_o_area);
+                    if(!empty($o_area_hotels)){
+                        $data['o_area_hotels'][$spring->id] = array_chunk($o_area_hotels,3);
+                    }
+                }
+*/
             }
         }
     }
@@ -54,7 +72,7 @@ class Jalan_lib
 
     function makeSpringsPlansByAreaIdByDate(&$data,$area_id,$date){
         //温泉
-        $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id);
+        $data['springs'] = $this->ci->Spring_model->getSpringsOrderTodoufukenIdByAreaId($area_id,TRUE);
 
         /*
         jalan data
@@ -67,16 +85,37 @@ class Jalan_lib
         if(!empty($data['springs'])){
             if(count($data['springs']) == 1){
                 //指定日、s_areaで空いているプランを表示
-                $plans = $this->getStocksBySAreaIdBySequenceByDate($data['springs'][0]->jalan_s_area,$sequence,$jalan_date);
+                $index = key($data['springs']);
+                $data['spring'] = $data['springs'][$index];
+                $plans = $this->getStocksBySAreaIdBySequenceByDate($data['springs'][$index]->jalan_s_area,$sequence,$jalan_date);
                 if(!empty($plans)){
                     $data['plans'] = array_chunk($plans,3);
                 }
             }else{
                 //対応の温泉が2つ以上あるため、指定日、o_areaで空いているプランを表示
-                $o_area_plans = $this->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$sequence,$jalan_date);
+                $data['stop_line'] = 1;//lineを1つで停止
+                $rand = array_rand($data['springs'],2);
+                //o_areaで取得
+                $o_area_plans = $this->getStocksByOAreaIdBySequenceByDate($data['springs'][$rand[0]]->jalan_o_area,$sequence,$jalan_date);
                 if(!empty($o_area_plans)){
-                    $data['o_area_plans'][$spring->id] = array_chunk($o_area_plans,3);
+                    $data['o_area_plans'][$data['springs'][$rand[0]]->id] = array_chunk($o_area_plans,3);
                 }
+                
+                $o_area_plans = $this->getStocksByOAreaIdBySequenceByDate($data['springs'][$rand[1]]->jalan_o_area,$sequence,$jalan_date);
+                if(!empty($o_area_plans)){
+                    $data['o_area_plans'][$data['springs'][$rand[1]]->id] = array_chunk($o_area_plans,3);
+                }
+
+/*
+                foreach ($data['springs'] as $spring){
+                    //o_areaで取得
+                    $o_area_plans = $this->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$sequence,$jalan_date);
+                    if(!empty($o_area_plans)){
+                        //$data['o_area_plans'][$spring->id] = array_chunk($o_area_plans,3);
+                        $data['o_area_plans'][$spring->id] = $o_area_plans;
+                    }
+                }
+*/
             }
         }
     }

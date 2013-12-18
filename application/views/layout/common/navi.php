@@ -215,7 +215,7 @@ header
     <!-- パンクズ -->
     <div id="breadcrumb" class="scrolltop">
         <div id="breadcrumbInner" class="cf">
-            <?php if(isset($isIndex)) : ?><div class="undisp"><?php endif; ?>
+
             <?php if(isset($topicpaths)) : ?>
             <?php
                 $count = count($topicpaths);
@@ -230,7 +230,7 @@ header
                 <?php endif; ?>
                 <?php $i++; ?>
             <?php endforeach; ?>
-            <?php if(isset($isIndex)) : ?></div><?php endif; ?>
+
             <?php endif; ?>
     <?php if(!isset($isIndex)) : ?>
             <div id="searchBox">

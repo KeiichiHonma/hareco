@@ -88,7 +88,7 @@ class Spring_model extends CI_Model
         return array();
     }
 
-    function getSpringsOrderTodoufukenIdByAreaId($area_id)
+    function getSpringsOrderTodoufukenIdByAreaId($area_id,$flip = FALSE)
     {
         $query = $this->db->query("SELECT *,{$this->table_name}.id AS id
                                     FROM {$this->table_name}
@@ -99,7 +99,7 @@ class Spring_model extends CI_Model
         );
 
         //if ($query->num_rows() != 0) return $query->result();
-        if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $flip ? $query->result('flip') : $query->result();
         return array();
     }
 

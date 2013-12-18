@@ -221,7 +221,7 @@ ul.menuBox dd a:hover {
 }
 #breadcrumb #searchBox .focus{
 	/*width:150px;*/
-    width:300px;
+    width:320px;
 	height:16px;
 	padding:2px 5px;
 	margin-right:8px;
@@ -434,10 +434,7 @@ ul.menuBox dd a:hover {
 	right:0;	
 	background:#000;
 	width:auto;
-	padding-top:15px;
-	padding-left:15px;
-    padding-right:15px;
-	padding-bottom:15px;
+	padding:10px;
 	 border-radius: 10px;
     -webkit-border-radius: 10px;  
     -moz-border-radius: 10px;
@@ -977,7 +974,7 @@ ul.menuBox dd a:hover {
     margin-bottom:20px;
 }
 
-#contentsInner .howtoBox h3{
+#contentsInner h3.center_dot{
 	display:block;
 	background: url(../images/h3_howto.png) 0 8px repeat-x;
 	background-size:4px 1px;
@@ -985,7 +982,7 @@ ul.menuBox dd a:hover {
 	margin-right:30px;
 	margin-bottom:20px;
 }
-#contentsInner .howtoBox h3 span{
+#contentsInner h3.center_dot span{
 	margin: 0 auto;
 	background:#fff;
 	padding: 0 15px;
@@ -993,6 +990,7 @@ ul.menuBox dd a:hover {
 	font-weight:bold;
 	font-size:18px;
 }
+
 #contentsInner .howtoBox .step {
 	float:left;
 	width:190px;
