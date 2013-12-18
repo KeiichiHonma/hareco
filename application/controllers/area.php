@@ -45,7 +45,6 @@ class Area extends MY_Controller {
     {
         $data['csrf_token'] = $this->security->get_csrf_token_name();
         $data['csrf_hash'] = $this->security->get_csrf_hash();
-        //$this->load->view('search/google_geo_test', $data);
         $this->load->view('area/test', $data);
     }
 
@@ -85,7 +84,7 @@ class Area extends MY_Controller {
         $data['search_object_id'] = $area_id;//sp
 
         //未来データ/////////////////////////////////////////
-        $data['recommend_futures_title'] = $this->data['all_areas'][$area_id]->area_name.'のおでかけプランニング';
+        $data['recommend_futures_title'] = $this->data['all_areas'][$area_id]->area_name.'の'.$this->lang->line('recommend_futures_title_default');
         $orderExpression = "date ASC";
         $page = 1;
         $weather = 'shine';
@@ -140,7 +139,9 @@ class Area extends MY_Controller {
         $data['bodyId'] = 'area';
         $data['leisure_type'] = 'area';
         $data['area_id'] = $area_id;
-
+        $data['search_type'] = 'area';//sp
+        $data['search_object_id'] = $area_id;//sp
+        
         //dateページでは全て指定日表示なので、この段階で生成
         $data['target_date'] = $date;
         $data['from_ymd'] = explode('-',$date);
@@ -156,13 +157,9 @@ class Area extends MY_Controller {
         $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
         
         //共通タイトル
-        $data['history_title'] = $this->data['all_areas'][$area_id]->area_name.'-'.$data['display_date_nj'].'ヒストリー';
-        $data['plan_title'] = $this->data['all_areas'][$area_id]->area_name.'-'.$data['display_date_nj'].'の温泉プラン';
-        //$data['holiday_title'] = $this->data['all_areas'][$area_id]->area_name.'の休日プラン';
-        $data['recommend_futures_title'] = $this->data['all_areas'][$area_id]->area_name.'の休日プランニング';
-        $data['backnumber_title'] = $this->data['all_areas'][$area_id]->area_name.'-'.$data['display_date_nj'].'の過去データ';
-        
-        //未来データ
+        $this->weather_lib->getTitlesForDate($data,$this->data['all_areas'][$area_id]->area_name);
+
+       //未来データ
         $data['week_futures'] = $this->Future_model->getFuturesByAreaIdByDateForWeek($area_id,$date);
 
         if(empty($data['week_futures'])){
@@ -202,7 +199,6 @@ class Area extends MY_Controller {
             'css/future.css',
             'css/add.css',
             'css/add_sp.css',
-            'css/slimmenu.css',
             'css/calendar/default.css',
             'css/calendar/default.date.css',
             'css/calendar/default.time.css'
@@ -213,8 +209,7 @@ class Area extends MY_Controller {
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
             'js/future.js',
-            'js/Chart.js',
-            'js/jquery.slimmenu.min.js'
+            'js/Chart.js'
         )));
         $this->load->view('area/date', array_merge($this->data,$data));
     }

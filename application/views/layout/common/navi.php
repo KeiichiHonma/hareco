@@ -217,12 +217,18 @@ header
         <div id="breadcrumbInner" class="cf">
             <?php if(isset($isIndex)) : ?><div class="undisp"><?php endif; ?>
             <?php if(isset($topicpaths)) : ?>
+            <?php
+                $count = count($topicpaths);
+                $validate_number = $count >= 2 ? $count - 2 : 1;
+                $i = 1;
+            ?>
             <?php foreach ($topicpaths as $key => $topicpath) : ?>
                 <?php if(strcasecmp($key,'news') == 0): ?>
                 <span><p class="news"><?php echo $topicpath[1]; ?></p></span>
                 <?php else: ?>
-                <span><?php echo is_null($topicpath[0]) ? $topicpath[1] :  '<a href="'.$topicpath[0].'">'.$topicpath[1].'</a>'; ?></span>
+                <span<?php if($i <= $validate_number) echo ' class="undisp"'; ?>><?php echo is_null($topicpath[0]) ? $topicpath[1] :  '<a href="'.$topicpath[0].'">'.$topicpath[1].'</a>'; ?></span>
                 <?php endif; ?>
+                <?php $i++; ?>
             <?php endforeach; ?>
             <?php if(isset($isIndex)) : ?></div><?php endif; ?>
             <?php endif; ?>

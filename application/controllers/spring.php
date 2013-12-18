@@ -73,16 +73,18 @@ class Spring extends MY_Controller {
         $data['bodyId'] = 'area';
         //$data['leisure_type'] = 'area';
         $data['leisure_type'] = 'spring';
-        $data['springs'][] = $spring;
+        $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
-
+        $data['search_type'] = 'spring';//sp
+        $data['search_object_id'] = $spring_id;//sp
+        
         //じゃらんホテル
         $data['hotel_title'] = '晴れの日に'.$spring->spring_name.'へ行く';
         $this->jalan_lib->makeSpringHotelsByOAreaId($data,$spring_id,$spring->jalan_o_area);
         $data['stop_line'] = 3;
 
         //未来データ/////////////////////////////////////////
-        $data['recommend_futures_title'] = $spring->spring_name.'のおでかけプランニング';
+        $data['recommend_futures_title'] = $spring->spring_name.'の'.$this->lang->line('recommend_futures_title_default');
         $orderExpression = "date ASC";
         $page = 1;
         $weather = 'shine';
@@ -130,15 +132,16 @@ class Spring extends MY_Controller {
         }
         $data['bodyId'] = 'leisure';
         $data['leisure_type'] = 'spring';
-        $data['springs'][] = $spring;
+        $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
         $data['is_s_area'] = $is_s_area == 's_area' ? TRUE : FALSE;//s_area指定の場合は温泉地がわかっていない。箱根温泉ではあるが、強羅温泉かはわかっていない状態
-
+        $data['search_type'] = 'spring';//sp
+        $data['search_object_id'] = $spring_id;//sp
+        
         //ホテル詳細
         $data['hotel'] = $this->jalan_lib->getHotelByHotelId($jalan_h_id);
 
         //未来データ/////////////////////////////////////////
-        $data['recommend_futures_title'] = $data['hotel']['HotelName'].'に晴れでいける休日';
         $orderExpression = "date ASC";
         $page = 1;
         $weather = 'shine';
@@ -147,23 +150,7 @@ class Spring extends MY_Controller {
         $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = date("Y-m-d",strtotime("+1 month"));//1ヶ月後から
         $futuresData = $this->Future_model->getFutures('area', $spring->area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
-        //$data['futures'] = $futuresData['data'];
         $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
-        //future data
-/*
-        $holiday = 1;
-        $sequence = 2;
-        $orderExpression = "date ASC";
-        $page = 1;
-        $youbi = 5;//金曜日
-        
-        //休日+休前日限定で取得。土日はけっこう空いていない・・・
-        $holiday_futures_data = $this->Future_model->getFuturesByAreaIdByHolidayByYoubiBySequence($area_id, $orderExpression, $page, $holiday, $sequence, $youbi);
-        $data['holiday_futures'] = $holiday_futures_data['data'];
-*/
-
-        $data['plan_title'] = $data['hotel']['HotelName'].'の晴れでいける休日温泉プラン';
-        //$this->jalan_lib->makeHotelPlansByJalan_h_idByShineSequence($data,$jalan_h_id,$shine_sequence);
         $data['use_image_type'] = 'plan';
         $data['stop_line'] = 3;
 
@@ -185,6 +172,9 @@ class Spring extends MY_Controller {
         }
         
         if(!empty($plans))$data['plans'] = array_chunk($plans,3,TRUE);
+
+        //共通タイトル
+        $this->weather_lib->getTitles($data,$data['hotel']['HotelName']);
 
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
@@ -236,9 +226,11 @@ class Spring extends MY_Controller {
         }
         $data['bodyId'] = 'leisure';
         $data['leisure_type'] = 'spring';
-        $data['springs'][] = $spring;
+        $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
-
+        $data['search_type'] = 'spring';//sp
+        $data['search_object_id'] = $spring_id;//sp
+        
         //dateページでは全て指定日表示なので、この段階で生成
         $data['target_date'] = $date;
         $data['from_ymd'] = explode('-',$date);
@@ -247,6 +239,7 @@ class Spring extends MY_Controller {
         $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
         $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
         $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
+        $data['display_date_nj'] = date("n月j日",$data['from_datetime']);
         
         $data['to_datetime'] = $data['from_datetime'] + 86400;
         $data['to_display_date'] = date("n/j",$data['to_datetime']);
@@ -269,8 +262,8 @@ class Spring extends MY_Controller {
         $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = null;//指定なし。直近
         $futuresData = $this->Future_model->getFutures('area', $spring->area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
-        $data['etc_futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
-
+        $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
+        $data['stop_line'] = 2;
         /*
         jalan data
         */
@@ -279,6 +272,7 @@ class Spring extends MY_Controller {
         if($jalan_h_id > 0){
             //ホテル詳細
             $data['hotel'] = $this->jalan_lib->getHotelByHotelId($jalan_h_id);
+            $data['jalan_h_id'] = $jalan_h_id;
             //指定日空き室検索
             //$jalan_date = str_replace('-','',$date);
             $hotel_plans = $this->jalan_lib->getStocksByHotelIdBySequenceByDate($jalan_h_id,$shine_sequence,$data['jalan_date']);
@@ -316,17 +310,34 @@ class Spring extends MY_Controller {
         $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $spring->spring_name);
 
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/add.css','css/add_sp.css')));
-        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/scrolltop.js','js/Chart.js')));
-
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
+            'js/jquery.form.js',
+            'js/jquery.blockUI.js',
+            'js/jquery.easing.1.3.js',
+            'js/scrolltop.js',
+            'js/future.js',
+            'js/Chart.js'
+        )));
         if($jalan_h_id > 0){
-            $page = 'hotel_date';
+            $show_page = 'hotel_date';
             $page_title = $data['hotel']['HotelName'];//ホテル名
+            //共通タイトル
+            $this->weather_lib->getTitlesForDate($data,$data['hotel']['HotelName']);
         }else{
-            $page = 'spring_date';
-            $page_title = $data['springs'][0]->spring_name;//温泉名
+            $show_page = 'spring_date';
+            $page_title = $spring->spring_name;//温泉名
+            //共通タイトル
+            $this->weather_lib->getTitlesForDate($data,$spring->spring_name);
         }
-        $this->load->view("spring/$page", array_merge($this->data,$data));
+        $this->load->view("spring/$show_page", array_merge($this->data,$data));
     }
 
 /*
@@ -345,8 +356,10 @@ class Spring extends MY_Controller {
         }
         $data['bodyId'] = 'leisure';
         $data['leisure_type'] = 'spring';
-        $data['springs'][] = $spring;
+        $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
+        $data['search_type'] = 'spring';//sp
+        $data['search_object_id'] = $spring_id;//sp
         
         //planページでは全て指定日表示なので、この段階で生成
         $data['target_date'] = $date;
@@ -356,6 +369,7 @@ class Spring extends MY_Controller {
         $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
         $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
         $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
+        $data['display_date_nj'] = date("n月j日",$data['from_datetime']);
         
         $data['to_datetime'] = $data['from_datetime'] + 86400;
         $data['to_display_date'] = date("n/j",$data['to_datetime']);
@@ -382,28 +396,32 @@ class Spring extends MY_Controller {
             if($plan['PlanCD'] == $jalan_plan_cd){
                 $data['target_plan'] = $plan;
             }else{
-                $hotel_etc_plans[] = $plan;//指定日、同じホテルで空いているプランを表示
+                $hotel_plans[] = $plan;//指定日、同じホテルで空いているプランを表示
             }
         }
 
-        $data['hotel_etc_plans_title'] = $data['display_date'].'に晴れでいける他のプラン';
-        $data['hotel_etc_plans'] = array_chunk($hotel_etc_plans,3,TRUE);
-        $data['hotel_etc_plans_stop_line'] = 2;
-        
-        //指定日、同じエリアで空いているプランを表示
-        $data['o_area_etc_plans_title'] = $spring->spring_name.'に晴れでいける休日温泉プラン';
-        $o_area_etc_plans = $this->jalan_lib->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$shine_sequence,$jalan_date);
-        if(!empty($o_area_etc_plans)){
-            $data['o_area_etc_plans'] = array_chunk($o_area_etc_plans,3,TRUE);
-            $data['o_area_etc_plans_stop_line'] = 1;
+        if(isset($hotel_plans)){
+            $data['hotel_plans'] = array_chunk($hotel_plans,3,TRUE);
+            $data['hotel_plans_stop_line'] = 2;
         }
 
+        
+        //指定日、同じエリアで空いているプランを表示
+        $o_area_plans = $this->jalan_lib->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$shine_sequence,$jalan_date);
+        if(!empty($o_area_plans)){
+            $data['o_area_plans'] = array_chunk($o_area_plans,3,TRUE);
+            $data['o_area_plans_stop_line'] = 1;
+        }
+
+        //共通タイトル
+        $this->weather_lib->getTitlesForDate($data,$data['hotel']['HotelName']);
+        $data['hotel_plans_title'] = $data['display_date_nj'].'-'.$data['hotel']['HotelName'].'に晴れで行ける他のプラン';
+        $data['o_area_plans_title'] = $spring->spring_name.'に晴れで行ける温泉プラン';
 
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
         $data['topicpaths'][] = array('/spring/show/'.$spring->id,$spring->spring_name);
         $data['topicpaths'][] = array('/spring/hotel/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id,$data['hotel']['HotelName']);
-        //$data['topicpaths'][] = array('/spring/plan/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id.'/'.$date.'/'.$data['target_plan']['PlanCD'],$data['target_plan']['PlanName']);
         $data['topicpaths'][] = array('/spring/plan/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id.'/'.$date.'/'.$data['target_plan']['PlanCD'],'プラン詳細');
 
         //set header title

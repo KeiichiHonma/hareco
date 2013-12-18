@@ -9,6 +9,27 @@ class Weather_lib
         $this->ci =& get_instance();
         $this->ci->load->library('tool_lib');
     }
+    function getTitles(&$data,$word){
+        $data['weather_title'] = $word.'の天気予想';
+        $data['plan_title'] = $word.'の晴れで行ける温泉プラン';
+        $data['recommend_futures_title'] = $word.'の'.$this->ci->lang->line('recommend_futures_title_default');
+    }
+
+    function getTitlesForDate(&$data,$word){
+        $data['weather_title'] = $data['display_date_nj'].'-'.$word.'の天気予想';
+        $data['history_title'] = $data['display_date_nj'].'-'.$word.'の天気ヒストリー';
+        $data['plan_title'] = $data['display_date_nj'].'-'.$word.'の晴れで行ける温泉プラン';
+        $data['recommend_futures_title'] = $data['display_date_nj'].'-'.$word.'の'.$this->ci->lang->line('recommend_futures_title_default');
+        $data['backnumber_title'] = $data['display_date_nj'].'-'.$word.'の過去データ';
+    }
+
+    function getTitlesForPlan(&$data,$word){
+        $data['weather_title'] = $data['display_date_nj'].'-'.$word.'の天気予想';
+        $data['history_title'] = $data['display_date_nj'].'-'.$word.'の天気ヒストリー';
+        $data['plan_title'] = $data['display_date_nj'].'-'.$word.'の晴れで行ける温泉プラン';
+        $data['recommend_futures_title'] = $data['display_date_nj'].'-'.$word.'の'.$this->ci->lang->line('recommend_futures_title_default');
+        $data['backnumber_title'] = $data['display_date_nj'].'-'.$word.'の過去データ';
+    }
 
     function getFutureWeather($month_day_weathers,$year = 1967){
         $is_rains = array();

@@ -81,7 +81,7 @@ contents
                         }
                     ?>
                     <div class="box">
-                        <a href="<?php echo '/spring/plan/'.$springs[0]->id.'/'.$plan['Hotel']['HotelID'].'/'.$springs[0]->area_id.'/'.$target_date.'/'.$plan['PlanCD']; ?>">
+                        <a href="<?php echo '/spring/plan/'.$spring->id.'/'.$plan['Hotel']['HotelID'].'/'.$spring->area_id.'/'.$target_date.'/'.$plan['PlanCD']; ?>">
                         <div class="photo spot"><?php echo img(array('src' => $plan['PlanPicture'][$image_number]['PlanPictureURL'], 'alt' => $plan['PlanName'])); ?><div class="shadow">&nbsp;</div><span><?php echo $plan['PlanName']; ?></span></div>
                         <div class="text">
                             <div class="date"><?php echo $from_display_date.$from_youbi; ?>～<?php echo $to_display_date.$to_youbi; ?></div>

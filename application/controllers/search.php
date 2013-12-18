@@ -41,7 +41,7 @@ class Search extends MY_Controller
         $data_etc_url = '';
         $data['bodyId'] = 'area';
         $data['leisure_type'] = 'area';
-
+        
         //書式：2012/01/01
         if(isset($_GET['date']) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $_GET['date'])){
             $data['date'] = str_replace('/','-',$_GET['date']);
@@ -136,6 +136,9 @@ class Search extends MY_Controller
                 show_404();
             }
             $data['area_id'] = $area_id;
+            $data['search_type'] = 'search';//sp
+            $data['search_object_id'] = $area_id;//sp
+            $data['search_keyword'] = $data['keyword'];//sp
             
             //ここから表示画面の分岐
             if(!empty($data['date'])){//日付がある場合
@@ -154,11 +157,7 @@ class Search extends MY_Controller
                 $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
 
                 //共通タイトル
-                
-                $data['history_title'] = $data['keyword'].'-'.$data['display_date_nj'].'ヒストリー';
-                $data['plan_title'] = $data['keyword'].'-'.$data['display_date_nj'].'の温泉プラン';
-                $data['holiday_title'] = $data['keyword'].'の休日プラン';
-                $data['backnumber_title'] = $data['keyword'].'-'.$data['display_date_nj'].'の過去データ';
+                $this->weather_lib->getTitlesForDate($data,$data['keyword']);
 
                 //未来データ
                 $data['week_futures'] = $this->Future_model->getFuturesByAreaIdByDateForWeek($area_id,$data['date']);
@@ -178,7 +177,7 @@ class Search extends MY_Controller
                 $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
                 $start_date = null;//指定なし。直近
                 $futuresData = $this->Future_model->getFutures('area', $area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
-                $data['etc_futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
+                $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
                 
                 //温泉
                 $data['plan_title'] = $data['keyword'].'-'.date("n月j日",$data['from_datetime']).'の温泉プラン';
@@ -187,7 +186,7 @@ class Search extends MY_Controller
                 $data['stop_line'] = 2;
             }else{//キーワードだけ
                 $show_page = 'show';
-                $data['recommend_futures_title'] = $data['keyword'].'のおでかけプランニング';
+                $data['recommend_futures_title'] = $data['keyword'].'の'.$this->lang->line('recommend_futures_title_default');
                 //デフォルト
                 $orderExpression = "date ASC";
                 $page = 1;
@@ -237,11 +236,11 @@ class Search extends MY_Controller
         $this->load->view("search/keyword/$show_page", array_merge($this->data,$data));
     }
     
-    function weather($type="area",$object_id)
+    function weather($type="area",$object_id,$keyword = '')
     {
         $data['bodyId'] = 'area';
         $data['leisure_type'] = 'area';
-        $data['recommend_futures_title'] = 'おでかけプランニング';
+        $data['recommend_futures_title'] = $this->lang->line('recommend_futures_title_default');
 
         //未来データ/////////////////////////////////////////
         $orderExpression = "date ASC";
@@ -251,12 +250,19 @@ class Search extends MY_Controller
         $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = null;//指定なし。直近
         
-        if($type == 'area'){
+        if($type == 'search'){
             $data['area_id'] = $object_id;
-            $data['recommend_futures_title'] = $this->data['all_areas'][$object_id]->area_name.'のおでかけプランニング';
+            $data['recommend_futures_title'] = urldecode($keyword).'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif($type == 'area'){
+            $data['area_id'] = $object_id;
+            $data['recommend_futures_title'] = $this->data['all_areas'][$object_id]->area_name.'の'.$this->lang->line('recommend_futures_title_default');
         }elseif ($type == 'spring'){
             $data['area_id'] = $this->data['all_springs'][$object_id]->area_id;
-            $data['recommend_futures_title'] = $this->data['all_springs'][$object_id]->spring_name.'のおでかけプランニング';
+            $data['recommend_futures_title'] = $this->data['all_springs'][$object_id]->spring_name.'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif ($type == 'airport'){
+            $this->data['all_airports'] = $this->Airport_model->getAllAirports();
+            $data['area_id'] = $this->data['all_springs'][$object_id]->area_id;
+            $data['recommend_futures_title'] = $this->data['all_airports'][$object_id]->airport_name.'の'.$this->lang->line('recommend_futures_title_default');
         }
         $futuresData = $this->Future_model->getFutures('area', $object_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));

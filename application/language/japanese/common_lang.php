@@ -17,6 +17,7 @@ $lang['topicpath_airport'] = '空港';
 
 $lang['search_box_default'] = 'どちらにおでかけですか？　ex.箱根温泉、札幌、ニセコ';
 
+$lang['recommend_futures_title_default'] = 'おでかけプランニング';
 
 
 /* End of file setting_lang.php */

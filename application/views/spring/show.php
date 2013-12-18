@@ -11,14 +11,14 @@ main image
         <div class="gradationRight"></div>
         <div id="copy">
             <div id="innerBox">
-                <h2><?php echo $springs[0]->spring_name; ?></h2>
+                <h2><?php echo $spring->spring_name; ?></h2>
             </div>
         </div>
     </div>
 </div>
 <style type="text/css">
 <!--
-#mainImage.main { background-image:url(/images/spring/<?php echo $springs[0]->id; ?>_main.jpg) ; }
+#mainImage.main { background-image:url(/images/spring/<?php echo $spring->id; ?>_main.jpg) ; }
 -->
 </style>
 <!--
