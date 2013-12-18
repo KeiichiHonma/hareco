@@ -81,6 +81,8 @@ class Area extends MY_Controller {
         $data['bodyId'] = 'area';
         $data['leisure_type'] = 'area';
         $data['area_id'] = $area_id;
+        $data['search_type'] = 'area';//sp
+        $data['search_object_id'] = $area_id;//sp
 
         //未来データ/////////////////////////////////////////
         $data['recommend_futures_title'] = $this->data['all_areas'][$area_id]->area_name.'のおでかけプランニング';

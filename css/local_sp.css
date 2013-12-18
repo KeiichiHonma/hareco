@@ -285,6 +285,7 @@
 --------------------------------------------------*/
 #contents #guide h2{
 	line-height:120%;
+    font-size: 18px;
 }
 #contents #guide h2 em{
 	padding-left:0;
@@ -333,7 +334,7 @@
 }
 
 #btnSp #sidr-left {
-    width:200px;
+    width:100%;
 }
 #btnSp .navSp {
     display:block;
@@ -345,30 +346,36 @@
 #btnSp .navSp span a{
     font-size:16px;
 }
+#btnSp .navSp li.radio,
+#btnSp .navSp li.checkbox{
+    height:30px;
+    line-height: 30px;
+}
+
 #btnSp .navSp .ttl{
-    background:#505050;
+    color:#333333;
+    background:#f9f9f9;
     padding-left:10px;
     height:30px;
     line-height: 30px;
 }
 
-#btnSp .navSp .ttl:hover{
-    border-top: 1px solid #4d4d4d;
-}
-
 #btnSp .navSp .date input{
-    width:95%;
+    width:85%;
     background:#ffffff;
     margin:5px;
     color:#333333;
 }
 
 #btnSp .navSp .searchBtn{
-    cursor:pointer;
 	background:#ffbd1f;
 	padding-left:10px;
-	height:50px;
-	line-height: 50px;
+	height:30px;
+	line-height: 30px;
+}
+#btnSp .navSp .searchBtn input{
+    width:95%;
+    height:25px;
 }
 #btnSp .navSp .close{
     background:#505050;

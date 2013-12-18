@@ -237,10 +237,29 @@ class Search extends MY_Controller
         $this->load->view("search/keyword/$show_page", array_merge($this->data,$data));
     }
     
-    function weather()
+    function weather($type="area",$object_id)
     {
         $data['bodyId'] = 'area';
         $data['leisure_type'] = 'area';
+        $data['recommend_futures_title'] = 'おでかけプランニング';
+
+        //未来データ/////////////////////////////////////////
+        $orderExpression = "date ASC";
+        $page = 1;
+        $weather = 'shine';
+        $daytime_shine_sequenceExpression = ' >= 1';//指定なし
+        $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
+        $start_date = null;//指定なし。直近
+        
+        if($type == 'area'){
+            $data['area_id'] = $object_id;
+            $data['recommend_futures_title'] = $this->data['all_areas'][$object_id]->area_name.'のおでかけプランニング';
+        }elseif ($type == 'spring'){
+            $data['area_id'] = $this->data['all_springs'][$object_id]->area_id;
+            $data['recommend_futures_title'] = $this->data['all_springs'][$object_id]->spring_name.'のおでかけプランニング';
+        }
+        $futuresData = $this->Future_model->getFutures('area', $object_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
 
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_about'));
@@ -249,6 +268,22 @@ class Search extends MY_Controller
         $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('topicpath_about'), $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_about'));
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->lang->line('topicpath_about'));
+
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
+            'css/future.css',
+            'css/add.css',
+            'css/add_sp.css',
+            'css/calendar/default.css',
+            'css/calendar/default.date.css',
+            'css/calendar/default.time.css'
+        )));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(
+            'js/jquery.form.js',
+            'js/jquery.blockUI.js',
+            'js/jquery.easing.1.3.js',
+            'js/scrolltop.js',
+            'js/future.js'
+        )));
 
         $this->load->view('search/weather', array_merge($this->data,$data));
     }
