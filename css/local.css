@@ -189,7 +189,6 @@ ul.menuBox dd a:hover {
 	width:997px;
 	height:40px;
 	margin:0 auto;
-	border-left:1px solid #fff;
 }
 #breadcrumbInner span {
 	display:block;
@@ -197,6 +196,14 @@ ul.menuBox dd a:hover {
 	height:40px;
 	float:left;
 }
+#breadcrumbInner span.first {
+    border-left:1px solid #fff;
+}
+
+#breadcrumbInner span.news {
+    border-right:none;
+}
+
 #breadcrumbInner span a{
 	display:block;
 	height:40px;
@@ -208,12 +215,12 @@ ul.menuBox dd a:hover {
 #breadcrumbInner span a:hover{
 	background:url(../images/bg_breadcrumb_on.png) 0 0 repeat-x;
 }
-#breadcrumbInner span p.news{
+#breadcrumbInner span.news p{
 	display:block;
 	height:40px;
 	color:#fff;
 	font-weight:bold;
-	padding:10px 18px 0;
+	padding:10px 5px 0;
 }
 #breadcrumb #searchBox {
 	float:right;

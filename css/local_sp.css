@@ -30,9 +30,9 @@
 	width:95%;
 	margin-left:5px;
 }
-#breadcrumbInner span p.news{
+#breadcrumbInner span.news p{
 	display:block;
-    width:280px;
+    width:250px;
 	height:40px;
 	color:#fff;
 	font-weight:normal;

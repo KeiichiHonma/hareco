@@ -215,7 +215,7 @@ header
     <!-- パンクズ -->
     <div id="breadcrumb" class="scrolltop">
         <div id="breadcrumbInner" class="cf">
-
+            <?php if(isset($isIndex)) : ?><div class="undisp"><?php endif; ?>
             <?php if(isset($topicpaths)) : ?>
             <?php
                 $count = count($topicpaths);
@@ -224,13 +224,13 @@ header
             ?>
             <?php foreach ($topicpaths as $key => $topicpath) : ?>
                 <?php if(strcasecmp($key,'news') == 0): ?>
-                <span><p class="news"><?php echo $topicpath[1]; ?></p></span>
+                <span class="news"><p><?php echo $topicpath[1]; ?></p></span>
                 <?php else: ?>
                 <span<?php if($i <= $validate_number) echo ' class="undisp"'; ?>><?php echo is_null($topicpath[0]) ? $topicpath[1] :  '<a href="'.$topicpath[0].'">'.$topicpath[1].'</a>'; ?></span>
                 <?php endif; ?>
                 <?php $i++; ?>
             <?php endforeach; ?>
-
+            <?php if(isset($isIndex)) : ?></div><?php endif; ?>
             <?php endif; ?>
     <?php if(!isset($isIndex)) : ?>
             <div id="searchBox">
