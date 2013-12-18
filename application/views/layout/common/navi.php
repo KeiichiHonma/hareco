@@ -41,31 +41,31 @@ header
                         </dl>
                         <dl class="cf">
                         <dt class="hakone">首都圏</dt>
-                        <dd style="float:left;"><a href="/spring/show/16">箱根・湯河原（強羅温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/17">箱根・湯河原（箱根湯本温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/18">箱根・湯河原（仙石原温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/19">箱根・湯河原（姥子温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/20">箱根・湯河原（宮ノ下温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/21">箱根・湯河原（大平台温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/22">箱根・湯河原（塔之沢温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/23">箱根・湯河原（小涌谷温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/24">箱根・湯河原（芦ノ湖温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/25">箱根・湯河原（芦之湯温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/26">箱根・湯河原（二ノ平温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/27">箱根・湯河原（蛸川温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/28">箱根・湯河原（元箱根温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/29">箱根・湯河原（湯ノ花沢温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/30">箱根・湯河原（箱根底倉温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/31">箱根・湯河原（湯河原温泉）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/16">強羅温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/17">箱根湯本温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/18">仙石原温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/19">姥子温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/20">宮ノ下温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/21">大平台温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/22">塔之沢温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/23">小涌谷温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/24">芦ノ湖温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/25">芦之湯温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/26">二ノ平温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/27">蛸川温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/28">元箱根温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/29">湯ノ花沢温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/30">箱根底倉温泉（箱根・湯河原）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/31">湯河原温泉（箱根・湯河原）</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt class="spring_area">東海</dt>
                         <dd style="float:left;"><a href="/spring/show/32">熱海温泉</a></dd>
                         <dd style="float:left;"><a href="/spring/show/33">下呂温泉</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/34">奥飛騨温泉郷（新穂高温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/35">奥飛騨温泉郷（新平湯温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/36">奥飛騨温泉郷（福地温泉）</a></dd>
-                        <dd style="float:left;"><a href="/spring/show/37">奥飛騨温泉郷（平湯温泉）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/34">新穂高温泉（奥飛騨温泉郷）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/35">新平湯温泉（奥飛騨温泉郷）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/36">福地温泉（奥飛騨温泉郷）</a></dd>
+                        <dd style="float:left;"><a href="/spring/show/37">平湯温泉（奥飛騨温泉郷）</a></dd>
                         <dd style="float:left;"><a href="/spring/show/38">飛騨高山温泉</a></dd>
                         </dl>
                         <dl class="cf">

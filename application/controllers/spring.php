@@ -71,8 +71,6 @@ class Spring extends MY_Controller {
             show_404();
         }
         $data['bodyId'] = 'area';
-        //$data['leisure_type'] = 'area';
-        $data['leisure_type'] = 'spring';
         $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
         $data['search_type'] = 'spring';//sp
@@ -131,12 +129,12 @@ class Spring extends MY_Controller {
             show_404();
         }
         $data['bodyId'] = 'leisure';
-        $data['leisure_type'] = 'spring';
         $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
         $data['is_s_area'] = $is_s_area == 's_area' ? TRUE : FALSE;//s_area指定の場合は温泉地がわかっていない。箱根温泉ではあるが、強羅温泉かはわかっていない状態
         $data['search_type'] = 'spring';//sp
         $data['search_object_id'] = $spring_id;//sp
+        $data['jalan_h_id'] = $jalan_h_id;
         
         //ホテル詳細
         $data['hotel'] = $this->jalan_lib->getHotelByHotelId($jalan_h_id);
@@ -209,8 +207,8 @@ class Spring extends MY_Controller {
 
     function date($spring_id,$jalan_h_id,$area_id,$date)
     {
-        //書式：2012/01/01
-        if(preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
+        //書式：2012-01-01
+        if(0 === preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
         
         /*
         
@@ -225,7 +223,6 @@ class Spring extends MY_Controller {
             show_404();
         }
         $data['bodyId'] = 'leisure';
-        $data['leisure_type'] = 'spring';
         $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
         $data['search_type'] = 'spring';//sp
@@ -347,15 +344,16 @@ class Spring extends MY_Controller {
 */
     function plan($spring_id,$jalan_h_id,$area_id,$date,$jalan_plan_cd)
     {
-        //書式：2012/01/01
-        if(preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
+
+
+        //書式：2012-01-01
+        if(0 === preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
         
         $spring = $this->Spring_model->getSpringById($spring_id);
         if(empty($spring)){
             show_404();
         }
         $data['bodyId'] = 'leisure';
-        $data['leisure_type'] = 'spring';
         $data['spring'] = $spring;
         $data['area_id'] = $spring->area_id;
         $data['search_type'] = 'spring';//sp

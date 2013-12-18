@@ -313,7 +313,7 @@ contents
         <div id="backnumber" class="undisp">
             <h2><?php echo $backnumber_title; ?></h2>
             <table>
-                <tr><th rowspan="4">日</th><th colspan="2">気圧(hPa)</th><th rowspan="2" colspan="3">降水量(mm)</th><th rowspan="2" colspan="3">気温(℃)</th><th rowspan="2" colspan="2">湿度(％)</th><th rowspan="2" colspan="5">風向・風速(m/s)</th><th rowspan="4">日照<br>時間<br>(h)</th><th rowspan="2" colspan="2">雪(cm)</th><th rowspan="2" colspan="2">天気概況</th></tr>
+                <tr><th class="top" rowspan="4">日</th><th class="top" colspan="2">気圧(hPa)</th><th class="top" rowspan="2" colspan="3">降水量(mm)</th><th class="top" rowspan="2" colspan="3">気温(℃)</th><th class="top" rowspan="2" colspan="2">湿度(％)</th><th class="top" rowspan="2" colspan="5">風向・風速(m/s)</th><th class="top" rowspan="4">日照<br>時間<br>(h)</th><th class="top" rowspan="2" colspan="2">雪(cm)</th><th class="top" rowspan="2" colspan="2">天気概況</th></tr>
                 <tr><th>現地</th><th colspan="1">海面</th></tr>
                 <tr><th rowspan="2">平均</th><th rowspan="2">平均</th><th rowspan="2">合計</th><th colspan="2">最大</th><th rowspan="2">平均</th><th rowspan="2">最高</th><th rowspan="2">最低</th><th rowspan="2">平均</th><th rowspan="2">最小</th><th rowspan="2">平均<br>風速</th><th colspan="2">最大風速</th><th colspan="2">最大瞬間風速</th><th colspan="1">降雪</th><th colspan="1">最深積雪</th><th rowspan="2">昼<br>(06:00-18:00)</th><th rowspan="2">夜<br>(18:00-翌日06:00)</th></tr>
                 <tr><th>1時間</th><th>10分間</th><th>風速</th><th>風向</th><th>風速</th><th>風向</th><th>合計</th><th>値</th></tr>

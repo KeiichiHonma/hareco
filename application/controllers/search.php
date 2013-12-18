@@ -42,7 +42,6 @@ class Search extends MY_Controller
         $data_etc_string = '';
         $data_etc_url = '';
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'area';
         
         //書式：2012/01/01
         if(isset($_GET['date']) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $_GET['date'])){
@@ -61,7 +60,7 @@ class Search extends MY_Controller
                     $url = $data['date'] != '' ? 'area/date/'.$tagsData[0]->object_id.'/'.$data['date'] : 'area/show/'.$tagsData[0]->object_id;
                 break;
                 case 1://spring
-                    $url = $data['date'] != '' ? 'spring/date/'.$tagsData[0]->object_id.'/'.$data['date'] : 'spring/show/'.$tagsData[0]->object_id;
+                    $url = $data['date'] != '' ? 'spring/date/'.$tagsData[0]->object_id.'/0/'.$tagsData[0]->area_id.'/'.$data['date'] : 'spring/show/'.$tagsData[0]->object_id;
                 break;
                 case 3://airport
                     $url = $data['date'] != '' ? 'airport/date/'.$tagsData[0]->object_id.'/'.$data['date'] : 'airport/show/'.$tagsData[0]->object_id;
@@ -242,7 +241,6 @@ class Search extends MY_Controller
     function weather($type="area",$object_id,$keyword = '')
     {
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'area';
         $data['recommend_futures_title'] = $this->lang->line('recommend_futures_title_default');
 
         //未来データ/////////////////////////////////////////

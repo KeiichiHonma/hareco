@@ -29,6 +29,7 @@
 #breadcrumbInner {
 	width:95%;
 	margin-left:5px;
+    border-left:none;
 }
 #breadcrumbInner span.news p{
 	display:block;
@@ -86,6 +87,9 @@
 }
 #ind .topNavSp ul.menuBox dd{
 	padding:5px;
+}
+ul.menuBox dd.first{
+	clear:left;
 }
 #ind #mainImage {
 	text-align:center;

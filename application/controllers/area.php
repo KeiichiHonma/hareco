@@ -78,7 +78,6 @@ class Area extends MY_Controller {
             show_404();
         }
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'area';
         $data['area_id'] = $area_id;
         $data['search_type'] = 'area';//sp
         $data['search_object_id'] = $area_id;//sp
@@ -134,10 +133,9 @@ class Area extends MY_Controller {
         }
 
         //書式：2012/01/01
-        if(!preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
+        if(0 === preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
         
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'area';
         $data['area_id'] = $area_id;
         $data['search_type'] = 'area';//sp
         $data['search_object_id'] = $area_id;//sp

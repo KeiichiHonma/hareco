@@ -75,7 +75,6 @@ class Airport extends MY_Controller {
             show_404();
         }
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'airport';
         $data['airport_id'] = $airport_id;
         $data['area_id'] = $this->data['airport']->area_id;
         $data['search_type'] = 'airport';//sp
@@ -128,7 +127,7 @@ class Airport extends MY_Controller {
     function date($airport_id,$date)
     {
         //書式：2012/01/01
-        if(!preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
+        if(0 === preg_match('/^([1-9][0-9]{3})\-(0[1-9]{1}|1[0-2]{1})\-(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)) show_404();
 
         $this->data['airport'] = $this->Airport_model->getAirportById($airport_id);
         
@@ -137,7 +136,6 @@ class Airport extends MY_Controller {
         }
 
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'airport';
         $data['airport_id'] = $airport_id;
         $data['area_id'] = $this->data['airport']->area_id;
         $data['search_type'] = 'airport';//sp

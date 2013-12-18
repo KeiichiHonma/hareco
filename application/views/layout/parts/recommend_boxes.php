@@ -1,4 +1,4 @@
-        <?php if($bodyId == 'area'): ?><div class="nextBtn undisp"><a href="javascript:void(0)">次へ ></a></div><?php endif; ?>
+        <div class="nextBtn undisp"><a href="javascript:void(0)">次へ ></a></div>
         <div id="recommend">
             <div id="boxes">
             <!-- 下段(スマホは非表示) -->
@@ -7,16 +7,18 @@
                 <?php $i = 1; ?>
                 <?php foreach ($chunk as $future) : ?>
                     <div class="box<?php if($i >= 7) echo ' undisp'; ?>">
-                        <?php if($leisure_type == 'spring'): ?>
+                        <?php if($search_type == 'spring'): ?>
                             <?php if(isset($hotel['HotelID'])): ?>
                                 <a href="<?php echo '/spring/date/'.$spring->id.'/'.$hotel['HotelID'].'/'.$spring->area_id.'/'.$future->date; ?>">
                             <?php else: ?>
                                 <a href="<?php echo '/spring/date/'.$spring->id.'/0/'.$spring->area_id.'/'.$future->date; ?>">
                             <?php endif; ?>
-                        <?php elseif($leisure_type == 'airport'): ?>
-                        <a href="<?php echo '/airport/date/'.$future->area_id.'/'.$future->date; ?>">
+                        <?php elseif($search_type == 'airport'): ?>
+                            <a href="<?php echo '/airport/date/'.$airport->id.'/'.$future->date; ?>">
+                        <?php elseif($search_type == 'search'): ?>
+                            <a href="<?php echo '/search?keyword='.urlencode($search_keyword).'&date='.urlencode(str_replace('-','/',$future->date)); ?>">
                         <?php else: ?>
-                        <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
+                            <a href="<?php echo '/area/date/'.$future->area_id.'/'.$future->date; ?>">
                         <?php endif; ?>
                         
                         <div class="weather"><img src="/images/weather/icon/<?php echo $future->daytime_icon_image; ?>" alt="<?php echo $future->daytime; ?>" /></div>
@@ -33,4 +35,4 @@
             <?php endforeach; ?>
             </div>
         </div>
-        <?php if($bodyId == 'area'): ?><div class="nextBtn"><a href="javascript:void(0)">次へ ></a></div><?php endif; ?>
+        <div class="nextBtn"><a href="javascript:void(0)">次へ ></a></div>

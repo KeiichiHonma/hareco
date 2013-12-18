@@ -50,7 +50,11 @@
         <input type="hidden" name="page" id="page" value="" />
         <input type="hidden" name="type" value="area" />
         <input type="hidden" name="day_type" id="day_type" value="" />
-        <input type="hidden" name="area_id" value="<?php echo $area_id ?>" />
+        <input type="hidden" name="search_type" value="<?php echo $search_type; ?>" />
+        <input type="hidden" name="search_object_id" value="<?php echo $search_object_id; ?>" />
+        <input type="hidden" name="search_keyword" value="<?php echo isset($search_keyword) ? $search_keyword : ''; ?>" />
+        <input type="hidden" name="h_id" value="<?php echo isset($jalan_h_id) ? $jalan_h_id : 0; ?>" />
+        <input type="hidden" name="area_id" value="<?php echo $area_id; ?>" />
         </form>
 
     <script src="/js/lib/picker.js"></script>

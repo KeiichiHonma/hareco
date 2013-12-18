@@ -141,7 +141,7 @@ ul.menuBox dt, ul.menuBox dd{
 }
 
 ul.menuBox dt{
-	clear: left;
+    text-align:left;
 	width:100px;
 	color:#a3a3a3;
 }
@@ -189,15 +189,13 @@ ul.menuBox dd a:hover {
 	width:997px;
 	height:40px;
 	margin:0 auto;
+    border-left:1px solid #fff;
 }
 #breadcrumbInner span {
 	display:block;
 	border-right:1px solid #fff;
 	height:40px;
 	float:left;
-}
-#breadcrumbInner span.first {
-    border-left:1px solid #fff;
 }
 
 #breadcrumbInner span.news {

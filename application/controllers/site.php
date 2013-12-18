@@ -33,7 +33,6 @@ class Site extends MY_Controller
     function about()
     {
         $data['bodyId'] = 'area';
-        $data['leisure_type'] = 'area';
 
         //確率
         $this->load->model('Odds_model');

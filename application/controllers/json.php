@@ -38,11 +38,12 @@ class Json extends MY_Controller {
 
     function futures()
     {
-        //sleep(1);
         /*
         spの場合は画面表示6個になります。
         */
+        
         $sp = isset($_POST['sp']) && is_numeric($_POST['sp']) ? $_POST['sp'] : 1;
+        
         if($sp == 1){
             $date = $_POST['date'];
             $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
@@ -52,9 +53,23 @@ class Json extends MY_Controller {
             $daytime_shine_sequence = isset($_POST['sp_daytime_shine_sequence']) && is_numeric($_POST['sp_daytime_shine_sequence']) ? $_POST['sp_daytime_shine_sequence'] : 1;
             $weather = $_POST['sp_weather'];
         }
+        
         $type = isset($_POST['type']) && strlen($_POST['type']) > 0 ? ($sp == 1 ? $_POST['type'] : 'sp' ) : 'area';
-        $object_id = 1;
-        if(isset($_POST['area_id']) && is_numeric($_POST['area_id'])) $object_id = $_POST['area_id'];
+
+        $search_type = isset($_POST['search_type']) && strlen($_POST['search_type']) > 0 ? $_POST['search_type'] : 'area';
+
+        $search_object_id = 0;
+        if(isset($_POST['search_object_id']) && is_numeric($_POST['search_object_id'])) $search_object_id = $_POST['search_object_id'];
+
+        $search_keyword = isset($_POST['search_keyword']) && strlen($_POST['search_keyword']) > 0 ? $_POST['search_keyword'] : '';
+
+        $jalan_h_id = 0;
+        if(isset($_POST['h_id']) && is_numeric($_POST['h_id'])) $jalan_h_id = $_POST['h_id'];
+
+
+
+        $area_id = 1;
+        if(isset($_POST['area_id']) && is_numeric($_POST['area_id'])) $area_id = $_POST['area_id'];
 
         //書式：2012/01/01
         $start_date = null;//指定なし。直近
@@ -101,7 +116,7 @@ class Json extends MY_Controller {
         }
         $orderExpression = "date ASC";
         $daytime_shine_sequenceExpression = $daytime_shine_sequence > 1 ? ' = '.$daytime_shine_sequence : ' >= '.$daytime_shine_sequence;
-        $futuresData = $this->Future_model->getFutures($type, $object_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $futuresData = $this->Future_model->getFutures($type, $area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $html = 'error';
         if(!empty($futuresData['data'])){
             $html = '';
@@ -110,7 +125,21 @@ class Json extends MY_Controller {
                 $html .= '<div class="line'.($key >= $this->config->item('sp_display_number') ? ' undisp' : '').' cf">';
                 foreach ($futures as $future){
                         $html .= '<div class="box">';
-                            $html .= '<a href="/area/date/'.$future->area_id.'/'.$future->date.'">';
+                            //ここのURLのは画面によって変わります
+                            if($search_type == 'area'){
+                                $html .= '<a href="/area/date/'.$future->area_id.'/'.$future->date.'">';
+                            }elseif($search_type == 'spring'){
+                                if($jalan_h_id > 0){
+                                    $html .= '<a href="/spring/date/'.$search_object_id.'/'.$jalan_h_id.'/'.$future->area_id.'/'.$future->date.'">';
+                                }else{
+                                    $html .= '<a href="/spring/date/'.$search_object_id.'/0/'.$future->area_id.'/'.$future->date.'">';
+                                }
+                            }elseif($search_type == 'airport'){
+                                $html .= '<a href="/airport/date/'.$search_object_id.'/'.$future->date.'">';
+                            }elseif($search_type == 'search'){
+                                $html .= '<a href="/search?keyword='.urlencode($search_keyword).'&date='.urlencode(str_replace('-','/',$future->date)).'">';
+                            }
+
                             $html .= '<div class="weather"><img src="/images/weather/icon/'.$future->daytime_icon_image.'" alt="'. $future->daytime.'" /></div>';
                             
                             $html .= '<div class="info">';
