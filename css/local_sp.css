@@ -133,7 +133,7 @@
     margin-right:0;
 } 
 #ind #mainImage #searchBox .btnSearch {
-	display:none;
+	position:absolute;visibility:hidden;
 }
 
 #ind #mainImage #searchBox #datepicker { display:none; }
@@ -331,6 +331,10 @@
 	font-weight:bold;
 	font-size:16px;
 }
+
+#btnSp #sidr-left {
+    width:200px;
+}
 #btnSp .navSp {
     display:block;
 }
@@ -363,14 +367,14 @@
     cursor:pointer;
 	background:#ffbd1f;
 	padding-left:10px;
-	height:30px;
-	line-height: 30px;
+	height:50px;
+	line-height: 50px;
 }
 #btnSp .navSp .close{
     background:#505050;
     padding-left:10px;
-    height:30px;
-    line-height: 30px;
+	height:50px;
+	line-height: 50px;
 }
 /* city page
 --------------------------------------------------*/

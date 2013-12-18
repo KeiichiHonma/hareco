@@ -236,6 +236,22 @@ class Search extends MY_Controller
 
         $this->load->view("search/keyword/$show_page", array_merge($this->data,$data));
     }
+    
+    function weather()
+    {
+        $data['bodyId'] = 'area';
+        $data['leisure_type'] = 'area';
+
+        $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
+        $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_about'));
+
+        //set header title
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('topicpath_about'), $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_about'));
+        $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->lang->line('topicpath_about'));
+
+        $this->load->view('search/weather', array_merge($this->data,$data));
+    }
 }
 
 /* End of file search.php */

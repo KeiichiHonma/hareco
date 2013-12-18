@@ -117,6 +117,7 @@
   background: #ffffff;
   display: table-cell;
   vertical-align: middle;
+  z-index:5000;
 }
 @media (min-height: 26.5em) {
   .picker__box {

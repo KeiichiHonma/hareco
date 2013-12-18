@@ -46,16 +46,17 @@
                 <span><a id="left-menu" href="javascript:void(0)">▼検索条件を変更する</a></span>
                 <div id="sidr-left">
                     <ul>
+                    <li class="close">閉じる</li>
                     <li class="ttl">日付</li>
                     <li class="date"><input id="spDate" name="sp_date" type="text" placeholder="日付を選択してください" value="" /></li>
 
                     <li class="ttl">天気</li>
-                    <li><input type="radio" id="sp_weather9" name="sp_weather" value="9" />指定なし</li>
-                    <li><input type="radio" id="sp_weather0" name="sp_weather" value="0" checked />晴</li>
-                    <li><input type="radio" id="sp_weather1" name="sp_weather" value="1" />雨</li>
-                    <li><input type="radio" id="sp_weather2" name="sp_weather" value="2" />曇</li>
-                    <li><input type="radio" id="sp_weather3" name="sp_weather" value="3" />雷</li>
-                    <li><input type="radio" id="sp_weather4" name="sp_weather" value="4" />雪</li>
+                    <li class="radio"><input type="radio" id="sp_weather9" name="sp_weather" value="9" />指定なし</li>
+                    <li class="radio"><input type="radio" id="sp_weather0" name="sp_weather" value="0" checked />晴</li>
+                    <li class="radio"><input type="radio" id="sp_weather1" name="sp_weather" value="1" />雨</li>
+                    <li class="radio"><input type="radio" id="sp_weather2" name="sp_weather" value="2" />曇</li>
+                    <li class="radio"><input type="radio" id="sp_weather3" name="sp_weather" value="3" />雷</li>
+                    <li class="radio"><input type="radio" id="sp_weather4" name="sp_weather" value="4" />雪</li>
 
                     <li class="ttl">晴数</li>
                     <li class="radio"><input type="radio" id="sp_sequence1" name="sp_daytime_shine_sequence" value="1" checked />指定なし</li>
@@ -83,7 +84,7 @@
             <script>
                 $('#left-menu').sidr({
                   name: 'sidr-left',
-                  side: 'left'
+                  side: 'right'
                 });
             </script>
         </div>
