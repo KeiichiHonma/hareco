@@ -47,7 +47,7 @@
         </div>
         
         <input type="hidden" name="sp" id="sp" value="1" />
-        <input type="hidden" name="page" id="page" value="" />
+        <input type="hidden" name="page" id="page" value="1" />
         <input type="hidden" name="type" value="area" />
         <input type="hidden" name="day_type" id="day_type" value="" />
         <input type="hidden" name="search_type" value="<?php echo $search_type; ?>" />

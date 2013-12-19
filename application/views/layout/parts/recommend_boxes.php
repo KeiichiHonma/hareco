@@ -1,5 +1,5 @@
-        <div class="nextBtn undisp"><a href="javascript:void(0)">次へ ></a></div>
-        <div id="recommend">
+        
+        <div id="recommend" class="cf">
             <div id="boxes">
             <!-- 下段(スマホは非表示) -->
             <?php foreach ($futures as $key => $chunk) : ?>
@@ -34,5 +34,5 @@
                 </div>
             <?php endforeach; ?>
             </div>
+            <div class="beforeBtn"><a href="javascript:void(0)">< 前へ</a></div><div class="nextBtn"><a href="javascript:void(0)">次へ ></a></div>
         </div>
-        <div class="nextBtn"><a href="javascript:void(0)">次へ ></a></div>

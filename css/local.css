@@ -850,8 +850,9 @@ ul.menuBox dd a:hover {
 }
 
 #contentsInner #recommend {
-	margin-top:40px;
+	margin-top:0px;
 }
+
 #contentsInner #recommend .empty { color:#fc4747;}
 #contentsInner #recommend div.box { 
 	height:138px;
@@ -1054,7 +1055,7 @@ ul.menuBox dd a:hover {
 --------------------------------------------------*/
 #btnPc {
 	width:910px;
-	padding-bottom:20px;
+	padding-bottom:10px;
 	margin-bottom:10px;
 }
 

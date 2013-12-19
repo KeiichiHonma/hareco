@@ -57,7 +57,18 @@ $(function(){
     //チェックボックス
     var $dayArray = new Array();
     var $pageValue = 1;
-    
+
+    //クリックした要素にクラス割り当てる
+    $('.beforeBtn').live('click',function() {
+        var page = $("#page").val();
+        if(page < 2) return;
+        var w = $(window).width();if (w <= 640) $("#sp").val(0);
+        $pageValue = $pageValue - 1;
+        $("#page").val($pageValue);
+        $("#day_type").val($dayArray.join(","));
+        $("#futures_search").submit();
+    });
+
     //クリックした要素にクラス割り当てる
     $('.nextBtn').live('click',function() {
         var w = $(window).width();if (w <= 640) $("#sp").val(0);

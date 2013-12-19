@@ -246,6 +246,8 @@ ul.menuBox dd.first{
 	margin:0 auto;
 	padding:20px 12px;
 }
+#contentsInner .line { margin-bottom:0px;}
+
 #contentsInner div.box {
 	width:278px;
 	margin:20px auto;

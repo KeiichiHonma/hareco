@@ -195,10 +195,19 @@
     margin-bottom:0px;
 }
 
-#contentsInner .nextBtn {
+#contentsInner .nextBtn{
+    width:45%;
+    float:right;
+    /*margin-bottom:30px;*/
     margin-right:30px;
 }
-#contentsInner .nextBtn a{
+#contentsInner .beforeBtn{
+    width:45%;
+    float:left;
+    /*margin-bottom:30px;*/
+}
+#contentsInner .nextBtn a,
+#contentsInner .beforeBtn a{
     display:block;
     background:#e3e2e2;
     text-align:center;
@@ -215,7 +224,8 @@
     behavior: url(js/PIE.htc);
     margin-top:30px;
 }
-#contentsInner .nextBtn a:hover{
+#contentsInner .nextBtn a:hover,
+#contentsInner .beforeBtn a:hover{
     background:#d4d4d4;
 }
 

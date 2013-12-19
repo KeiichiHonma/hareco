@@ -99,7 +99,10 @@
         transform: scale(1.3);
         margin-right:0.5em;
     }
-    #contentsInner .nextBtn { margin-right:0px; }
+    #contentsInner .nextBtn {
+        margin-right:10px;
+    }
+    #contentsInner .beforeBtn { margin-right:0px; }
 
     #contentsInner #history { { width:100%; }
     

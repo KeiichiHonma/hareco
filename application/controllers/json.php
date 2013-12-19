@@ -82,7 +82,7 @@ class Json extends MY_Controller {
                 $start_date = str_replace('/','-',$date);
             }
         }
-        $page = isset($_POST['page']) && is_numeric($_POST['page']) ? $_POST['page'] : 1;
+        $page = isset($_POST['page']) && is_numeric($_POST['page']) && $_POST['page'] > 0 ? $_POST['page'] : 1;
         $wether_number = is_numeric($weather) ? $weather : 9;
         if($wether_number >= 0 && $wether_number <= 5  ){
             switch ($wether_number){
