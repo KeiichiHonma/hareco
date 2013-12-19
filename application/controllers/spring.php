@@ -96,6 +96,7 @@ class Spring extends MY_Controller {
         $data['topicpaths'][] = array('/spring/show/'.$spring_id,$spring->spring_name);
 
         //set header title
+        $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
         $data['header_title'] = sprintf($this->lang->line('common_header_title'), $spring->spring_name, $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $spring->spring_name);
@@ -179,6 +180,7 @@ class Spring extends MY_Controller {
         $data['topicpaths'][] = array('/spring/hotel/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id,$data['hotel']['HotelName']);
 
         //set header title
+        $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
         $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['hotel']['HotelName'].'['.$spring->spring_name.']', $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $data['hotel']['HotelName'].'['.$spring->spring_name.']');
@@ -336,6 +338,7 @@ class Spring extends MY_Controller {
             $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name);
             $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $spring->spring_name);
         }
+        $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
         $this->load->view("spring/$show_page", array_merge($this->data,$data));
     }
 
@@ -424,6 +427,7 @@ class Spring extends MY_Controller {
         $data['topicpaths'][] = array('/spring/plan/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id.'/'.$date.'/'.$data['target_plan']['PlanCD'],'プラン詳細');
 
         //set header title
+        $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
         $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['target_plan']['PlanName'].'に晴れで行く為', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
         $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'],  $data['target_plan']['PlanName']);

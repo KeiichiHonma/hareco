@@ -102,6 +102,7 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/show/'.$area_id,$this->data['all_areas'][$area_id]->area_name);
         
         //set header title
+        $data['og_image'] = site_url('/images/area/big/'.$area_id.'_big.jpg');
         $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->data['all_areas'][$area_id]->area_name.'エリア');
@@ -188,6 +189,7 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/show/'.$area_id.'/'.str_replace('/','-',$date),$date);
 
         //set header title
+        $data['og_image'] = site_url('/images/area/big/'.$area_id.'_big.jpg');
         $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $this->data['all_areas'][$area_id]->area_name.'エリア');

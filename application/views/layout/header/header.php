@@ -4,12 +4,20 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta name="copyright" content="&copy;hareco" />
+<meta property="og:title" content="<?php echo isset($header_title) ? $header_title : $this->lang->line('header_title'); ?>" />
+<meta property="og:type" content="<?php echo isset($isHome) ? 'website' : 'article' ?>" />
+<meta property="og:image" content="<?php echo isset($og_image) ? $og_image : 'http://hareco.jp/images/apple-touch-icon-precomposed.png' ?>" />
+<meta property="og:url" content="<?php echo site_url($this->uri->uri_string()); ?>" />
+<meta property="og:description" content="<?php echo isset($header_description) ? $header_description : $this->lang->line('header_description'); ?>" />
+
 <meta name="viewport" content="width=device-width,user-scalable=0" />
 <title><?php echo isset($header_title) ? $header_title : $this->lang->line('header_title'); ?></title>
 <meta name="keywords" content="<?php echo isset($header_keywords) ? $header_keywords : $this->lang->line('header_keywords'); ?>" />
 <meta name="description" content="<?php echo isset($header_description) ? $header_description : $this->lang->line('header_description'); ?>" />
-
-<?php echo link_tag("images/favicon.ico", "shortcut icon", "image/x-icon"); ?>
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+<link rel="icon" type="image/png" href="/images/favicon.png" />
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png" />
 
 <?php foreach($this->config->item('stylesheets') as $css) : ?>
 <?php echo link_tag($css) . "\n"; ?>
