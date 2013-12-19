@@ -27,7 +27,6 @@ class Area extends MY_Controller {
         $this->load->helper('image');
         $this->load->helper('weather');
         $this->lang->load('setting');
-        $this->lang->load('area');
         $this->load->library('tank_auth');
         $this->load->model('Region_model');
         $this->load->model('Area_model');
@@ -59,9 +58,9 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('area_header_title'), $this->lang->line('topicpath_area'), $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->lang->line('topicpath_area'));
-        $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->lang->line('topicpath_area'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各エリア', $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_area'));
+        $data['header_description'] = sprintf($this->lang->line('common_header_description'), '各エリア');
 
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
@@ -103,9 +102,9 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/show/'.$area_id,$this->data['all_areas'][$area_id]->area_name);
         
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('area_header_title'), $this->data['all_areas'][$area_id]->area_name, $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
-        $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->data['all_areas'][$area_id]->area_name);
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
+        $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->data['all_areas'][$area_id]->area_name.'エリア');
         
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
             'css/future.css',
@@ -189,9 +188,9 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/show/'.$area_id.'/'.str_replace('/','-',$date),$date);
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('area_header_title'), $this->data['all_areas'][$area_id]->area_name, $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
-        $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->data['all_areas'][$area_id]->area_name);
+        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
+        $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $this->data['all_areas'][$area_id]->area_name.'エリア');
         
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
             'css/future.css',
@@ -221,8 +220,6 @@ class Area extends MY_Controller {
         */
         $holiday_sequence = 2;
         $shine_sequence = 2;
-        //$holiday_futures = $this->Future_model->getFuturesGoupByAreaByHolidaySequence($holiday_sequence,$shine_sequence);
-        //$data['holiday_futures'] = array_chunk($holiday_futures,3);
         
         $data['holiday_futures'] = $this->Future_model->getFuturesGoupByAreaByHolidaySequence($holiday_sequence,$shine_sequence);
 
@@ -231,9 +228,9 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/holiday',$this->lang->line('holiday_title'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('area_header_title'), $this->lang->line('holiday_title'), $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('area_header_keywords'), $this->lang->line('holiday_title'));
-        $data['header_description'] = sprintf($this->lang->line('area_header_description'), $this->lang->line('holiday_title'));
+        $data['header_title'] = '各エリアの'.$this->lang->line('holiday_title').'を予想｜未来の天気なら'.$this->config->item('website_name', 'tank_auth');
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), '連休');
+        $data['header_description'] = $this->lang->line('holiday_title').'にでかけるならハレコ。世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」';
 
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/scrolltop.js')));
         $this->load->view('area/holiday', array_merge($this->data,$data));

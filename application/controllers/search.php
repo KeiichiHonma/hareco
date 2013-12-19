@@ -185,7 +185,10 @@ class Search extends MY_Controller
                 $data['plan_title'] = $data['strim_keyword'].'-'.date("n月j日",$data['from_datetime']).'の温泉プラン';
                 $this->jalan_lib->makeSpringsPlansByAreaIdByDate($data,$area_id,$data['date']);
                 $data['use_image_type'] = 'hotel';//ホテル画像の方が映える
-                
+                //set header title
+                $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['keyword'], $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+                $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $data['keyword']);
+                $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $data['keyword']);
             }else{//キーワードだけ
                 $show_page = 'show';
                 $data['recommend_futures_title'] = $data['strim_keyword'].'の'.$this->lang->line('recommend_futures_title_default');
@@ -203,18 +206,17 @@ class Search extends MY_Controller
                 $data['hotel_title'] = '晴れの日に'.$data['strim_keyword'].'近辺の温泉へ行く';
                 $this->jalan_lib->makeSpringsHotelsByAreaId($data,$area_id);
                 $data['stop_line'] = 2;
+                //set header title
+                $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['keyword'], $this->config->item('website_name', 'tank_auth'));
+                $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $data['keyword']);
+                $data['header_description'] = sprintf($this->lang->line('common_header_description'), $data['keyword']);
             }
 
         }
         
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/search?keyword='.urlencode($data['keyword']).$data_etc_url,$data['strim_keyword'].$data_etc_string.$data['date']);
-        
-        //set header title
-        $data['header_title'] = sprintf($this->lang->line('spring_header_title'), $data['keyword'].$data_etc_string.$data['date'], $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('spring_header_keywords'), $data['keyword'].$data_etc_string.$data['date']);
-        $data['header_description'] = sprintf($this->lang->line('spring_header_description'), $data['keyword'].$data_etc_string.$data['date']);
-        
+
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
             'css/future.css',
             'css/add.css',
@@ -272,9 +274,9 @@ class Search extends MY_Controller
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_about'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('topicpath_about'), $this->config->item('website_name', 'tank_auth'));
-        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_about'));
-        $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->lang->line('topicpath_about'));
+        $data['header_title'] = '天気検索｜未来の天気なら'.$this->config->item('website_name', 'tank_auth');
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), '天気検索');
+        $data['header_description'] = '天気を検索して晴れの日にでかけるならハレコ。世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」';
 
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array(
             'css/future.css',

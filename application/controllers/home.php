@@ -78,7 +78,7 @@ class Home extends MY_Controller
         $start_date = null;//指定なし。直近
         $futuresData = $this->Future_model->getFutures('index', null, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $data['futures'] = $futuresData['data'];
-        
+
         //news
         $data['topicpaths']['news'] = array('#','2013/12/24 世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」をリリースしました！ ');
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css')));
