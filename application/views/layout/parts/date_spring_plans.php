@@ -1,5 +1,5 @@
-        <div id="guide">
-            <div id="leisure">
+        <div class="guide">
+            <div class="leisure">
         <?php if(!empty($hotel_plans)) : ?>
             <?php $image_number = 9; ?>
             <!-- 下段(スマホは非表示) -->

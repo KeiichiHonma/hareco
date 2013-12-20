@@ -97,7 +97,7 @@ contents
             </table>
         </div>
 
-        <div id="guide2">
+        <div class="guide">
             <h2><?php echo $history_title; ?></h2>
             <div class="line cf">
                 <div class="history_box">

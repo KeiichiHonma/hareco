@@ -33,5 +33,4 @@ contents
     </div>
 </div>
 <?php $this->load->view('layout/footer/footer'); ?>
-
 </html>

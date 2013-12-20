@@ -59,7 +59,7 @@ contents
         <div class="topNavSp">
 <?php $this->load->view('layout/parts/spring_navi'); ?>
         </div>
-        <div id="guide">
+        <div class="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>
         </div>
     </div>

@@ -193,7 +193,7 @@ contents
             </table>
         </div>
 
-        <div id="guide">
+        <div class="guide">
 
             <h2>おでかけチャンス！<?php echo $this->lang->line('holiday_title'); ?></em></h2>
             <?php foreach ($million_city_holiday_futures as $key => $chunk) : ?>

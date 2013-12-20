@@ -1,4 +1,4 @@
-    <div id="guide">
+    <div class="guide">
         <h2><?php echo $recommend_futures_title; ?></h2>
         <?php echo form_open('/json/futures','method="post" id="futures_search" class="futures_search"'); ?>
         <div id="btnPc">

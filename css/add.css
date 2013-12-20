@@ -237,7 +237,7 @@
     position:relative;
     width:300px;
     height:300px;
-    margin-right:20px;
+    margin-right:18px;
     float:left;
 }
 
@@ -246,7 +246,7 @@
 .chart {
     position: relative;
     float: left; 
-    margin-right: 20px;
+    margin-right: 18px;
 }
 .chart .count {
     position: absolute;

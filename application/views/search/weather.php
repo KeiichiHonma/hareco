@@ -8,7 +8,7 @@ contents
 <div id="contents">
     <div id ="contentsInner">
 
-    <div id="guide">
+    <div class="guide">
         <div id="btnSp">
         <?php if($bodyId == 'area'): ?>
         <h2><?php echo $recommend_futures_title; ?></h2>

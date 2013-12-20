@@ -712,7 +712,7 @@ ul.menuBox dd a:hover {
 	position:relative;
 	width:300px;
 	height:192px;
-	margin-right:20px;
+	margin-right:18px;
 	float:left;
 	background:#fff;
 	-moz-box-shadow: 0 3px 5px #ccc;
@@ -725,8 +725,8 @@ ul.menuBox dd a:hover {
     background:url(../images/bg_box.gif) 0 0 repeat;
     background-size:20px 20px;
 }
-#contentsInner #guide div.box { height:192px;}
-#contentsInner #leisure div.box { height:265px;}
+#contentsInner .guide div.box { height:192px;}
+#contentsInner .leisure div.box { height:265px;}
 #contentsInner #outing div.box { height:160px;}
 
 #contentsInner div.box a{
@@ -777,8 +777,8 @@ ul.menuBox dd a:hover {
 	line-height:140%;
 	text-align:right;
 }
-#contentsInner #guide div.box .photo span{font-size:24px;}
-#contentsInner #leisure div.box .photo span{font-size:18px;}
+#contentsInner .guide div.box .photo span{font-size:24px;}
+#contentsInner .leisure div.box .photo span{font-size:18px;}
 
 #contentsInner div.box .category {
     position:absolute;
@@ -811,8 +811,8 @@ ul.menuBox dd a:hover {
     position:absolute;
     z-index:100;
 }
-#contentsInner #guide div.box .text { top:142px;left:74px; }
-#contentsInner #leisure div.box .text{ top:165px; left:10px; }
+#contentsInner .guide div.box .text { top:142px;left:74px; }
+#contentsInner .leisure div.box .text{ top:165px; left:10px; }
 
 #contentsInner div.box .text p{
     margin-bottom:8px;
@@ -845,7 +845,7 @@ ul.menuBox dd a:hover {
     padding:3px 10px;
     font-size:11px; 
 }
-#contentsInner #leisure {
+#contentsInner .leisure {
 	margin-top:40px;
 }
 
@@ -932,7 +932,7 @@ ul.menuBox dd a:hover {
 
 /* top page
 --------------------------------------------------*/
-#ind #contents #guide h2{
+#ind #contents .guide h2{
 	color:#000;
 	font-size:14px;
 	font-weight:bold;
@@ -943,9 +943,9 @@ ul.menuBox dd a:hover {
 	margin-bottom:22px;
 }
 
-#ind .win.ie8 #contents #guide h2{ background:url(../images/icon_h2_guid_ie8.png) 0 2px no-repeat; }
+#ind .win.ie8 #contents .guide h2{ background:url(../images/icon_h2_guid_ie8.png) 0 2px no-repeat; }
 
-#contents #guide h2 em{
+#contents .guide h2 em{
 	font-style:normal;
 	padding-left:8px;
 	font-size:11px;
@@ -1292,13 +1292,13 @@ ul.menuBox dd a:hover {
 }
 
 
-#leisure .btnBooking {
+.leisure .btnBooking {
 	display:block;
 	width:270px;
 	height:47px;
 	margin: 30px auto 0;
 }
-#leisure .btnBooking img{
+.leisure .btnBooking img{
 	display:block;
 	width:270px;
 	height:47px;

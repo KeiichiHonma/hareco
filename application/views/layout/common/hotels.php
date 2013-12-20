@@ -1,5 +1,5 @@
-
-        <div id="leisure">
+    <div class="guide">
+        <div class="leisure">
         <?php if(!empty($s_area_hotels)) : ?>
             <h2><?php echo $hotel_title; ?></h2>
             <?php foreach ($s_area_hotels as $key => $chunk) : ?>
@@ -38,9 +38,10 @@
                                 </a>
                             </div>
                         <?php endforeach; ?>
+                        </div>
                     <?php endforeach; ?>
-                    </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         <?php endif; ?>
         </div>
+    </div>

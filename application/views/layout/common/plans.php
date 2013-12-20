@@ -1,6 +1,6 @@
     <?php if(!empty($springs)) : ?>
-        <div id="guide">
-            <div id="leisure">
+        <div class="guide">
+            <div class="leisure">
         <?php if(!empty($plans)) : ?>
             <!-- 下段(スマホは非表示) -->
             <h2><?php echo $plan_title; ?></h2>

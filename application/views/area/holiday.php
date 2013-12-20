@@ -9,7 +9,7 @@ contents
 <div id="contents">
     <div id ="contentsInner">
 
-        <div id="guide">
+        <div class="guide">
             <?php
                 $i = 0;
                 $count = count($all_areas);

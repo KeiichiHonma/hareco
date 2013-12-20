@@ -253,32 +253,32 @@ ul.menuBox dd.first{
 	margin:20px auto;
 	float:none;
 }
-#contentsInner #guide div.box .photo img{
+#contentsInner .guide div.box .photo img{
 	width:278px;
 	height:125px;
 }
 
-#contentsInner #guide div.box .photo .shadow{
+#contentsInner .guide div.box .photo .shadow{
 	width:278px;
 	height:125px;
 }
 
-#contentsInner #guide div.box .icon { top:100px; }
-#contentsInner #guide div.box .text { top:130px; }
+#contentsInner .guide div.box .icon { top:100px; }
+#contentsInner .guide div.box .text { top:130px; }
 
 
 
-#contentsInner #leisure div.box .photo img{
+#contentsInner .leisure div.box .photo img{
 	width:278px;
 	height:148px;
 }
 
-#contentsInner #leisure div.box .photo .shadow{
+#contentsInner .leisure div.box .photo .shadow{
 	width:278px;
 	height:148px;
 	margin-top:-139px;
 }
-#contentsInner #leisure div.box .text { top:165px; }
+#contentsInner .leisure div.box .text { top:165px; }
 
 #contentsInner #outing div.box  {
 	height:125px;
@@ -305,11 +305,11 @@ ul.menuBox dd.first{
 
 /* top
 --------------------------------------------------*/
-#contents #guide h2{
+#contents .guide h2{
 	line-height:120%;
     font-size: 20px;
 }
-#contents #guide h2 em{
+#contents .guide h2 em{
 	padding-left:0;
 	display:block;
 }
@@ -431,7 +431,7 @@ ul.menuBox dd.first{
 
 /* leisure
 ------------------------------------------------------------------*/
-#leisure #contents h2 { margin-top:0px;}
+.leisure #contents h2 { margin-top:0px;}
 #boxLeisure {
     width:98%;
     margin: 0 auto 30px;

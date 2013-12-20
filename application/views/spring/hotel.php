@@ -44,8 +44,8 @@ contents
             </div>
         </div>
 
-        <div id="guide">
-            <div id="leisure">
+        <div class="guide">
+            <div class="leisure">
         <?php if(!empty($plans)) : ?>
             <?php $image_number = 9; ?>
             <!-- 下段(スマホは非表示) -->
