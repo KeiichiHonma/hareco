@@ -42,7 +42,7 @@ class Site extends MY_Controller
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_about'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('topicpath_about'), $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->lang->line('topicpath_about'), $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_about'));
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->lang->line('topicpath_about'));
 
@@ -56,7 +56,7 @@ class Site extends MY_Controller
         $data['header_title'] = sprintf('%s [%s]', $this->lang->line('common_title_404_error'), $this->lang->line('header_title'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '404 error', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '404 error', $this->lang->line('header_website_name'));
 
         $this->load->view('site/error_404', array_merge($this->data,$data));
     }

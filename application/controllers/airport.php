@@ -53,7 +53,7 @@ class Airport extends MY_Controller {
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/airport/',$this->lang->line('topicpath_airport'));
 
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各空港', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各空港', $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_airport'));
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), '各空港');
 
@@ -101,7 +101,7 @@ class Airport extends MY_Controller {
         
         //set header title
         $data['og_image'] = site_url('/images/airport/big/airport1.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['airport']->airport_name, $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['airport']->airport_name, $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['airport']->airport_name);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->data['airport']->airport_name);
         
@@ -191,7 +191,7 @@ class Airport extends MY_Controller {
 
         //set header title
         $data['og_image'] = site_url('/images/airport/big/airport2.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['airport']->airport_name, $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['airport']->airport_name, $data['display_date'], $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['airport']->airport_name);
         $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $this->data['airport']->airport_name);
 

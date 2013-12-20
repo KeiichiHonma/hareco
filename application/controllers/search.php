@@ -186,7 +186,7 @@ class Search extends MY_Controller
                 $this->jalan_lib->makeSpringsPlansByAreaIdByDate($data,$area_id,$data['date']);
                 $data['use_image_type'] = 'hotel';//ホテル画像の方が映える
                 //set header title
-                $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['keyword'], $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+                $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['keyword'], $data['display_date'], $this->lang->line('header_website_name'));
                 $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $data['keyword']);
                 $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $data['keyword']);
             }else{//キーワードだけ
@@ -207,7 +207,7 @@ class Search extends MY_Controller
                 $this->jalan_lib->makeSpringsHotelsByAreaId($data,$area_id);
                 $data['stop_line'] = 2;
                 //set header title
-                $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['keyword'], $this->config->item('website_name', 'tank_auth'));
+                $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['keyword'], $this->lang->line('header_website_name'));
                 $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $data['keyword']);
                 $data['header_description'] = sprintf($this->lang->line('common_header_description'), $data['keyword']);
             }
@@ -274,7 +274,7 @@ class Search extends MY_Controller
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_about'));
 
         //set header title
-        $data['header_title'] = '天気検索｜未来の天気なら'.$this->config->item('website_name', 'tank_auth');
+        $data['header_title'] = '天気検索｜未来の天気なら'.$this->lang->line('header_website_name');
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), '天気検索');
         $data['header_description'] = '天気を検索して晴れの日にでかけるならハレコ。世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」';
 

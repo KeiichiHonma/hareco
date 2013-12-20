@@ -58,7 +58,7 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
 
         //set header title
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各エリア', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各エリア', $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_area'));
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), '各エリア');
 
@@ -103,7 +103,7 @@ class Area extends MY_Controller {
         
         //set header title
         $data['og_image'] = site_url('/images/area/big/'.$area_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $this->data['all_areas'][$area_id]->area_name.'エリア');
         
@@ -190,7 +190,7 @@ class Area extends MY_Controller {
 
         //set header title
         $data['og_image'] = site_url('/images/area/big/'.$area_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $this->data['all_areas'][$area_id]->area_name.'エリア', $data['display_date'], $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->data['all_areas'][$area_id]->area_name);
         $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $this->data['all_areas'][$area_id]->area_name.'エリア');
         
@@ -230,7 +230,7 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/area/holiday',$this->lang->line('holiday_title'));
 
         //set header title
-        $data['header_title'] = '各エリアの'.$this->lang->line('holiday_title').'を予想｜未来の天気なら'.$this->config->item('website_name', 'tank_auth');
+        $data['header_title'] = '各エリアの'.$this->lang->line('holiday_title').'を予想｜未来の天気なら'.$this->lang->line('header_website_name');
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), '連休');
         $data['header_description'] = $this->lang->line('holiday_title').'にでかけるならハレコ。世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」';
 

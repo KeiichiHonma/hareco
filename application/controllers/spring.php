@@ -54,7 +54,7 @@ class Spring extends MY_Controller {
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
 
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '温泉地', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '温泉地', $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_spring'));
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), '温泉地');
 
@@ -97,7 +97,7 @@ class Spring extends MY_Controller {
 
         //set header title
         $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $spring->spring_name, $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $spring->spring_name, $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $spring->spring_name);
         
@@ -181,7 +181,7 @@ class Spring extends MY_Controller {
 
         //set header title
         $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['hotel']['HotelName'].'['.$spring->spring_name.']', $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), $data['hotel']['HotelName'].'['.$spring->spring_name.']', $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
         $data['header_description'] = sprintf($this->lang->line('common_header_description'), $data['hotel']['HotelName'].'['.$spring->spring_name.']');
         
@@ -325,7 +325,7 @@ class Spring extends MY_Controller {
             //共通タイトル
             $this->weather_lib->getTitlesForDate($data,$data['hotel']['HotelName']);
 
-            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['hotel']['HotelName'].'['.$spring->spring_name.']', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['hotel']['HotelName'].'['.$spring->spring_name.']', $data['display_date'], $this->lang->line('header_website_name'));
             $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
             $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $data['hotel']['HotelName'].'['.$spring->spring_name.']');
         }else{
@@ -334,7 +334,7 @@ class Spring extends MY_Controller {
             //共通タイトル
             $this->weather_lib->getTitlesForDate($data,$spring->spring_name);
             
-            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $spring->spring_name, $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $spring->spring_name, $data['display_date'], $this->lang->line('header_website_name'));
             $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name);
             $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $spring->spring_name);
         }
@@ -428,7 +428,7 @@ class Spring extends MY_Controller {
 
         //set header title
         $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['target_plan']['PlanName'].'に晴れで行く為', $data['display_date'], $this->config->item('website_name', 'tank_auth'));
+        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['target_plan']['PlanName'].'に晴れで行く為', $data['display_date'], $this->lang->line('header_website_name'));
         $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
         $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'],  $data['target_plan']['PlanName']);
 
