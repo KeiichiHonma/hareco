@@ -337,16 +337,16 @@ ul.menuBox dd.first{
 
 /* area page
 --------------------------------------------------*/
-#area #btnPc { display:none;}
+#btnPc { display:none;}
 
-#area #btnSp {
+#btnSp {
 	display:block;
 	padding-bottom:20px;
 	margin-bottom:30px;
 	border-bottom:1px solid #dad9d9;
 }
 
-#area #btnSp select {
+#btnSp select {
 	display:block;
 	width:100%;
 	padding:10px 10px;

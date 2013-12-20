@@ -45,13 +45,13 @@ class Json extends MY_Controller {
         $sp = isset($_POST['sp']) && is_numeric($_POST['sp']) ? $_POST['sp'] : 1;
         
         if($sp == 1){
-            $date = $_POST['date'];
+            $date = isset($_POST['date']) ? $_POST['date'] : '';
             $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
-            $weather = $_POST['weather'];
+            $weather = isset($_POST['weather']) ? $_POST['weather'] : '';
         }else{
-            $date = $_POST['sp_date'];
+            $date = isset($_POST['sp_date']) ? $_POST['sp_date'] : '';
             $daytime_shine_sequence = isset($_POST['sp_daytime_shine_sequence']) && is_numeric($_POST['sp_daytime_shine_sequence']) ? $_POST['sp_daytime_shine_sequence'] : 1;
-            $weather = $_POST['sp_weather'];
+            $weather = isset($_POST['sp_weather']) ? $_POST['sp_weather'] : '';
         }
         
         $type = isset($_POST['type']) && strlen($_POST['type']) > 0 ? ($sp == 1 ? $_POST['type'] : 'sp' ) : 'area';
@@ -73,7 +73,7 @@ class Json extends MY_Controller {
 
         //書式：2012/01/01
         $start_date = null;//指定なし。直近
-        if( isset($date) && preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)){
+        if( preg_match('/^([1-9][0-9]{3})\/(0[1-9]{1}|1[0-2]{1})\/(0[1-9]{1}|[1-2]{1}[0-9]{1}|3[0-1]{1})$/', $date)){
             $start_datetime = strtotime("+8 day");
             $ymd = explode('/',$date);
             if($start_datetime > mktime(0,0,0,$ymd[1],$ymd[2],$ymd[0])){
