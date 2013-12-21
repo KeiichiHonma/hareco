@@ -7,6 +7,7 @@ class Yahoo_lib
         $this->ci =& get_instance();
         define("GEO_CODE_API_URL", "http://geo.search.olp.yahooapis.jp/OpenLocalPlatform/V1/geoCoder");//http://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/geocoder.html
         define("CONTENTS_GEO_CODE_API_URL", "http://contents.search.olp.yahooapis.jp/OpenLocalPlatform/V1/contentsGeoCoder");//http://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/contentsgeocoder.html
+        define("REVERSE_GEO_CODE_API_URL", "http://reverse.search.olp.yahooapis.jp/OpenLocalPlatform/V1/reverseGeoCoder");//http://developer.yahoo.co.jp/webapi/map/openlocalplatform/v1/reversegeocoder.html
         
         define("MAP_API_URL", "http://map.olp.yahooapis.jp/OpenLocalPlatform/V1/static");
         //define("APP_ID", "dj0zaiZpPWgwWkN3SUtHbXpxViZzPWNvbnN1bWVyc2VjcmV0Jng9ODM-");
@@ -54,6 +55,19 @@ class Yahoo_lib
         $to_url .= "&query=" . urlencode($address);
         //$to_url .= "&category=landmark";
         $xml = @simplexml_load_file($to_url);
+        return intval($xml->ResultInfo->Count) > 0 ? $xml->Feature->Property->Address : '';
+    }
+    
+    function getReverseGeoCode($lat,$lon)
+    {
+        $to_url = REVERSE_GEO_CODE_API_URL;
+        $to_url .= "?appid=" . APP_ID;
+        $to_url .= "&datum=tky";
+        $to_url .= "&lat=" . $lat;
+        $to_url .= "&lon=" . $lon;
+        $xml = @simplexml_load_file($to_url);
+var_dump($xml);
+die();
         return intval($xml->ResultInfo->Count) > 0 ? $xml->Feature->Property->Address : '';
     }
 

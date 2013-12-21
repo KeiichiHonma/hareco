@@ -11,6 +11,7 @@ class Devtools extends CI_Controller {
 
         $this->load->library('tank_auth');
         $this->load->library('weather_lib');
+        $this->load->library('yahoo_lib');
         //connect database
         $this->load->database();
     }
@@ -704,7 +705,62 @@ class Devtools extends CI_Controller {
         }
         $this->Area_model->insertBatchAreasOdds($areasOddsData);
     }
+    
+    public function getLocations(){
+        $csv = '';
+        $fp=@fopen('/usr/local/apache2/htdocs/hareco/lei.csv',"r");
+        while ($CSVRow = @$this->_fgetcsv_reg($fp,1024)){//ファイルを一行ずつ読み込む
+            sleep(5);
+            $result = $this->getLocation($CSVRow[0]);
+            if($result){
+                $csv .= $result['lat'].','.$result['lng']."<br />";
+            }else{
+                $csv .= 'ng'."<br />";
+            }
+        }
+        echo $csv;
+    }
+    
+    public function getLocation($address){
+        $gurl = "http://maps.google.com/maps/api/geocode/json?sensor=false&address=";
+        $url = $gurl.urlencode($address);
+       
+        $resp_json = $this->curl_file_get_contents($url);
+        $resp = json_decode($resp_json, true);
+        if(@$resp['status'] = 'OK'){
+            return @$resp['results'][0]['geometry']['location'];
+        }else{
+            return false;
+        }
+    }
 
+
+    private function curl_file_get_contents($URL){
+        $c = curl_init();
+        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($c, CURLOPT_URL, $URL);
+        $contents = curl_exec($c);
+        curl_close($c);
+
+        if ($contents) return $contents;
+            else return FALSE;
+    }
+
+    function geoReverseYahoo(){
+        $csv = '';
+        $fp=@fopen('/usr/local/apache2/htdocs/hareco/rev.csv',"r");
+        while ($CSVRow = @$this->_fgetcsv_reg($fp,1024)){//ファイルを一行ずつ読み込む
+            sleep(1);
+            $result = $this->yahoo_lib->getReverseGeoCode($CSVRow[0],$CSVRow[1]);
+            if($result){
+                $csv .= $result['lat'].','.$result['lng']."<br />";
+            }else{
+                $csv .= 'ng'."<br />";
+            }
+        }
+        echo $csv;
+    }
+    
     function _fgetcsv_reg (&$handle, $length = null, $d = ',', $e = '"') {
         $d = preg_quote($d);
         $e = preg_quote($e);

@@ -36,7 +36,7 @@ $(function(){
     $('#slider').bxSlider({
         auto:true,
         speed:5000,
-        pause:5000,
+        pause:60000,
         mode: 'fade',
         hideControlOnEnd:false,
         pager:false,

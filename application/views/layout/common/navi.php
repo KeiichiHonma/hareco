@@ -210,6 +210,7 @@ header
             <h3>予測正答率</h3>
             <span><?php echo $odds->percentage; ?>%</span>
         </div>
+        <div id="desc"><span>ハレコへようこそ！</span><br />ハレコは過去50年の過去データを元に、独自の天気予測エンジンで各地の天気を1年間予測しています。</div>
     <?php endif; ?>
     </div>
     <!-- パンクズ -->
