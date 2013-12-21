@@ -7,7 +7,8 @@
                 <div class="line<?php if($key >= $this->config->item('sp_display_number')) echo ' undisp'; ?> cf">
                 <?php foreach ($chunk as $hotel) : ?>
                     <div class="box">
-                        <a href="<?php echo 'spring/show/'.$spring->id; ?>">
+                        <a href="<?php echo '/spring/hotel/'.$spring->id.'/'.$hotel['HotelID'].'/'.$all_springs[$spring->id]->area_id; ?>">
+                        
                         <div class="photo spot"><?php echo img(array('src' => $hotel['PictureURL'], 'alt' => $hotel['HotelName'])); ?><div class="shadow">&nbsp;</div><span><?php echo $hotel['HotelName']; ?></span></div>
                         <div class="text">
                             <p><?php echo $hotel['HotelCatchCopy']; ?></p>
