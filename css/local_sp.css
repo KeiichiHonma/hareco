@@ -72,6 +72,10 @@
 #breadcrumb #searchBox {
 	display:none;
 }
+
+#desc {
+	display:none;
+}
 .scrolltop {
 	position:relative !important;
 }

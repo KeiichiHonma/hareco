@@ -1291,13 +1291,13 @@ ul.menuBox dd a:hover {
 }
 
 
-.leisure .btnBooking {
+.btnBooking {
 	display:block;
 	width:270px;
 	height:47px;
 	margin: 30px auto 0;
 }
-.leisure .btnBooking img{
+.btnBooking img{
 	display:block;
 	width:270px;
 	height:47px;
