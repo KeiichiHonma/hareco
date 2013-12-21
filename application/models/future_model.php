@@ -83,7 +83,7 @@ class Future_model extends CI_Model
     }
 
     //汎用未来データ取得
-    function getFutures($type = 'area', $area_id, $order, $page,$weather = 'shine', $daytime_shine_sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
+    function getFutures($type = 'area', $object_id, $order, $page,$weather = 'shine', $daytime_shine_sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
     {
         $result = array();
         $cond = '';
@@ -96,13 +96,14 @@ class Future_model extends CI_Model
                 $offset = $perPageCount * ($page - 1);
                 $end_datetime = $this->start_datetime + (86400 * 7);
                 $end_date = date("Y-n-j",$end_datetime);
-                $and_cond[] = "( {$this->million_city_query} )";
+                //$and_cond[] = "( {$this->million_city_query} )";
+                $and_cond[] = "region_id = $object_id";
                 $and_cond[] = "date < '{$end_date}'";
             break;
             case 'area':
                 $perPageCount = $this->CI->config->item('paging_count_per_recommend_page');
                 $offset = $perPageCount * ($page - 1);
-                $and_cond[] = "{$this->table_name}.area_id = ".$area_id;
+                $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
                 
                 if($weather == 'shine'){
                     $and_cond[] = "daytime_type = 0";
@@ -121,7 +122,7 @@ class Future_model extends CI_Model
             case 'sp':
                 $perPageCount = $this->CI->config->item('paging_count_per_recommend_sp_page');
                 $offset = $perPageCount * ($page - 1);
-                $and_cond[] = "{$this->table_name}.area_id = ".$area_id;
+                $and_cond[] = "{$this->table_name}.area_id = ".$object_id;
                 if($weather == 'shine'){
                     $and_cond[] = "daytime_type = 0";
                 }elseif($weather == 'rain'){

@@ -70,13 +70,15 @@ class Home extends MY_Controller
         /*
         天気予想
         */
+        //$orderExpression = "area_id ASC,date ASC";
         $orderExpression = "area_id ASC,date ASC";
         $page = 1;
         $weather = 'shine';
         $daytime_shine_sequenceExpression = null;
         $day_type = array('type'=>'index','value'=>1);//休日+祝日
         $start_date = null;//指定なし。直近
-        $futuresData = $this->Future_model->getFutures('index', null, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        //$futuresData = $this->Future_model->getFutures('index', null, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $futuresData = $this->Future_model->getFutures('index', 3, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $data['futures'] = $futuresData['data'];
 
         //news
