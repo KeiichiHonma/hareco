@@ -20,6 +20,7 @@ $lang['topicpath_about'] = 'ハレコについて';
 $lang['topicpath_area'] = 'エリア';
 $lang['topicpath_spring'] = '温泉';
 $lang['topicpath_airport'] = '空港';
+$lang['topicpath_leisure'] = 'レジャー・行楽地';
 
 $lang['search_box_default'] = 'どちらにおでかけですか？ ex.札幌、箱根温泉、羽田空港';
 
