@@ -175,7 +175,38 @@ ul.menuBox dd a:hover {
 	color:#a3a3a3;
 } 
 
+table.menuBox{
+	padding:5px;
+}
+table.menuBox tr {
+    display:block;
+	border-bottom:1px solid #ccc;
+	margin-bottom:10px;
+}
+table.menuBox td{
+    text-align:left;
+    padding:5px;
+}
 
+table.menuBox td.kana_index{
+    text-align:left;
+	width:20px;
+	color:#a3a3a3;
+}
+
+table.menuBox td a {
+    display:block;
+    float:left;
+	text-decoration:none;
+	color:#fff;
+	line-height:140%;
+	padding-left:12px;
+    margin-right:5px;
+	background: url(../images/icon_arrow_nav.png) 0 1px no-repeat; 
+}
+table.menuBox td a:hover {
+	color:#a3a3a3;
+} 
 
 
 #breadcrumb {
@@ -1139,6 +1170,7 @@ ul.menuBox dd a:hover {
 }
 
 #weather td{
+    width:100px;
 	border-bottom:1px dotted #c4c3c0;
 	border-right:1px solid #dfdedb;
 	padding: 10px;

@@ -187,7 +187,7 @@ class Airport extends MY_Controller {
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/airport/',$this->lang->line('topicpath_airport'));
         $data['topicpaths'][] = array('/airport/show/'.$airport_id,$this->data['airport']->airport_name);
-        $data['topicpaths'][] = array('/airport/show/'.$airport_id.'/'.str_replace('/','-',$date),$date);
+        $data['topicpaths'][] = array('/airport/date/'.$airport_id.'/'.str_replace('/','-',$date),$date);
 
         //set header title
         $data['og_image'] = site_url('/images/airport/big/airport2.jpg');

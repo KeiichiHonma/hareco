@@ -15,6 +15,8 @@
                             <?php endif; ?>
                         <?php elseif($search_type == 'airport'): ?>
                             <a href="<?php echo '/airport/date/'.$airport->id.'/'.$future->date; ?>">
+                        <?php elseif($search_type == 'leisure'): ?>
+                            <a href="<?php echo '/leisure/date/'.$leisure->id.'/'.$future->date; ?>">
                         <?php elseif($search_type == 'search'): ?>
                             <a href="<?php echo '/search?keyword='.urlencode($search_keyword).'&date='.urlencode(str_replace('-','/',$future->date)); ?>">
                         <?php else: ?>

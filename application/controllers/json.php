@@ -136,6 +136,8 @@ class Json extends MY_Controller {
                                 }
                             }elseif($search_type == 'airport'){
                                 $html .= '<a href="/airport/date/'.$search_object_id.'/'.$future->date.'">';
+                            }elseif($search_type == 'leisure'){
+                                $html .= '<a href="/leisure/date/'.$search_object_id.'/'.$future->date.'">';
                             }elseif($search_type == 'search'){
                                 $html .= '<a href="/search?keyword='.urlencode($search_keyword).'&date='.urlencode(str_replace('-','/',$future->date)).'">';
                             }

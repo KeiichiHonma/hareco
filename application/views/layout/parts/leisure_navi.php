@@ -4,91 +4,71 @@
                     <div>
                         <dl class="cf">
                         <dt>北海道</dt>
-                        <dd class="first"><a href="/airport/show/1">利尻空港</a></dd>
-                        <dd><a href="/airport/show/2">稚内空港</a></dd>
-                        <dd><a href="/airport/show/3">礼文空港</a></dd>
-                        <dd><a href="/airport/show/4">旭川空港</a></dd>
-                        <dd><a href="/airport/show/5">女満別空港</a></dd>
-                        <dd><a href="/airport/show/6">紋別空港</a></dd>
-                        <dd><a href="/airport/show/7">新千歳空港</a></dd>
-                        <dd><a href="/airport/show/8">丘珠空港</a></dd>
-                        <dd><a href="/airport/show/9">帯広空港</a></dd>
-                        <dd><a href="/airport/show/10">釧路空港</a></dd>
-                        <dd><a href="/airport/show/11">中標津空港</a></dd>
-                        <dd><a href="/airport/show/12">函館空港</a></dd>
-                        <dd><a href="/airport/show/13">奥尻空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/1">北海道</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>東北</dt>
-                        <dd class="first"><a href="/airport/show/14">青森空港</a></dd>
-                        <dd><a href="/airport/show/15">三沢空港</a></dd>
-                        <dd><a href="/airport/show/16">秋田空港</a></dd>
-                        <dd><a href="/airport/show/17">大館能代空港</a></dd>
-                        <dd><a href="/airport/show/18">花巻空港</a></dd>
-                        <dd><a href="/airport/show/19">庄内空港</a></dd>
-                        <dd><a href="/airport/show/20">山形空港</a></dd>
-                        <dd><a href="/airport/show/21">仙台空港</a></dd>
-                        <dd><a href="/airport/show/22">福島空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/2">青森県</a></dd>
+                        <dd><a href="/leisure/view/3">秋田県</a></dd>
+                        <dd><a href="/leisure/view/4">岩手県</a></dd>
+                        <dd><a href="/leisure/view/5">宮城県</a></dd>
+                        <dd><a href="/leisure/view/6">山形県</a></dd>
+                        <dd><a href="/leisure/view/7">福島県</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>関東・信越</dt>
-                        <dd class="first"><a href="/airport/show/23">新潟空港</a></dd>
-                        <dd><a href="/airport/show/24">佐渡空港</a></dd>
-                        <dd><a href="/airport/show/28">松本空港</a></dd>
-                        <dd><a href="/airport/show/32">成田空港</a></dd>
-                        <dd><a href="/airport/show/33">羽田空港</a></dd>
-                        <dd><a href="/airport/show/34">調布空港</a></dd>
-                        <dd><a href="/airport/show/35">大島空港</a></dd>
-                        <dd><a href="/airport/show/66">八丈島空港</a></dd>
-                        <dd><a href="/airport/show/67">三宅島空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/8">茨城県</a></dd>
+                        <dd><a href="/leisure/view/9">栃木県</a></dd>
+                        <dd><a href="/leisure/view/10">群馬県</a></dd>
+                        <dd><a href="/leisure/view/11">埼玉県</a></dd>
+                        <dd><a href="/leisure/view/12">東京都</a></dd>
+                        <dd><a href="/leisure/view/13">千葉県</a></dd>
+                        <dd><a href="/leisure/view/14">神奈川県</a></dd>
+                        <dd><a href="/leisure/view/15">長野県</a></dd>
+                        <dd><a href="/leisure/view/16">山梨県</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>東海・北陸・近畿</dt>
-                        <dd class="first"><a href="/airport/show/25">小松空港</a></dd>
-                        <dd><a href="/airport/show/26">能登空港</a></dd>
-                        <dd><a href="/airport/show/27">富山空港</a></dd>
-                        <dd><a href="/airport/show/29">福井空港</a></dd>
-                        <dd><a href="/airport/show/30">中部国際空港</a></dd>
-                        <dd><a href="/airport/show/31">名古屋空港</a></dd>
-                        <dd><a href="/airport/show/43">神戸空港</a></dd>
-                        <dd><a href="/airport/show/44">大阪空港</a></dd>
-                        <dd><a href="/airport/show/45">関西国際空港</a></dd>
-                        <dd><a href="/airport/show/46">南紀白浜空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/17">静岡県</a></dd>
+                        <dd><a href="/leisure/view/18">愛知県</a></dd>
+                        <dd><a href="/leisure/view/19">岐阜県</a></dd>
+                        <dd><a href="/leisure/view/20">三重県</a></dd>
+                        <dd><a href="/leisure/view/21">新潟県</a></dd>
+                        <dd><a href="/leisure/view/22">富山県</a></dd>
+                        <dd><a href="/leisure/view/23">石川県</a></dd>
+                        <dd><a href="/leisure/view/24">福井県</a></dd>
+                        <dd><a href="/leisure/view/25">滋賀県</a></dd>
+                        <dd><a href="/leisure/view/26">京都府</a></dd>
+                        <dd><a href="/leisure/view/27">大阪府</a></dd>
+                        <dd><a href="/leisure/view/28">兵庫県</a></dd>
+                        <dd><a href="/leisure/view/29">奈良県</a></dd>
+                        <dd><a href="/leisure/view/30">和歌山県</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>中国・四国</dt>
-                        <dd class="first"><a href="/airport/show/36">出雲空港</a></dd>
-                        <dd><a href="/airport/show/37">石見空港</a></dd>
-                        <dd><a href="/airport/show/38">隠岐空港</a></dd>
-                        <dd><a href="/airport/show/39">鳥取空港</a></dd>
-                        <dd><a href="/airport/show/40">山口宇部空港</a></dd>
-                        <dd><a href="/airport/show/41">広島空港</a></dd>
-                        <dd><a href="/airport/show/42">岡山空港</a></dd>
-                        <dd><a href="/airport/show/58">松山空港</a></dd>
-                        <dd><a href="/airport/show/59">高松空港</a></dd>
-                        <dd><a href="/airport/show/60">高知空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/31">岡山県</a></dd>
+                        <dd><a href="/leisure/view/32">広島県</a></dd>
+                        <dd><a href="/leisure/view/33">島根県</a></dd>
+                        <dd><a href="/leisure/view/34">鳥取県</a></dd>
+                        <dd><a href="/leisure/view/35">徳島県</a></dd>
+                        <dd><a href="/leisure/view/36">香川県</a></dd>
+                        <dd><a href="/leisure/view/37">愛媛県</a></dd>
+                        <dd><a href="/leisure/view/38">高知県</a></dd>
+                        <dd><a href="/leisure/view/39">山口県</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>九州</dt>
-                        <dd class="first"><a href="/airport/show/47">北九州空港</a></dd>
-                        <dd><a href="/airport/show/48">福岡空港</a></dd>
-                        <dd><a href="/airport/show/49">長崎空港</a></dd>
-                        <dd><a href="/airport/show/50">対馬空港</a></dd>
-                        <dd><a href="/airport/show/51">壱岐空港</a></dd>
-                        <dd><a href="/airport/show/52">佐賀空港</a></dd>
-                        <dd><a href="/airport/show/53">大分空港</a></dd>
-                        <dd><a href="/airport/show/54">熊本空港</a></dd>
-                        <dd><a href="/airport/show/55">鹿児島空港</a></dd>
-                        <dd><a href="/airport/show/56">種子島空港</a></dd>
-                        <dd><a href="/airport/show/57">宮崎空港</a></dd>
-                        <dd><a href="/airport/show/61">奄美空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/40">福岡県</a></dd>
+                        <dd><a href="/leisure/view/41">大分県</a></dd>
+                        <dd><a href="/leisure/view/42">長崎県</a></dd>
+                        <dd><a href="/leisure/view/43">佐賀県</a></dd>
+                        <dd><a href="/leisure/view/44">熊本県</a></dd>
+                        <dd><a href="/leisure/view/45">宮崎県</a></dd>
+                        <dd><a href="/leisure/view/46">鹿児島県</a></dd>
                         </dl>
                         <dl class="cf">
                         <dt>沖縄</dt>
-                        <dd class="first"><a href="/airport/show/62">石垣空港</a></dd>
-                        <dd><a href="/airport/show/63">宮古空港</a></dd>
-                        <dd><a href="/airport/show/64">那覇空港</a></dd>
-                        <dd><a href="/airport/show/65">久米島空港</a></dd>
+                        <dd class="first"><a href="/leisure/view/47">沖縄県</a></dd>
                         </dl>
                     </div>
                 </ul>

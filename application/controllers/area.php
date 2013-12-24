@@ -186,7 +186,7 @@ class Area extends MY_Controller {
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/area/',$this->lang->line('topicpath_area'));
         $data['topicpaths'][] = array('/area/show/'.$area_id,$this->data['all_areas'][$area_id]->area_name);
-        $data['topicpaths'][] = array('/area/show/'.$area_id.'/'.str_replace('/','-',$date),$date);
+        $data['topicpaths'][] = array('/area/date/'.$area_id.'/'.str_replace('/','-',$date),$date);
 
         //set header title
         $data['og_image'] = site_url('/images/area/big/'.$area_id.'_big.jpg');

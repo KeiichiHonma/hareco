@@ -39,6 +39,18 @@ class Todoufuken_model extends CI_Model
         if ($query->num_rows() != 0) return $query->result('flip');
         return array();
     }
+    
+    function getAllTodoufukenOrderRegionId()
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    ORDER BY {$this->table_name}.region_id ASC"
+        );
+
+        //if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $query->result();
+        return array();
+    }
 }
 
 /* End of file todoufuken_model.php */

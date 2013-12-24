@@ -48,8 +48,6 @@ class Leisure extends MY_Controller {
         $data['isBigSlide'] = TRUE;
         $data['bodyId'] = 'ind';
         
-        $this->data['all_leisures'] = $this->Leisure_model->getAllLeisures();
-        
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/leisure/',$this->lang->line('topicpath_leisure'));
 
@@ -60,6 +58,32 @@ class Leisure extends MY_Controller {
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
         $this->load->view('leisure/index', array_merge($this->data,$data));
+    }
+
+    function view($todoufuken_id)
+    {
+        $data['isSlide'] = TRUE;
+        $data['isBigSlide'] = TRUE;
+        $data['bodyId'] = 'ind';
+        
+        $this->load->model('Todoufuken_model');
+        $this->data['todoufuken'] = $this->Todoufuken_model->getTodoufukenById($todoufuken_id);
+        if(empty($this->data['todoufuken'])){
+            show_404();
+        }
+        $this->data['leisures'] = $this->Leisure_model->getLeisuresByTodoufukenIdOrderKanaIndex($todoufuken_id);
+
+        $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
+        $data['topicpaths'][] = array('/leisure/',$this->lang->line('topicpath_leisure'));
+        $data['topicpaths'][] = array('/leisure/view/'.$todoufuken_id,$this->data['todoufuken']->todoufuken_name);
+
+        $data['header_title'] = sprintf($this->lang->line('common_header_title'), '各空港', $this->lang->line('header_website_name'));
+        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $this->lang->line('topicpath_leisure'));
+        $data['header_description'] = sprintf($this->lang->line('common_header_description'), '各空港');
+
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','css/add.css','css/add_sp.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/scrolltop.js',)));
+        $this->load->view('leisure/view', array_merge($this->data,$data));
     }
 
     /**
@@ -73,6 +97,8 @@ class Leisure extends MY_Controller {
         if(empty($this->data['leisure'])){
             show_404();
         }
+        $this->load->model('Todoufuken_model');
+        $this->data['todoufuken'] = $this->Todoufuken_model->getTodoufukenById($this->data['leisure']->todoufuken_id);
         $data['bodyId'] = 'area';
         $data['leisure_id'] = $leisure_id;
         $data['area_id'] = $this->data['leisure']->area_id;
@@ -97,6 +123,7 @@ class Leisure extends MY_Controller {
         
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/leisure/',$this->lang->line('topicpath_leisure'));
+        $data['topicpaths'][] = array('/leisure/view/'.$this->data['leisure']->todoufuken_id,$this->data['todoufuken']->todoufuken_name);
         $data['topicpaths'][] = array('/leisure/show/'.$leisure_id,$this->data['leisure']->leisure_name);
         
         //set header title
@@ -134,7 +161,8 @@ class Leisure extends MY_Controller {
         if(empty($this->data['leisure'])){
             show_404();
         }
-
+        $this->load->model('Todoufuken_model');
+        $this->data['todoufuken'] = $this->Todoufuken_model->getTodoufukenById($this->data['leisure']->todoufuken_id);
         $data['bodyId'] = 'area';
         $data['leisure_id'] = $leisure_id;
         $data['area_id'] = $this->data['leisure']->area_id;
@@ -186,8 +214,9 @@ class Leisure extends MY_Controller {
 
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));
         $data['topicpaths'][] = array('/leisure/',$this->lang->line('topicpath_leisure'));
+        $data['topicpaths'][] = array('/leisure/view/'.$this->data['leisure']->todoufuken_id,$this->data['todoufuken']->todoufuken_name);
         $data['topicpaths'][] = array('/leisure/show/'.$leisure_id,$this->data['leisure']->leisure_name);
-        $data['topicpaths'][] = array('/leisure/show/'.$leisure_id.'/'.str_replace('/','-',$date),$date);
+        $data['topicpaths'][] = array('/leisure/date/'.$leisure_id.'/'.str_replace('/','-',$date),$date);
 
         //set header title
         $data['og_image'] = site_url('/images/leisure/big/leisure2.jpg');
