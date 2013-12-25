@@ -7,6 +7,7 @@ contents
 -->
 <div id="contents">
     <div id="contentsInner">
+    <?php if(isset($target_plan['PlanName'])): ?>
         <h2><?php echo $hotel['HotelName'].'-'.$target_plan['PlanName']; ?></h2>
         <div id="boxLeisure">
             <div class="title cf">
@@ -32,6 +33,9 @@ contents
                 </ul>
             </div>
         </div>
+    <?php else: ?>
+    <h2><?php echo $hotel['HotelName'].'-ご指定のプランに空きがありませんでした。'; ?></h2>
+    <?php endif; ?>
 
         <div id="boxLeisureDetail">
             <h3><?php echo $hotel['HotelName'] ?>の基本情報</h3>
@@ -54,7 +58,9 @@ contents
                 </tr>
             </table>
         </div>
+    <?php if(isset($target_plan['PlanName'])): ?>
         <div class="btnBooking"><a href="<?php echo $target_plan['PlanDetailURL']; ?>" target="_blank"><img src="/images/btn_booking.png" alt="この旅を予約する" /></a></div>
+    <?php endif; ?>
 <?php $this->load->view('layout/parts/date_spring_plans'); ?>
     </div>
 </div>

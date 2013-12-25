@@ -254,10 +254,9 @@ table.menuBox td a:hover {
 	padding-top:7px;
 }
 #breadcrumb .searchBox .focus{
-	/*width:150px;*/
     width:320px;
 	height:16px;
-	padding:2px 5px;
+	padding:2px;
 	margin-right:8px;
 	color:#a0a09f;
 }

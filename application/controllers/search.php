@@ -74,6 +74,18 @@ class Search extends MY_Controller
         )));
         //set header title
         if(!empty($data['date'])){//日付がある場合
+            $data['target_date'] = $data['date'];
+            $data['from_ymd'] = explode('-',$data['date']);
+            $data['from_datetime'] = mktime(0,0,0,$data['from_ymd'][1],$data['from_ymd'][2],$data['from_ymd'][0]);
+            $data['from_display_date'] = date("n/j",$data['from_datetime']);
+            $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
+            $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
+            $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
+            $data['display_date_nj'] = date("n月j日",$data['from_datetime']);
+            
+            $data['to_datetime'] = $data['from_datetime'] + 86400;
+            $data['to_display_date'] = date("n/j",$data['to_datetime']);
+            $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
             $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['keyword'], $data['display_date'], $this->lang->line('header_website_name'));
             $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $data['keyword']);
             $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'], $data['keyword']);
@@ -187,19 +199,6 @@ class Search extends MY_Controller
                 //ここから表示画面の分岐
                 if(!empty($data['date'])){//日付がある場合
                     $show_page = 'date';
-                    $data['target_date'] = $data['date'];
-                    $data['from_ymd'] = explode('-',$data['date']);
-                    $data['from_datetime'] = mktime(0,0,0,$data['from_ymd'][1],$data['from_ymd'][2],$data['from_ymd'][0]);
-                    $data['from_display_date'] = date("n/j",$data['from_datetime']);
-                    $data['from_youbi'] = get_day_of_the_week(date("N",$data['from_datetime']),array_key_exists($data['target_date'],$this->data['all_holidays']),TRUE);
-                    $data['jalan_date'] = $data['from_ymd'][0].$data['from_ymd'][1].$data['from_ymd'][2];
-                    $data['display_date'] = date("Y年n月j日",$data['from_datetime']);
-                    $data['display_date_nj'] = date("n月j日",$data['from_datetime']);
-                    
-                    $data['to_datetime'] = $data['from_datetime'] + 86400;
-                    $data['to_display_date'] = date("n/j",$data['to_datetime']);
-                    $data['to_youbi'] = get_day_of_the_week(date("N",$data['to_datetime']),array_key_exists(date("Y-m-d",$data['to_datetime']),$this->data['all_holidays']),TRUE);
-
                     //共通タイトル
                     $this->weather_lib->getTitlesForDate($data,$data['strim_keyword']);
 

@@ -386,24 +386,36 @@ class Spring extends MY_Controller {
         $shine_sequence = 2;
         $jalan_date = str_replace('-','',$date);
         $data['plans'] = $this->jalan_lib->getStocksByHotelIdBySequenceByDate($jalan_h_id,$shine_sequence,$jalan_date);
+
         //この段階で存在しないのは、相手側で急遽空きがなくなった
         if( empty($data['plans']) ){
-            
-        }
-        //対象のプランを検索
-        foreach ($data['plans'] as $plan){
-            if($plan['PlanCD'] == $jalan_plan_cd){
-                $data['target_plan'] = $plan;
-            }else{
-                $hotel_plans[] = $plan;//指定日、同じホテルで空いているプランを表示
+            //このパターンがあるいみたい
+
+            //set header title
+            $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
+            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['hotel']['HotelName'].'に晴れで行く為', $data['display_date'], $this->lang->line('header_website_name'));
+            $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
+            $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'],  $data['hotel']['HotelName']);
+        }else{
+            //対象のプランを検索
+            foreach ($data['plans'] as $plan){
+                if($plan['PlanCD'] == $jalan_plan_cd){
+                    $data['target_plan'] = $plan;
+                }else{
+                    $hotel_plans[] = $plan;//指定日、同じホテルで空いているプランを表示
+                }
             }
-        }
-        if(isset($hotel_plans)){
-            $data['hotel_plans'] = array_chunk($hotel_plans,3,TRUE);
-            $data['hotel_plans_stop_line'] = 2;
+            if(isset($hotel_plans)){
+                $data['hotel_plans'] = array_chunk($hotel_plans,3,TRUE);
+                $data['hotel_plans_stop_line'] = 2;
+            }
+            //set header title
+            $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
+            $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['target_plan']['PlanName'].'に晴れで行く為', $data['display_date'], $this->lang->line('header_website_name'));
+            $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
+            $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'],  $data['target_plan']['PlanName']);
         }
 
-        
         //指定日、同じエリアで空いているプランを表示
         $o_area_plans = $this->jalan_lib->getStocksByOAreaIdBySequenceByDate($spring->jalan_o_area,$shine_sequence,$jalan_date);
         if(!empty($o_area_plans)){
@@ -420,13 +432,7 @@ class Spring extends MY_Controller {
         $data['topicpaths'][] = array('/spring/',$this->lang->line('topicpath_spring'));
         $data['topicpaths'][] = array('/spring/show/'.$spring->id,$spring->spring_name);
         $data['topicpaths'][] = array('/spring/hotel/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id,$data['hotel']['HotelName']);
-        $data['topicpaths'][] = array('/spring/plan/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id.'/'.$date.'/'.$data['target_plan']['PlanCD'],'プラン詳細');
-
-        //set header title
-        $data['og_image'] = site_url('/images/spring/big/'.$spring_id.'_big.jpg');
-        $data['header_title'] = sprintf($this->lang->line('common_date_header_title'), $data['target_plan']['PlanName'].'に晴れで行く為', $data['display_date'], $this->lang->line('header_website_name'));
-        $data['header_keywords'] = sprintf($this->lang->line('common_header_keywords'), $spring->spring_name.','.$data['hotel']['HotelName']);
-        $data['header_description'] = sprintf($this->lang->line('common_date_header_description'), $data['display_date'],  $data['target_plan']['PlanName']);
+        if(isset($data['target_plan']['PlanCD']))$data['topicpaths'][] = array('/spring/plan/'.$spring->id.'/'.$data['hotel']['HotelID'].'/'.$spring->area_id.'/'.$date.'/'.$data['target_plan']['PlanCD'],'プラン詳細');
 
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/future.css','css/add.css','css/add_sp.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array(

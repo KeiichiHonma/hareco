@@ -33,7 +33,7 @@ if (defined('ENVIRONMENT'))
 	{
 		case 'development':
 			error_reporting(E_ALL);
-            define('DOMAIN','balloooooon.apollon.corp.813.co.jp');
+            define('DOMAIN','hareco.apollon.corp.813.co.jp');
 		break;
 
 		case 'testing':
@@ -42,7 +42,7 @@ if (defined('ENVIRONMENT'))
                 ini_set('date.timezone', 'Asia/Bangkok');
             }
 			error_reporting(E_ALL);
-            define('DOMAIN','balloooooon.hachione.com');
+            define('DOMAIN','hareco.hachione.com');
 		break;
 		case 'production':
             if (!ini_get('display_errors')) {
@@ -50,7 +50,7 @@ if (defined('ENVIRONMENT'))
                 ini_set('date.timezone', 'Asia/Bangkok');
             }
 			error_reporting(0);
-            define('DOMAIN','balloooooon.com');
+            define('DOMAIN','hareco.jp');
 		break;
 
 		default:
