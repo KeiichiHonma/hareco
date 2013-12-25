@@ -397,6 +397,7 @@ ul.menuBox dd.first{
 	line-height: 40px;
 }
 #btnSp .navSp .searchBtn input{
+    height: 40px;
     width:95%;
     padding:10px;
 }

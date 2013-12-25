@@ -17,7 +17,7 @@ contents
                 <ul>
                 <li class="ttl">日付</li>
                 <li class="date"><input id="spDate" name="date" type="text" placeholder="日付を選択してください" value="" /></li>
-                <li><?php echo date("Y年n月j日",strtotime("+8 day")); ?>り前の日付は、<br />気象情報を元にした各所の天気予報をご確認ください。</li>
+                <li><?php echo date("Y年n月j日",strtotime("+8 day")); ?>より前の日付は、<br />気象情報を元にした各所の天気予報をご確認ください。</li>
                 
                 <li class="ttl">天気</li>
                 <li class="radio"><input type="radio" id="weather9" name="weather" value="9" />指定なし</li>
