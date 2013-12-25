@@ -84,7 +84,7 @@ class Spring_model extends CI_Model
         );
 
         //if ($query->num_rows() != 0) return $query->result();
-        if ($query->num_rows() != 0) return $query->result();
+        if ($query->num_rows() != 0) return $query->result('flip');
         return array();
     }
 

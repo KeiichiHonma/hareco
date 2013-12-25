@@ -115,15 +115,27 @@ class Json extends MY_Controller {
         $this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
         
         $sp = isset($_POST['sp']) && is_numeric($_POST['sp']) ? $_POST['sp'] : 1;
-        
+
+        $date = isset($_POST['date']) ? $_POST['date'] : '';
+        $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
+        $weather = isset($_POST['weather']) ? $_POST['weather'] : '';
+        //day type
+        $day_type = array('type'=>'multi','value'=>array(6,7,8));//土日祝日
+        if( isset($_POST['sp_day_type']) && !empty($_POST['sp_day_type'])){
+            $day_type = array('type'=>'multi','value'=>$_POST['sp_day_type']);
+            
+        }elseif( isset($_POST['day_type']) && !empty($_POST['day_type']) ){
+            $day_type = array('type'=>'multi','value'=>explode(',',$_POST['day_type']));
+        }
+
         if($sp == 1){
-            $date = isset($_POST['date']) ? $_POST['date'] : '';
-            $daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
-            $weather = isset($_POST['weather']) ? $_POST['weather'] : '';
+            //$date = isset($_POST['date']) ? $_POST['date'] : '';
+            //$daytime_shine_sequence = isset($_POST['daytime_shine_sequence']) && is_numeric($_POST['daytime_shine_sequence']) ? $_POST['daytime_shine_sequence'] : 1;
+            //$weather = isset($_POST['weather']) ? $_POST['weather'] : '';
         }else{
-            $date = isset($_POST['sp_date']) ? $_POST['sp_date'] : '';
-            $daytime_shine_sequence = isset($_POST['sp_daytime_shine_sequence']) && is_numeric($_POST['sp_daytime_shine_sequence']) ? $_POST['sp_daytime_shine_sequence'] : 1;
-            $weather = isset($_POST['sp_weather']) ? $_POST['sp_weather'] : '';
+            //$date = isset($_POST['sp_date']) ? $_POST['sp_date'] : '';
+            //$daytime_shine_sequence = isset($_POST['sp_daytime_shine_sequence']) && is_numeric($_POST['sp_daytime_shine_sequence']) ? $_POST['sp_daytime_shine_sequence'] : 1;
+            //$weather = isset($_POST['sp_weather']) ? $_POST['sp_weather'] : '';
         }
         
         $type = isset($_POST['type']) && strlen($_POST['type']) > 0 ? ($sp == 1 ? $_POST['type'] : 'sp' ) : 'area';
@@ -178,15 +190,11 @@ class Json extends MY_Controller {
                     $weather = '';
             }
         }
-        
-        //day type
-        $day_type = array('type'=>'multi','value'=>array(6,7,8));//土日祝日
-        if( isset($_POST['day_type']) && !empty($_POST['day_type']) ){
-            $day_type = array('type'=>'multi','value'=>explode(',',$_POST['day_type']));
-        }
+
         $orderExpression = "date ASC";
         $daytime_shine_sequenceExpression = $daytime_shine_sequence > 1 ? ' = '.$daytime_shine_sequence : ' >= '.$daytime_shine_sequence;
         $futuresData = $this->Future_model->getFutures($type, $area_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+
         $html = 'error';
         if(!empty($futuresData['data'])){
             $html = '';

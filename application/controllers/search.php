@@ -253,7 +253,7 @@ class Search extends MY_Controller
         }
     }
     
-    function weather($type="area",$object_id,$keyword = '')
+    function weather($search_type,$search_object_id,$h_id,$search_keyword = '')
     {
         $data['bodyId'] = 'area';
         $data['recommend_futures_title'] = $this->lang->line('recommend_futures_title_default');
@@ -265,29 +265,34 @@ class Search extends MY_Controller
         $daytime_shine_sequenceExpression = ' >= 1';//指定なし
         $day_type = array('type'=>'multi','value'=>array(6,7,8));//休日+祝日
         $start_date = null;//指定なし。直近
+        $data['search_type'] = $search_type;
+        $data['search_object_id'] = $search_object_id;
+        $data['h_id'] = $h_id;
+        $data['search_keyword'] = $search_keyword;
         
-        if($type == 'search'){
-            $data['area_id'] = $object_id;
-            $data['recommend_futures_title'] = urldecode($keyword).'の'.$this->lang->line('recommend_futures_title_default');
-        }elseif($type == 'area'){
-            $data['area_id'] = $object_id;
-            $data['recommend_futures_title'] = $this->data['all_areas'][$object_id]->area_name.'の'.$this->lang->line('recommend_futures_title_default');
-        }elseif ($type == 'spring'){
-            $data['area_id'] = $this->data['all_springs'][$object_id]->area_id;
-            $data['recommend_futures_title'] = $this->data['all_springs'][$object_id]->spring_name.'の'.$this->lang->line('recommend_futures_title_default');
-        }elseif ($type == 'airport'){
+        if($search_type == 'search'){
+            $data['area_id'] = $search_object_id;
+            $data['recommend_futures_title'] = urldecode($search_keyword).'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif($search_type == 'area'){
+            $data['area_id'] = $search_object_id;
+            $data['recommend_futures_title'] = $this->data['all_areas'][$search_object_id]->area_name.'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif ($search_type == 'spring'){
+            $data['area_id'] = $this->data['all_springs'][$search_object_id]->area_id;
+            $data['spring'] = $this->data['all_springs'][$search_object_id];
+            $data['recommend_futures_title'] = $this->data['all_springs'][$search_object_id]->spring_name.'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif ($search_type == 'airport'){
             $this->data['all_airports'] = $this->Airport_model->getAllAirports();
-            $data['area_id'] = $this->data['all_springs'][$object_id]->area_id;
-            $data['recommend_futures_title'] = $this->data['all_airports'][$object_id]->airport_name.'の'.$this->lang->line('recommend_futures_title_default');
-        }elseif ($type == 'leisure'){
+            $data['area_id'] = $this->data['all_airports'][$search_object_id]->area_id;
+            $data['airport'] = $this->data['all_airports'][$search_object_id];
+            $data['recommend_futures_title'] = $this->data['all_airports'][$search_object_id]->airport_name.'の'.$this->lang->line('recommend_futures_title_default');
+        }elseif ($search_type == 'leisure'){
             $this->load->model('Leisure_model');
-            $this->data['leisure'] = $this->Leisure_model->getLeisureById($object_id);
-            //$this->data['all_leisures'] = $this->Airport_model->getAllAirports();
+            $this->data['leisure'] = $this->Leisure_model->getLeisureById($search_object_id);
             $data['area_id'] = $this->data['leisure']->area_id;
             $data['recommend_futures_title'] = $this->data['leisure']->leisure_name.'の'.$this->lang->line('recommend_futures_title_default');
         }
 
-        $futuresData = $this->Future_model->getFutures('area', $object_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $futuresData = $this->Future_model->getFutures('area', $search_object_id, $orderExpression, $page, $weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
         $data['futures'] = array_chunk($futuresData['data'],$this->config->item('paging_day_row_count'));
 
         $data['topicpaths'][] = array('/',$this->lang->line('topicpath_home'));

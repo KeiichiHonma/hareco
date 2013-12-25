@@ -160,7 +160,7 @@ class Future_model extends CI_Model
             //$and_cond[] = "holiday_sequence {$sequence}";
             $and_cond[] = "daytime_shine_sequence {$daytime_shine_sequence}";
         }
-        
+
         //日タイプ
         switch ($day_type['type']){
             case 'index':
@@ -173,7 +173,7 @@ class Future_model extends CI_Model
                 $and_cond[] = "day_of_the_week = {$day_type['value']}";
             break;
             case 'multi':
-                if(!empty($day_type['value'])){
+                if(!empty($day_type['value']) && !in_array(0,$day_type['value'])){//指定なし 0 がある場合は無視
                     foreach ($day_type['value'] as $value){
                         if($value == 0){
                             break;
@@ -202,6 +202,7 @@ class Future_model extends CI_Model
                                     ORDER BY {$this->table_name}.{$order}
                                     LIMIT {$offset},{$perPageCount}"
         );
+
         if ($query->num_rows() != 0) {
             $result['data'] = $query->result();
             $query = $this->db->query("SELECT FOUND_ROWS() as count");

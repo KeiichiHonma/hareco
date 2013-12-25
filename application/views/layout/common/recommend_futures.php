@@ -5,6 +5,7 @@
             <dl class="btnPc01 cf gray">
                 <dt>日付：</dt>
                 <dd id="future_searchBox"><input type="text" name="date" value="日付を選択" id="datepicker" /></dd>
+                <dd><?php echo date("Y年n月j日",strtotime("+8 day")); ?>より前の日付は、<br />気象情報を元にした各所の天気予報をご確認ください。</dd>
             </dl>
 
             <dl class="btnPc02 radio-group cf">
@@ -42,7 +43,7 @@
         
         <div id="btnSp">
             <div class="navSp">
-                <span><a href="/search/weather/<?php echo $search_type.'/'.$search_object_id.(isset($search_keyword) && $search_keyword != '' ? '/'.urlencode($search_keyword) : ''); ?>">▼検索条件を変更する</a></span>
+                <span><a href="/search/weather/<?php echo $search_type.'/'.$search_object_id.'/'.(isset($jalan_h_id) ? $jalan_h_id : 0).(isset($search_keyword) && $search_keyword != '' ? '/'.urlencode($search_keyword) : ''); ?>">▼検索条件を変更する</a></span>
             </div>
         </div>
         
