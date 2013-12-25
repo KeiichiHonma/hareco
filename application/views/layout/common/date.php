@@ -13,28 +13,10 @@ contents
                 <div class="text">
                     <h3><?php echo $hotel['HotelCatchCopy'] ?></h3>
                     <p><?php echo $hotel['HotelCaption'] ?></p>
-                    <?php if(isset($date)): ?>
-                    <h4>宿泊日 2013/11/28</h4>
-                    <h5>2014年02月07日の残室数：1部屋</h5>
-                    <div class="price">合計<span>￥77,175 </span>(税込・サービス料込)</div>
-                    <div class="btnBooking"><a href="#"><img src="/images/btn_booking.png" alt="この旅を予約する" /></a></div>
-                    <?php endif; ?>
+                    <div class="btnBooking"><a href="<?php echo $hotel['HotelDetailURL']; ?>" target="_blank"><img src="/images/btn_booking.png" alt="この旅を予約する" /></a></div>
                 </div>
             </div>
             <div class="plan">
-                <?php if(isset($date)): ?>
-                <h4>プラン内容</h4>
-                <p>
-                    四季折々彩りを変える樹木に囲まれた露天風呂。<br />
-                    風情あふれる日本庭園。<br />
-                    割烹の味と技の伝統を受け継ぐ和風料理の数々をゆっくりお楽しみ下さい。<br />
-                    【　夕食　】<br />
-                    お部屋にて、こだわりの懐石料理をご賞味くださいませ。<br />
-                    丹念に吟味された素材を活かした、目も舌をも愉しませてくれる一品は、記憶に残る至極の味わいです。ゆっくり時間をかけてお召し上がりくださいませ。<br />
-                    【　朝食　】<br />
-                    お部屋にて、和食をご用意させていただきます。
-                </p>
-                <?php endif; ?>
                 <ul class="cf">
                 <?php foreach ($hotel['Picture'] as $key => $picture) : ?>
                     <?php if($key != 0): ?><li><img src="<?php echo $picture['PictureURL']; ?>" alt="<?php echo $picture['PictureCaption']; ?>" width="270" /><br /><?php echo $picture['PictureCaption']; ?></li><?php endif; ?>
@@ -83,10 +65,10 @@ contents
                 <?php $count = count($week_futures); ?>
                 <tr>
                     
-                    <th class="cell02">天気(昼)</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><img src="/images/weather/icon/<?php echo $week_futures[$index]->daytime_icon_image; ?>" alt="<?php echo $week_futures[$index]->daytime; ?>" class="icon" /></td><?php endfor; ?>
+                    <th class="cell02">天気(昼)</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><img src="/images/weather/icon/<?php echo $week_futures[$index]->daytime_icon_image; ?>" alt="<?php echo $week_futures[$index]->daytime; ?>" class="icon" /><br /><?php echo $week_futures[$index]->daytime; ?></td><?php endfor; ?>
                 </tr>
                 <tr>
-                    <th class="cell02">天気(夜)</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><img src="/images/weather/icon/<?php echo $week_futures[$index]->night_icon_image; ?>" alt="<?php echo $week_futures[$index]->night; ?>" class="icon" /></td><?php endfor; ?>
+                    <th class="cell02">天気(夜)</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>"><img src="/images/weather/icon/<?php echo $week_futures[$index]->night_icon_image; ?>" alt="<?php echo $week_futures[$index]->night; ?>" class="icon" /><br /><?php echo $week_futures[$index]->daytime; ?></td><?php endfor; ?>
                 </tr>
                 <tr>
                     <th class="cell02">気温</th><?php for ($index = 0; $index < $count; $index++) : ?><td class="<?php echo $class_array[$index+1]; ?>">

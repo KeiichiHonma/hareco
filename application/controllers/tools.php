@@ -36,6 +36,10 @@ class Tools extends CI_Controller {
             $this->_get_sitemap_data('airport_date');
             $this->_make_file($file,$this->sitemap_line);
 
+            $file= '/usr/local/apache2/htdocs/hareco/sitemap_leisure_date.xml';
+            $this->_get_sitemap_data('leisure_date');
+            $this->_make_file($file,$this->sitemap_line);
+
             print 'Sitemap: update success';
         } catch (Exception $e) { 
             print 'Error: ' . $e->getMessage();
@@ -772,6 +776,34 @@ class Tools extends CI_Controller {
                         for($day=1;$day <= $lastday;$day++){
                             $day_string = $day < 10 ? '0'.$day : $day;
                             $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/airport/date/'.$airport->id.'/'.$year.'-'.$month_string.'-'.$day_string);
+                        }
+                    }
+                }
+            }
+        }
+
+        //leisures
+        if($type == 'main'){
+            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/leisure/');
+            $this->load->model('Todoufuken_model');
+            $all_todoufuken = $this->Todoufuken_model->getAllTodoufuken();
+            foreach ($all_todoufuken as $key => $todoufuken){
+                $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/leisure/view/'.$todoufuken->id);
+            }
+        }
+        
+        $this->load->model('Leisure_model');
+        $leisures = $this->Leisure_model->getAllLeisures();
+        foreach ($leisures as $index => $leisure) {
+            if($type == 'main') $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/leisure/show/'.$leisure->id);
+            if($type == 'leisure_date'){
+                for ($year=$start_year;$year<=$end_year;$year++){
+                    for($month=1;$month<=$target_month;$month++){
+                        $lastday = date("t", mktime(0,0,0,$month,1,$year));
+                        $month_string = $month < 10 ? '0'.$month : $month;
+                        for($day=1;$day <= $lastday;$day++){
+                            $day_string = $day < 10 ? '0'.$day : $day;
+                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/leisure/date/'.$leisure->id.'/'.$year.'-'.$month_string.'-'.$day_string);
                         }
                     }
                 }

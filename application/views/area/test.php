@@ -1,34 +1,140 @@
-<!doctype html>
-
-<meta charset="utf-8">
-
-<meta name="author" content="Amsul - http://amsul.ca">
-
-<meta name="viewport" content="width=device-width">
-<meta http-equiv="cache-control" content="no-cache">
-<meta http-equiv="pragma" content="no-cache">
-<meta http-equiv="X-UA-Compatible" content="IE=Edge">
-
-<title>pickadate.js</title>
-
-<link rel="shortcut icon" href="demo/images/favicon.ico">
-<link rel="stylesheet" href="/css/calendar/main.css">
-<link rel="stylesheet" href="/css/calendar/default.css" id="theme_base">
-<link rel="stylesheet" href="/css/calendar/default.date.css" id="theme_date">
-<link rel="stylesheet" href="/css/calendar/default.time.css" id="theme_time">
-
-<script src="http://hareco.apollon.corp.813.co.jp/js/jquery-1.7.2.min.js" language="javascript" type="text/javascript" /></script>
-<!--[if lt IE 9]>
-    <script>document.createElement('section')</script>
-<![endif]-->
-
-
+<html>
+<head>
+	<title>Tabulous.js</title>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+<link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+	<link href='/css/tabulous.css' rel='stylesheet' type='text/css'>
+</head>
 <body>
-<fieldset class="fieldset fieldset--demo"><div class="fieldset__wrapper"><input class="fieldset__input js__datepicker" type="text" placeholder="Try me&hellip;"></div></fieldset>
 
-    <script src="/js/lib/picker.js"></script>
-    <script src="/js/lib/picker.date.js"></script>
-    <script src="/js/lib/picker.time.js"></script>
-    <script src="/js/lib/legacy.js"></script>
-    <script src="/js/lib/main.js"></script>
+	<div id="wrapper">
+
+				<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1" title="">Tab 1</a></li>
+			<li><a href="#tabs-2" title="">Tab 2</a></li>
+			<li><a href="#tabs-3" title="">Tab 3</a></li>
+		</ul>
+
+		<div id="tabs_container">
+			
+
+
+
+		<div id="tabs-1">
+			    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus.</p><p>Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		</div>
+
+		<div id="tabs-2">
+			    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
+	
+		</div>
+
+		<div id="tabs-3">
+			    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem.</p><p> Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.</p>
+		</div>
+
+		</div><!--End tabs container-->
+		
+	</div><!--End tabs-->
+
+
+
+
+			<div id="tabs2">
+		<ul>
+			<li><a href="#tabs-1" title="">Tab 1</a></li>
+			<li><a href="#tabs-2" title="">Tab 2</a></li>
+			<li><a href="#tabs-3" title="">Tab 3</a></li>
+		</ul>
+
+		<div id="tabs_container">
+			
+
+
+
+		<div id="tabs-1">
+			    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus.</p><p>Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		</div>
+
+		<div id="tabs-2">
+			    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
+	
+		</div>
+
+		<div id="tabs-3">
+			    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem.</p><p> Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.</p>
+		</div>
+
+		</div><!--End tabs container-->
+		
+	</div><!--End tabs-->
+
+
+	<div id="tabs3">
+		<ul>
+			<li><a href="#tabs-1" title="">Tab 1</a></li>
+			<li><a href="#tabs-2" title="">Tab 2</a></li>
+			<li><a href="#tabs-3" title="">Tab 3</a></li>
+		</ul>
+
+		<div id="tabs_container">
+			
+
+			<div id="tabs-1">
+				    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus.</p><p>Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+			</div>
+
+			<div id="tabs-2">
+				    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
+		
+			</div>
+
+			<div id="tabs-3">
+				    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem.</p><p> Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.</p>
+			</div>
+
+		</div><!--End tabs container-->
+		
+	</div><!--End tabs-->
+
+
+
+	<div id="tabs4">
+		<ul>
+			<li><a href="#tabs-1" title="">Tab 1</a></li>
+			<li><a href="#tabs-2" title="">Tab 2</a></li>
+			<li><a href="#tabs-3" title="">Tab 3</a></li>
+		</ul>
+
+		<div id="tabs_container">
+			
+
+
+
+		<div id="tabs-1">
+			    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus.</p><p>Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		</div>
+
+		<div id="tabs-2">
+			    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor.</p>
+	
+		</div>
+
+		<div id="tabs-3">
+			    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem.</p><p> Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales.</p>
+		</div>
+
+		</div><!--End tabs container-->
+		
+	</div><!--End tabs-->
+
+		
+	</div>
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="/js/tabulous.js"></script>
+<script type="text/javascript" src="/js/js.js"></script>
+
 </body>
+</html>

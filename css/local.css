@@ -5,9 +5,6 @@
 body {
 	background:#ccc;
 }
-
-
-
 /* header
 --------------------------------------------------*/
 #header {
@@ -85,6 +82,7 @@ body {
 #header .navPc li a.nav03 { background-image: url(../images/nav_03.png) ; }
 #header .navPc li a.nav04 { background-image: url(../images/nav_04.png) ; }
 #header .navPc li a.nav05 { background-image: url(../images/nav_05.png) ; }
+#header .navPc li a.nav06 { background-image: url(../images/nav_06.png) ; }
 
 
 #header .navPc li ul {
@@ -308,16 +306,16 @@ table.menuBox td a:hover {
 
 #desc{
 	position:absolute;
-	top:150px;
-	right:0;
-	width:180px;
-	padding:10px;
+	top:90px;
+	left:0;
+	width:380px;
+	padding:15px;
 	border-radius: 5px;
     -webkit-border-radius: 5px;  
     -moz-border-radius: 5px;
     background-color: rgba(255, 255, 255, 0.7);
     color:#333;
-    font-size:12px;
+    font-size:14px;
     text-align:left;
     text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.4), 0px -1px 1px rgba(0, 0, 0, 0.4);
     line-height:150%;
@@ -733,6 +731,7 @@ table.menuBox td a:hover {
 	margin-bottom:20px;
 	line-height:120%;
 }
+#contents h2 em {font-style:normal;}
 #contentsInner .line { margin-bottom:20px;}
 
 #contentsInner .highTemp em { color:#fc4747;font-style:normal;}
@@ -1170,7 +1169,7 @@ table.menuBox td a:hover {
 }
 
 #weather td{
-    width:100px;
+    width:110px;
 	border-bottom:1px dotted #c4c3c0;
 	border-right:1px solid #dfdedb;
 	padding: 10px;

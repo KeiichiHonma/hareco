@@ -40,6 +40,17 @@ class Area_model extends CI_Model
         return array();
     }
 
+    function getAreasByRegionId($region_id)
+    {
+        $query = $this->db->query("SELECT *
+                                    FROM {$this->table_name}
+                                    WHERE {$this->table_name}.region_id = ?"
+        , array($region_id)
+        );
+        if ($query->num_rows() != 0) return $query->result();
+        return array();
+    }
+
     function getAreaByTodoufukenId($todoufuken_id)
     {
         $query = $this->db->query("SELECT *
@@ -47,8 +58,7 @@ class Area_model extends CI_Model
                                     WHERE {$this->table_name}.todoufuken_id = ?"
         , array($todoufuken_id)
         );
-
-        if ($query->num_rows() == 1) return $query->row();
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 
@@ -59,8 +69,7 @@ class Area_model extends CI_Model
                                     WHERE {$this->table_name}.todoufuken_name = ?"
         , array($todoufuken)
         );
-
-        if ($query->num_rows() == 1) return $query->row();
+        if ($query->num_rows() != 0) return $query->result();
         return array();
     }
 

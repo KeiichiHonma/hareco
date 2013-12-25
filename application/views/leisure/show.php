@@ -7,7 +7,7 @@ main image
 -->
 <div id="mainImage" class="sub main">
     <div id="mainImageInner">
-        <div id="gmap" style="width: 100%; height: 460px; border:none;"></div>
+        <div id="gmap"></div>
     </div>
 </div>
 <!--

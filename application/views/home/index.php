@@ -74,16 +74,16 @@ main image
         <div class="boxPhoto photo03">
             <div class="boxInner">
                 <div class="minWeather cf">
-                    <?php $sapporo_datetime = strtotime($slides['area'][4]->date); ?>
-                    <a href="<?php echo 'area/date/'.$slides['area'][4]->area_id.'/'.$slides['area'][4]->date; ?>">
-                    <h4><?php echo date("n月j日",$sapporo_datetime); ?>から<?php echo date("n月j日",$sapporo_datetime+86400); ?>の連休<br />札幌は2日連続で晴れる予測です！</h4>
+                    <?php $hakone_datetime = strtotime($slides['leisure']->date); ?>
+                    <a href="<?php echo 'leisure/date/'.$slides['leisure']->leisure_id.'/0/'.$slides['leisure']->area_id.'/'.$slides['leisure']->date; ?>">
+                    <h4><?php echo date("n月j日",$hakone_datetime); ?>から<?php echo date("n月j日",$hakone_datetime+86400); ?>の連休<br />旭山動物園は2日連続で晴れる予測です！</h4>
                     <div class="box">
-                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",$sapporo_datetime); ?></div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['leisure']->daytime_icon_image; ?>" alt="<?php echo $slides['leisure']->daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",$hakone_datetime); ?></div>
                     </div>
                     <div class="box">
-                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['area'][4]->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['area'][4]->tomorrow_daytime; ?>" class="icon" /></div>
-                        <div class="date"><?php echo date("n/j",$sapporo_datetime+86400); ?></div>
+                        <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['leisure']->tomorrow_daytime_icon_image; ?>" alt="<?php echo $slides['leisure']->tomorrow_daytime; ?>" class="icon" /></div>
+                        <div class="date"><?php echo date("n/j",$hakone_datetime+86400); ?></div>
                     </div>
                     </a>
                 </div>
@@ -176,38 +176,140 @@ contents
 }
 -->
 </style>
-
-
             <h2><?php echo $start_date_string; ?>～<?php echo $end_date_string; ?>の未来天気予想 </h2>
-            <table class="weather_index">
-                <tr class="title">
-                    <th class="cell01">日付</th>
-                    <td class="<?php echo $class_array[1]; ?>"><?php echo $futures[0]->month.'/'.$futures[0]->day.get_day_of_the_week($futures[0]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[2]; ?>"><?php echo $futures[0]->month.'/'.$futures[1]->day.get_day_of_the_week($futures[1]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[3]; ?>"><?php echo $futures[0]->month.'/'.$futures[2]->day.get_day_of_the_week($futures[2]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[4]; ?>"><?php echo $futures[0]->month.'/'.$futures[3]->day.get_day_of_the_week($futures[3]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[5]; ?>"><?php echo $futures[0]->month.'/'.$futures[4]->day.get_day_of_the_week($futures[4]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[6]; ?>"><?php echo $futures[0]->month.'/'.$futures[5]->day.get_day_of_the_week($futures[5]->day_of_the_week,FALSE,FALSE) ?></td>
-                    <td class="<?php echo $class_array[7]; ?>"><?php echo $futures[0]->month.'/'.$futures[6]->day.get_day_of_the_week($futures[6]->day_of_the_week,FALSE,FALSE) ?></td>
-                </tr>
-                <tr>
-                <th class="cell02"><?php echo $all_areas[$futures[0]->area_id]->area_name; ?></th>
-                <?php
-                    $td_number = 1;
-                    $count = count($futures);
-                ?>
-                <?php for ($index = 0; $index < $count; $index++) : ?>
-                    <?php if ($index > 0 && $index != $count - 1 && $index % 7 == 0) : ?>
-                        <?php $td_number = 1; ?>
-                        </tr>
-                        <tr>
-                        <th class="cell02"><?php echo $all_areas[$futures[$index]->area_id]->area_name; ?></th>
-                    <?php endif; ?>
+            <div id="tabs" class="cf">
+                <ul id="tabs_ul">
+                    <li><a href="#tabs-1" id="tab1" class="change_tab">北海道</a></li>
+                    <li><a href="#tabs-2" id="tab2" class="change_tab">東北</a></li>
+                    <li><a href="#tabs-3" id="tab3" class="change_tab tabulous_active">関東・信越</a></li>
+                    <li><a href="#tabs-4" id="tab4" class="change_tab">東海・北陸・近畿</a></li>
+                    <li><a href="#tabs-5" id="tab5" class="change_tab">中国・四国</a></li>
+                    <li><a href="#tabs-6" id="tab6" class="change_tab">九州</a></li>
+                    <li><a href="#tabs-7" id="tab7" class="change_tab">沖縄</a></li>
+                    <li class="undisp"><a href="#tabs-8" id="tab8" class="next_tab">次週を見る ></a></li>
+                </ul>
+            </div><!--End tabs-->
+            <div id="weathers">
+                <table class="weather_index">
+                    <tr class="title">
+                        <th class="cell01">日付</th>
+                        <td class="<?php echo $class_array[1]; ?>"><?php echo $futures[0]->month.'/'.$futures[0]->day.get_day_of_the_week($futures[0]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[2]; ?>"><?php echo $futures[0]->month.'/'.$futures[1]->day.get_day_of_the_week($futures[1]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[3]; ?>"><?php echo $futures[0]->month.'/'.$futures[2]->day.get_day_of_the_week($futures[2]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[4]; ?>"><?php echo $futures[0]->month.'/'.$futures[3]->day.get_day_of_the_week($futures[3]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[5]; ?>"><?php echo $futures[0]->month.'/'.$futures[4]->day.get_day_of_the_week($futures[4]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[6]; ?>"><?php echo $futures[0]->month.'/'.$futures[5]->day.get_day_of_the_week($futures[5]->day_of_the_week,FALSE,FALSE) ?></td>
+                        <td class="<?php echo $class_array[7]; ?>"><?php echo $futures[0]->month.'/'.$futures[6]->day.get_day_of_the_week($futures[6]->day_of_the_week,FALSE,FALSE) ?></td>
+                    </tr>
+                    <tr>
+                    <th class="cell02"><?php echo $all_areas[$futures[0]->area_id]->area_name; ?></th>
+                    <?php
+                        $td_number = 1;
+                        $count = count($futures);
+                    ?>
+                    <?php for ($index = 0; $index < $count; $index++) : ?>
+                        <?php if ($index > 0 && $index != $count - 1 && $index % 7 == 0) : ?>
+                            <?php $td_number = 1; ?>
+                            </tr>
+                            <tr>
+                            <th class="cell02"><?php echo $all_areas[$futures[$index]->area_id]->area_name; ?></th>
+                        <?php endif; ?>
 
-                    <td class="<?php echo $class_array[$td_number]; ?>"><img src="images/weather/icon/<?php echo $futures[$index]->daytime_icon_image; ?>" alt="<?php echo $futures[$index]->daytime; ?>" class="icon" /><br /><?php echo $futures[$index]->daytime; ?></td>
-                    <?php $td_number++; ?>
-                <?php endfor; ?>
-            </table>
+                        <td class="<?php echo $class_array[$td_number]; ?>"><img src="images/weather/icon/<?php echo $futures[$index]->daytime_icon_image; ?>" alt="<?php echo $futures[$index]->daytime; ?>" class="icon" /><br /><?php echo $futures[$index]->daytime; ?></td>
+                        <?php $td_number++; ?>
+                    <?php endfor; ?>
+                </table>
+            </div>
+<script type="text/javascript">
+    $(document).ready(function($) {
+        var page = 1;
+        $( '.change_tab' ) . click(
+            function() {
+                $('#weathers').block({
+                    message: '<img src="/images/loadinfo.net.gif" alt="" />',
+                    overlayCSS:  {
+                        backgroundColor: '#fdfdfd', 
+                        opacity:         0.8,
+                        cursor:          'wait' 
+                    },
+                    css: {
+                       backgroundColor: '#fdfdfd',
+                       opacity:         0.8,
+                       color:'#fff',
+                       height:  '0px',
+                       width:   '0px',
+                       border:  'none'
+                   }
+                });
+                var links = $(this).parent().parent().find('a');
+                links.removeClass('tabulous_active');
+                $(this).addClass('tabulous_active');
+                
+                jQuery . post(
+                    '/json/weathers',
+                    { <?php echo $csrf_token; ?>:"<?php echo $csrf_hash; ?>",tab_id:$(this).attr('id') },
+                    function( data, textStatus ) {
+                        if( textStatus == 'success' ) {
+                            try {
+                                $('#weathers').unblock();
+                                var jsonobj = jQuery.parseJSON( data );
+                                $( '#weathers' ) . html( jsonobj.html );
+                                
+                            } catch (e) {
+
+                            }
+                        }
+                    }
+                    ,'html'
+                );
+            }
+        );
+        $( '.next_tab' ) . click(
+            function() {
+                $('#weathers').block({
+                    message: '<img src="/images/loadinfo.net.gif" alt="" />',
+                    overlayCSS:  {
+                        backgroundColor: '#fdfdfd', 
+                        opacity:         0.8,
+                        cursor:          'wait' 
+                    },
+                    css: {
+                       backgroundColor: '#fdfdfd',
+                       opacity:         0.8,
+                       color:'#fff',
+                       height:  '0px',
+                       width:   '0px',
+                       border:  'none'
+                   }
+                });
+                $('#tabs_ul li a[class="change_tab tabulous_active"]').each(function(idx, obj){
+                    target_id = $(obj).attr("id");
+                });
+                page = page + 1;
+                jQuery . post(
+                    '/json/weathers',
+                    { <?php echo $csrf_token; ?>:"<?php echo $csrf_hash; ?>",tab_id:target_id,page:page },
+                    function( data, textStatus ) {
+                        if( textStatus == 'success' ) {
+                            try {
+                                $('#weathers').unblock();
+                                var jsonobj = jQuery.parseJSON( data );
+                                $( '#weathers' ) . html( jsonobj.html );
+                                
+                            } catch (e) {
+
+                            }
+                            
+                        }
+                    }
+                    ,'html'
+                );
+            }
+
+        );
+
+    });
+</script>
         </div>
 
         <div class="guide">

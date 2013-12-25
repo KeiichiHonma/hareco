@@ -50,6 +50,20 @@ class Future_model extends CI_Model
         if ($query->num_rows() != 0) return $query->result();
         return array();
     }
+
+    function getLeisureFuturesGoupByAreaByHolidayBySequenceForSlide($leisure_id,$holiday = 1,$holiday_sequence = 2,$shine_sequence = 2)
+    {
+        $query = $this->db->query("SELECT {$this->table_name}.id AS id,{$this->table_name}.area_id AS area_id, date, leisures.id AS leisure_id, leisures.leisure_name, daytime_icon_image, night_icon_image, tomorrow_daytime_icon_image, daytime,night,tomorrow_daytime,daytime_type,daytime_number,daytime_shine_sequence,night,night_type,night_shine_sequence,yesterday_night,yesterday_night_type , temperature_max, temperature_min, rain_percentage, snow_percentage,day_of_the_week,holiday,holiday_sequence
+                                    FROM {$this->table_name}
+                                    INNER JOIN leisures ON {$this->table_name}.area_id = leisures.area_id
+                                    WHERE daytime_type = 0 AND date > '{$this->start_date}' AND leisures.id = ? AND holiday >= ? AND holiday_sequence >= ? AND daytime_shine_sequence >= ?
+                                    GROUP BY area_id"
+        , array($leisure_id,$holiday,$holiday_sequence,$shine_sequence)
+        );
+        if ($query->num_rows() != 0) return $query->result();
+        return array();
+    }
+
     /*
     百万都市限定の晴れ未来。連休用
     */
@@ -83,7 +97,7 @@ class Future_model extends CI_Model
     }
 
     //汎用未来データ取得
-    function getFutures($type = 'area', $object_id, $order, $page,$weather = 'shine', $daytime_shine_sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null)
+    function getFutures($type = 'area', $object_id, $order, $page,$weather = 'shine', $daytime_shine_sequence = null, $day_type = array('type'=>'holiday','value'=>1), $start_date = null,$end_date = null,$paging = 11)
     {
         $result = array();
         $cond = '';
@@ -92,12 +106,15 @@ class Future_model extends CI_Model
         //タイプ指定
         switch ($type){
             case 'index':
-                $perPageCount = $this->CI->config->item('paging_count_per_index_page');
-                $offset = $perPageCount * ($page - 1);
-                $end_datetime = $this->start_datetime + (86400 * 7);
-                $end_date = date("Y-n-j",$end_datetime);
-                //$and_cond[] = "( {$this->million_city_query} )";
+                //$perPageCount = $this->CI->config->item('paging_count_per_index_page');
+                $perPageCount = $paging * 7;
+                //$offset = $perPageCount * ($page - 1);
+                $offset = 0;//日付を変動しているので、0からでOK
                 $and_cond[] = "region_id = $object_id";
+                if(is_null($end_date)){
+                    $end_datetime = $this->start_datetime + (86400 * 7);
+                    $end_date = date("Y-n-j",$end_datetime);
+                }
                 $and_cond[] = "date < '{$end_date}'";
             break;
             case 'area':

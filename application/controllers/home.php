@@ -57,6 +57,8 @@ class Home extends MY_Controller
         ・箱根の次の連休の晴れ
         ・17 箱根・湯河原（箱根湯本温泉）
         
+        旭山動物園
+        
         ゴルフ場
         ・15 隨縁カントリークラブセンチュリー富士コース（山梨）
         */
@@ -66,6 +68,12 @@ class Home extends MY_Controller
         $spring_id = 17;
         $spring_slide = $this->Future_model->getSpringFuturesGoupByAreaByHolidayBySequenceForSlide($spring_id);
         $data['slides']['spring'] = $spring_slide[0];
+
+        $leisure_id = 17;
+        $leisure_slide = $this->Future_model->getLeisureFuturesGoupByAreaByHolidayBySequenceForSlide($leisure_id);
+        $data['slides']['leisure'] = $leisure_slide[0];
+
+
 
         /*
         天気予想
@@ -77,14 +85,18 @@ class Home extends MY_Controller
         $daytime_shine_sequenceExpression = null;
         $day_type = array('type'=>'index','value'=>1);//休日+祝日
         $start_date = null;//指定なし。直近
+        $end_date = null;//指定なし。直近
+        $paging = 11;//関東圏
         //$futuresData = $this->Future_model->getFutures('index', null, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
-        $futuresData = $this->Future_model->getFutures('index', 3, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date);
+        $futuresData = $this->Future_model->getFutures('index', 3, $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date,$end_date,$paging);//関東
         $data['futures'] = $futuresData['data'];
 
         //news
         $data['topicpaths']['news'] = array('#','2013/12/24 世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」をリリースしました！ ');
-        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css')));
-        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js')));
+        $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','/css/tabulous.css')));
+        $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/jquery.blockUI.js')));
+        $data['csrf_token'] = $this->security->get_csrf_token_name();
+        $data['csrf_hash'] = $this->security->get_csrf_hash();
         $this->load->view('home/index', array_merge($this->data,$data));
     }
 }

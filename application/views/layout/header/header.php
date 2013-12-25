@@ -35,7 +35,7 @@ $(function(){
     /*- スライダー */
     $('#slider').bxSlider({
         auto:true,
-        speed:5000,
+        speed:3000,
         pause:10000,
         mode: 'fade',
         hideControlOnEnd:false,
@@ -82,6 +82,8 @@ $(function(){
             $(this).fadeTo("fast", 1.0);
         }
     });
+
+
 
     /* IE8 background-size対策 */
     jQuery('#cloud,#header h1 a,#header h2, #header .navPc li a.ttl').css({backgroundSize: "cover"});

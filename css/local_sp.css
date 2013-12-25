@@ -107,11 +107,6 @@ ul.menuBox dd.first{
 #ind #mainImage .boxPhoto {
 	width:100%;
 	height:200px;
-	overflow:hidden;
-	top:0;
-}
-
-#ind #mainImage .boxPhoto {
 	background-size:auto 100% !important;
 }
 
@@ -178,13 +173,8 @@ ul.menuBox dd.first{
 #mainImage.sub {
 	width:100%;
 	height:180px;
-	overflow:hidden;
-	top:0;
+    background-size:auto 100% !important;
 }
-#mainImage.sub {
-	background-size:auto 100% !important;
-}
-
 
 #mainImage.sub #innerBox {
 	width:100%;
@@ -242,7 +232,7 @@ ul.menuBox dd.first{
 /* content
 --------------------------------------------------*/
 #contents h2{
-	font-size:20px;
+	font-size:16px;
 	margin-bottom:10px;
 }
 #contentsInner {

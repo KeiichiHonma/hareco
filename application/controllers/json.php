@@ -33,14 +33,86 @@ class Json extends MY_Controller {
         $this->load->model('Weather_model');
         $this->load->library('weather_lib');
         $this->data['all_areas'] = $this->Area_model->getAllAreas();
-        $this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
+        
     }
+    function weathers(){
+        if(!isset($_POST['tab_id']) || !($id = explode('tab',$_POST['tab_id'])) || !is_numeric($id[1]) || $id[1] > 8) return;
+        $page = 1;
+        if(isset($_POST['page']) && is_numeric($_POST['page'])) $page = $_POST['page'];
 
+        /*
+        天気予想
+        */
+        $orderExpression = "area_id ASC,date ASC";
+        $weather = 'shine';
+        $daytime_shine_sequenceExpression = null;
+        $day_type = array('type'=>'index','value'=>1);//休日+祝日
+        if($page > 1){
+            $start_datetime = strtotime("+8 day") + (86400 * 7 * ($page - 1));//strtotime("+8 day");
+            $start_date = date("Y-n-j",$start_datetime);
+            $end_date = date("Y-n-j",$start_datetime + (86400 * 7));
+        }else{
+            $start_date = null;//指定なし。直近
+            $end_date = null;
+        }
+        $region_areas = $this->Area_model->getAreasByRegionId($id[1]);
+        $paging = count($region_areas);//関東圏
+        $futuresData = $this->Future_model->getFutures('index', $id[1], $orderExpression, $page,$weather, $daytime_shine_sequenceExpression, $day_type, $start_date,$end_date,$paging);//関東
+
+        $futures = $futuresData['data'];
+
+        if(empty($futures)) return;
+        $i = 1;
+        $class_array = array();
+        $local_sp_style = array();
+        foreach ($futures as $future){
+            if($i == 8) break;
+            if($future->day_of_the_week == 6){
+                $class_array[$i] = 'day0'.$i.' sat';
+            }elseif($future->day_of_the_week == 7){
+                $class_array[$i] = 'day0'.$i.' sun';
+            }else{
+                $class_array[$i] = 'day0'.$i;
+                $local_sp_style[] = '#weather td.day0'.$i;
+            }
+            $i++;
+        }
+
+        $html = '';
+            $html .= '<table class="weather_index">';
+                $html .= '<tr class="title">';
+                    $html .= '<th class="cell01">日付</th>';
+                    $html .= '<td class="'.$class_array[1].'">'.$futures[0]->month.'/'.$futures[0]->day.get_day_of_the_week($futures[0]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[2].'">'.$futures[0]->month.'/'.$futures[1]->day.get_day_of_the_week($futures[1]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[3].'">'.$futures[0]->month.'/'.$futures[2]->day.get_day_of_the_week($futures[2]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[4].'">'.$futures[0]->month.'/'.$futures[3]->day.get_day_of_the_week($futures[3]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[5].'">'.$futures[0]->month.'/'.$futures[4]->day.get_day_of_the_week($futures[4]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[6].'">'.$futures[0]->month.'/'.$futures[5]->day.get_day_of_the_week($futures[5]->day_of_the_week,FALSE,FALSE).'</td>';
+                    $html .= '<td class="'.$class_array[7].'">'.$futures[0]->month.'/'.$futures[6]->day.get_day_of_the_week($futures[6]->day_of_the_week,FALSE,FALSE).'</td>';
+                $html .= '</tr>';
+                $html .= '<tr>';
+                $html .= '<th class="cell02">'.$this->data['all_areas'][$futures[0]->area_id]->area_name.'</th>';
+                    $td_number = 1;
+                    $count = count($futures);
+                    for ($index=0;$index<$count;$index++){
+                        if ($index > 0 && $index != $count - 1 && $index % 7 == 0){
+                            $td_number = 1;
+                            $html .= '</tr><tr>';
+                            $html .= '<th class="cell02">'.$this->data['all_areas'][$futures[$index]->area_id]->area_name.'</th>';
+                        }
+                        $html .= '<td class="'.$class_array[$td_number].'"><img src="images/weather/icon/'.$futures[$index]->daytime_icon_image.'" alt="'.$futures[$index]->daytime.'" class="icon" /><br />'.$futures[$index]->daytime.'</td>';
+                        $td_number++;
+                    }
+            $html .= '</table>';
+            $mes_text = json_encode(array('html'=>$html,'tab_id'=>$id[1]));
+        echo $mes_text;
+    }
     function futures()
     {
         /*
         spの場合は画面表示6個になります。
         */
+        $this->data['all_holidays'] = $this->weather_lib->get_holidays_this_month(date("Y",time()));
         
         $sp = isset($_POST['sp']) && is_numeric($_POST['sp']) ? $_POST['sp'] : 1;
         
@@ -65,8 +137,6 @@ class Json extends MY_Controller {
 
         $jalan_h_id = 0;
         if(isset($_POST['h_id']) && is_numeric($_POST['h_id'])) $jalan_h_id = $_POST['h_id'];
-
-
 
         $area_id = 1;
         if(isset($_POST['area_id']) && is_numeric($_POST['area_id'])) $area_id = $_POST['area_id'];
