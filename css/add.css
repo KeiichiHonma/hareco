@@ -44,7 +44,7 @@
 .win #ind #slideImage #copy h2{ font-family: "HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO" sans-serif ;}
 .win #ind #slideImage #copy h3{ font-family: "HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO" sans-serif ;}
 
-#ind #slideImage #searchBox {
+#ind #slideImage .searchBox {
     background:url(../images/bg_nav.png) 0 0 repeat;
     margin:15px auto;
     padding:5px 8px;
@@ -55,7 +55,7 @@
 }
 
 
-#ind #slideImage #searchBox .focus{
+#ind #slideImage .searchBox .focus{
     color:#a0a09f;
     width:390px;
     height:39px;
@@ -67,10 +67,10 @@
     border:none;
     margin-right:10px;
 }
-.win.ie8 #ind #slideImage #searchBox .focus{ line-height:240%;}
+.win.ie8 #ind #slideImage .searchBox .focus{ line-height:240%;}
 
 
-#ind #slideImage #searchBox #datepicker {
+#ind #slideImage .searchBox #datepicker {
     color:#a0a09f;
     width:140px;
     height:39px;
@@ -84,9 +84,9 @@
     background:url(../images/icon_calendar.png) 124px 12px no-repeat #fff;
 }
 
-.win.ie8 #ind #slideImage #searchBox #datepicker{ line-height:240%;}
+.win.ie8 #ind #slideImage .searchBox #datepicker{ line-height:240%;}
 
-#ind #slideImage #searchBox .btnSearch {
+#ind #slideImage .searchBox .btnSearch {
     width:68px;
     height:39px;
 }

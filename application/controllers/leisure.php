@@ -228,7 +228,6 @@ class Leisure extends MY_Controller {
             'css/future.css',
             'css/add.css',
             'css/add_sp.css',
-            'css/slimmenu.css',
             'css/calendar/default.css',
             'css/calendar/default.date.css',
             'css/calendar/default.time.css'
@@ -239,8 +238,7 @@ class Leisure extends MY_Controller {
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
             'js/future.js',
-            'js/Chart.js',
-            'js/jquery.slimmenu.min.js'
+            'js/Chart.js'
         )));
         $this->load->view('leisure/date', array_merge($this->data,$data));
     }

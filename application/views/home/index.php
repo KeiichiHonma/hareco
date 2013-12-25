@@ -19,8 +19,8 @@ main image
     <div id="copy">
         <h2>晴れてよかった！を創る。</h2>
         <h3>でかけるなら晴れがいい。世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」</h3>
-        <div id="searchBox">
-            <div id="searchBoxInner">
+        <div class="searchBox">
+            <div class="searchBoxInner">
                 <?php echo form_open('/search','method="get" onsubmit="s_confirm();return false;" id="search"'); ?>
                     <input type="text" name="keyword" value="<?php echo $this->lang->line('search_box_default'); ?>" class="focus" /><input type="text" name="date" value="日付を選択" id="datepicker" /><input type="image" src="images/btn_search.png" align="top" alt="検索" class="btnSearch" />
                 <?php echo form_close(); ?>
@@ -75,7 +75,7 @@ main image
             <div class="boxInner">
                 <div class="minWeather cf">
                     <?php $hakone_datetime = strtotime($slides['leisure']->date); ?>
-                    <a href="<?php echo 'leisure/date/'.$slides['leisure']->leisure_id.'/0/'.$slides['leisure']->area_id.'/'.$slides['leisure']->date; ?>">
+                    <a href="<?php echo 'leisure/date/'.$slides['leisure']->leisure_id.'/'.$slides['leisure']->date; ?>">
                     <h4><?php echo date("n月j日",$hakone_datetime); ?>から<?php echo date("n月j日",$hakone_datetime+86400); ?>の連休<br />旭山動物園は2日連続で晴れる予測です！</h4>
                     <div class="box">
                         <div class="icon"><img src="images/weather/icon/w_<?php echo $slides['leisure']->daytime_icon_image; ?>" alt="<?php echo $slides['leisure']->daytime; ?>" class="icon" /></div>

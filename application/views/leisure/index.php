@@ -19,7 +19,11 @@ main image
         <h2>レジャー・行楽地ガイド</h2>
         <h3>レジャー・行楽地の天気予測から、晴れの日を探す</h3>
         <div class="topNavPc">
+            <div class="searchBox">
+                <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/leisure_navi'); ?>
+                </div>
+            </div>
         </div>
     </div>
     <div id="slider">
@@ -46,7 +50,11 @@ contents
 <div id="contents">
     <div id ="contentsInner">
         <div class="topNavSp">
+            <div class="searchBox">
+                <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/leisure_navi'); ?>
+                </div>
+            </div>
         </div>
         <div class="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>

@@ -69,7 +69,7 @@
 	border-top: 1px solid #4d4d4d;
 }
 
-#breadcrumb #searchBox {
+#breadcrumb .searchBox {
 	display:none;
 }
 
@@ -132,22 +132,22 @@ ul.menuBox dd.first{
 #ind #mainImage #copy h3 {
 	display:none;
 }
-#ind #mainImage #searchBox {
+#ind #mainImage .searchBox {
 	padding:6px;
     width:282px;
 }
-#ind #mainImage #searchBox .focus{
+#ind #mainImage .searchBox .focus{
 	width:260px;
 	padding:0 10px;
 	font-size:11px;
     border:none;
     margin-right:0;
 } 
-#ind #mainImage #searchBox .btnSearch {
+#ind #mainImage .searchBox .btnSearch {
 	position:absolute;visibility:hidden;
 }
 
-#ind #mainImage #searchBox #datepicker { display:none; }
+#ind #mainImage .searchBox #datepicker { display:none; }
 
 #ind #mainImage img.photo{
 	display:block;

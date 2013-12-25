@@ -92,7 +92,7 @@ class Home extends MY_Controller
         $data['futures'] = $futuresData['data'];
 
         //news
-        $data['topicpaths']['news'] = array('#','2013/12/24 世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」をリリースしました！ ');
+        $data['topicpaths']['news'] = array('#','2013/12/25 世界初、天気予測エンジンで晴れを提案するサービス「ハレコ」をリリースしました！ ');
         $this->config->set_item('stylesheets', array_merge($this->config->item('stylesheets'), array('css/jquery.bxslider.css','/css/tabulous.css')));
         $this->config->set_item('javascripts', array_merge($this->config->item('javascripts'), array('js/jquery.easing.1.3.js','js/jquery.bxslider.js','js/jquery.blockUI.js')));
         $data['csrf_token'] = $this->security->get_csrf_token_name();

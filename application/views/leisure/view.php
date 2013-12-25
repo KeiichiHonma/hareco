@@ -19,8 +19,8 @@ main image
         <h2><?php echo $todoufuken->todoufuken_name; ?>レジャー・行楽地ガイド</h2>
         <h3>レジャー・行楽地の天気予測から、晴れの日を探す</h3>
         <div class="topNavPc">
-            <div id="searchBox">
-                <div id="searchBoxInner">
+            <div class="searchBox">
+                <div class="searchBoxInner">
                     <table class="menuBox">
                         <?php
                             $i = 0;
@@ -75,8 +75,8 @@ contents
     <div id ="contentsInner">
         <div class="topNavSp">
 
-            <div id="searchBox">
-                <div id="searchBoxInner">
+            <div class="searchBox">
+                <div class="searchBoxInner">
                     <ul class="menuBox">
                         <div>
                         <?php

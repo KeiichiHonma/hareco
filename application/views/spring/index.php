@@ -20,7 +20,11 @@ main image
         <h2>温泉ガイド</h2>
         <h3>温泉地の天気予測から、晴れの日に温泉に行く</h3>
         <div class="topNavPc">
+            <div class="searchBox">
+                <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/spring_navi'); ?>
+                </div>
+            </div>
         </div>
     </div>
     <div id="slider">
@@ -57,7 +61,11 @@ contents
     <div id ="contentsInner">
         <!-- スマホ用ナビゲーション -->
         <div class="topNavSp">
+            <div class="searchBox">
+                <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/spring_navi'); ?>
+                </div>
+            </div>
         </div>
         <div class="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>

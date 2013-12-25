@@ -54,7 +54,7 @@
 	text-shadow: 0px 3px 3px #333;
 	line-height:120%;
 }
-#ind #searchBox {
+#ind .searchBox {
     background-color: rgba(0, 0, 0, 0.8);
 	padding:6px;
     width:266px;
@@ -62,18 +62,18 @@
     -webkit-border-radius: 5px;  
     -moz-border-radius: 5px;
 }
-#ind #searchBox .focus{
+#ind .searchBox .focus{
 	width:260px;
 	padding:0 10px;
 	font-size:11px;
     border:none;
     margin-right:0;
 } 
-#ind #searchBox .btnSearch {
+#ind .searchBox .btnSearch {
 	display:none;
 }
 
-#ind #searchBox #datepicker { display:none; }
+#ind .searchBox #datepicker { display:none; }
 
 #ind #slideImage img.photo{
 	display:block;

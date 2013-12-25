@@ -1,5 +1,3 @@
-            <div id="searchBox">
-                <div id="searchBoxInner">
                     <ul class="menuBox">
                         <div>
                             <dl class="cf">
@@ -96,5 +94,3 @@
                             </dl>
                         </div>
                     </ul>
-                </div>
-            </div>

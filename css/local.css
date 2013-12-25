@@ -249,11 +249,11 @@ table.menuBox td a:hover {
 	font-weight:bold;
 	padding:10px 5px 0;
 }
-#breadcrumb #searchBox {
+#breadcrumb .searchBox {
 	float:right;
 	padding-top:7px;
 }
-#breadcrumb #searchBox .focus{
+#breadcrumb .searchBox .focus{
 	/*width:150px;*/
     width:320px;
 	height:16px;
@@ -262,9 +262,9 @@ table.menuBox td a:hover {
 	color:#a0a09f;
 }
 
-.ie #breadcrumb #searchBox .focus{ height:20px; }
+.ie #breadcrumb .searchBox .focus{ height:20px; }
 
-#breadcrumb #searchBox #datepicker {
+#breadcrumb .searchBox #datepicker {
 	width:90px;
 	height:16px;
 	padding:2px 5px;
@@ -272,9 +272,9 @@ table.menuBox td a:hover {
 	color:#a0a09f;
     background:url(../images/icon_calendar.png) 79px 3px no-repeat #fff;
 }
-.win.ie8 #breadcrumb #searchBox #datepicker{ line-height:240%;}
+.win.ie8 #breadcrumb .searchBox #datepicker{ line-height:240%;}
 
-#breadcrumb #searchBox .btnSearch {
+#breadcrumb .searchBox .btnSearch {
 	width:56px;
 	height:26px;
 }
@@ -386,7 +386,7 @@ table.menuBox td a:hover {
 .win #ind #mainImage #copy h2{ font-family: "HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO" sans-serif ;}
 .win #ind #mainImage #copy h3{ font-family: "HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO" sans-serif ;}
 
-#ind #mainImage #searchBox {
+#ind #mainImage .searchBox {
 	background:url(../images/bg_searchbox.png) 0 0 repeat;
 	margin:15px auto;
 	padding:5px 8px;
@@ -397,7 +397,7 @@ table.menuBox td a:hover {
 }
 
 
-#ind #mainImage #searchBox .focus{
+#ind #mainImage .searchBox .focus{
 	color:#a0a09f;
 	width:390px;
 	height:39px;
@@ -409,10 +409,10 @@ table.menuBox td a:hover {
     border:none;
     margin-right:10px;
 }
-.win.ie8 #ind #mainImage #searchBox .focus{ line-height:240%;}
+.win.ie8 #ind #mainImage .searchBox .focus{ line-height:240%;}
 
 
-#ind #mainImage #searchBox #datepicker {
+#ind #mainImage .searchBox #datepicker {
 	color:#a0a09f;
 	width:140px;
 	height:39px;
@@ -426,9 +426,9 @@ table.menuBox td a:hover {
     background:url(../images/icon_calendar.png) 124px 12px no-repeat #fff;
 }
 
-.win.ie8 #ind #mainImage #searchBox #datepicker{ line-height:240%;}
+.win.ie8 #ind #mainImage .searchBox #datepicker{ line-height:240%;}
 
-#ind #mainImage #searchBox .btnSearch {
+#ind #mainImage .searchBox .btnSearch {
 	width:68px;
 	height:39px;
 }
@@ -1353,7 +1353,7 @@ table.menuBox td a:hover {
 #cloud {right:10px; }
 #header h1{ left:8px; }
 #header .navPc {right:8px;}
-#ind #mainImage #searchBox:not([width]) { zoom: 0.9; }
+#ind #mainImage .searchBox:not([width]) { zoom: 0.9; }
 #ui-datepicker-div:not([width]) { zoom: 0.9; }
 #contentsInner div.box .date {margin-bottom:0px;}
 #footerInner { width:auto; padding:0 30px; }

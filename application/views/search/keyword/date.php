@@ -6,9 +6,7 @@ main image
 //////////////////////////////////////////////////////////////////////////////
 -->
 <div id="mainImage" class="sub main">
-    <div id="mainImageInner">
-        <div id="gmap"></div>
-    </div>
+    <div id="gmap"></div>
 </div>
 <?php $this->load->view('layout/common/date'); ?>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>

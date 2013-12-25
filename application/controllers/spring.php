@@ -105,7 +105,6 @@ class Spring extends MY_Controller {
             'css/future.css',
             'css/add.css',
             'css/add_sp.css',
-            'css/slimmenu.css',
             'css/calendar/default.css',
             'css/calendar/default.date.css',
             'css/calendar/default.time.css'
@@ -116,8 +115,7 @@ class Spring extends MY_Controller {
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
-            'js/future.js',
-            'js/jquery.slimmenu.min.js'
+            'js/future.js'
         )));
         $this->load->view('spring/show', array_merge($this->data,$data));
     }
@@ -189,7 +187,6 @@ class Spring extends MY_Controller {
             'css/future.css',
             'css/add.css',
             'css/add_sp.css',
-            'css/slimmenu.css',
             'css/calendar/default.css',
             'css/calendar/default.date.css',
             'css/calendar/default.time.css'
@@ -200,8 +197,7 @@ class Spring extends MY_Controller {
             'js/jquery.blockUI.js',
             'js/jquery.easing.1.3.js',
             'js/scrolltop.js',
-            'js/future.js',
-            'js/jquery.slimmenu.min.js'
+            'js/future.js'
         )));
         $this->load->view('spring/hotel', array_merge($this->data,$data));
     }

@@ -18,7 +18,11 @@ main image
         <h2>空港ガイド</h2>
         <h3>空港の天気予測から、晴れの日のフライトを探す</h3>
         <div class="topNavPc">
+        <div class="searchBox">
+            <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/airport_navi'); ?>
+            </div>
+        </div>
         </div>
     </div>
     <div id="slider">
@@ -41,7 +45,12 @@ contents
 <div id="contents">
     <div id ="contentsInner">
         <div class="topNavSp">
+        <div class="searchBox">
+            <div class="searchBoxInner">
 <?php $this->load->view('layout/parts/airport_navi'); ?>
+            </div>
+        </div>
+
         </div>
         <div class="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>
