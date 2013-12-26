@@ -755,7 +755,7 @@ class Tools extends CI_Controller {
                         $month_string = $month < 10 ? '0'.$month : $month;
                         for($day=1;$day <= $lastday;$day++){
                             $day_string = $day < 10 ? '0'.$day : $day;
-                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/spring/date/'.$spring->id.'/'.$year.'-'.$month_string.'-'.$day_string);
+                            $this->sitemap_line .= $this->_make_sitemap_url('http://'.$domain.'/spring/date/'.$spring->id.'/0/'.$spring->area_id.'/'.$year.'-'.$month_string.'-'.$day_string);
                         }
                     }
                 }
