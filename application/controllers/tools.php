@@ -15,6 +15,202 @@ class Tools extends CI_Controller {
         $this->load->database();
 
     }
+    public function xbrl()
+    {
+/*
+        $xml = simplexml_load_file("/usr/local/apache2/htdocs/hareco/xbrl/S1000Z7Y/XBRL/PublicDoc/jpsps070000-asr-001_G03898-001_2014-01-20_01_2014-04-18.xbrl");
+        foreach($xml->getDocNamespaces() as $id=>$name) {
+            $obj[$id][] = $xml->children($name);
+        }
+*/
+        $csv = '';
+        require_once('application/libraries/simple_html_dom.php');
+        $xbrls = $this->_list_files('/usr/local/apache2/htdocs/hareco/xbrl2/');
+        foreach ($xbrls as $dir_name =>  $files){
+
+            foreach ($files as $file_name => $file){
+                $obj = array();
+                $xml = simplexml_load_file($file);
+                foreach($xml->getDocNamespaces() as $id=>$name) {
+                    $obj[$id][] = $xml->children($name);
+                }
+                if(isset($obj['jpdei_cor']) && isset($obj['jpcrp_cor'])){
+                    //社名
+                    $text1 =  (string)$obj['jpdei_cor'][0]->FilerNameInJapaneseDEI;
+                    $text2 = str_replace(array('株式会社'),array(''),$text1);
+                    $company_name = trim($text2);
+                    $result[$dir_name][$file_name][] = $company_name;
+                    
+                    //提出日
+                    $text1 =  (string)$obj['jpcrp_cor'][0]->FilingDateCoverPage;
+                    $date = str_replace(array('-'),array('/'),$text1);
+                    $result[$dir_name][$file_name][] = $date;
+                    
+                    //各値
+                    $html =  (string)$obj['jpcrp_cor'][0]->InformationAboutEmployeesTextBlock;
+                    $html_no_br = str_replace(array("\r\n","\n","\r"),array('','',''),$html);
+                    $this->html = str_get_html($html_no_br);
+
+                    foreach($this->html->find('p') as $key => $element){
+                        $innertext = strip_tags($element->innertext);
+
+                        //if ( preg_match("/^平均年間給与/", $element->innertext) ) {
+                        if ( preg_match("/^平均年間給与/", $innertext) ) {
+                            $pos = mb_strpos($html, '>平均年間給与');//>はあえてつけてる
+                            $rest = mb_substr($html, $pos, 2500, 'UTF-8');
+
+                            $implode_html = str_get_html($rest);
+                            foreach($implode_html->find('p') as $key2 => $element2){
+                                $text = trim($element2->innertext);
+                                if($text != ' '){
+                                    //$text = strip_tags($text);
+                                    $text = mb_convert_kana($text, "a", "UTF-8");
+                                    $text = str_replace(array(',','、',' ','　','名','人',' '),array('','','','','','',''),$text);//不思議な空白 「 」 がある。。
+                                    //カッコ対策　16〔10〕等
+                                    $kakkos = array('（','〔','(','[','［','【');
+                                    foreach ($kakkos as $kakko){
+                                        if( FALSE !== strstr($text,$kakko) ){
+                                            $string = explode($kakko,$text);
+                                            $text = $string[0];
+                                        }
+                                    }
+
+                                    //ヶ月対策　35歳   11ヶ月　8年  10ヶ月 ６年10ヵ月等
+                                    if( FALSE !== strstr($text,'ヶ月') && FALSE !== strstr($text,'歳') ){
+                                        $string = explode('歳',$text);
+                                        $string2 = explode('ヶ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'ヶ月') && FALSE !== strstr($text,'才') ){
+                                        $string = explode('才',$text);
+                                        $string2 = explode('ヶ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'ヶ月') && FALSE !== strstr($text,'年') ){
+                                        $string = explode('年',$text);
+                                        $string2 = explode('ヶ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'ヵ月') && FALSE !== strstr($text,'歳') ){
+                                        $string = explode('歳',$text);
+                                        $string2 = explode('ヵ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'ヵ月') && FALSE !== strstr($text,'才') ){
+                                        $string = explode('才',$text);
+                                        $string2 = explode('ヵ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'ヵ月') && FALSE !== strstr($text,'年') ){
+                                        $string = explode('年',$text);
+                                        $string2 = explode('ヵ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'か月') && FALSE !== strstr($text,'歳') ){
+                                        $string = explode('歳',$text);
+                                        $string2 = explode('か月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'か月') && FALSE !== strstr($text,'才') ){
+                                        $string = explode('才',$text);
+                                        $string2 = explode('か月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'か月') && FALSE !== strstr($text,'年') ){
+                                        $string = explode('年',$text);
+                                        $string2 = explode('か月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'カ月') && FALSE !== strstr($text,'歳') ){
+                                        $string = explode('歳',$text);
+                                        $string2 = explode('カ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'カ月') && FALSE !== strstr($text,'才') ){
+                                        $string = explode('才',$text);
+                                        $string2 = explode('カ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'カ月') && FALSE !== strstr($text,'年') ){
+                                        $string = explode('年',$text);
+                                        $string2 = explode('カ月',$string[1]);
+                                        (int)$text = $string[0] + round($string2[0] / 12,1);
+                                    }elseif( FALSE !== strstr($text,'歳') ){
+                                        $string = explode('歳',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== strstr($text,'才') ){
+                                        $string = explode('才',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== strstr($text,'年') ){
+                                        $string = explode('年',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== strstr($text,'千円') ){
+                                        $string = explode('千円',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== strstr($text,'万円') ){
+                                        $string = explode('万円',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== strstr($text,'円') ){
+                                        $string = explode('円',$text);
+                                        (int)$text = $string[0];
+                                    }elseif( FALSE !== @strstr($text,'ヶ月') || FALSE !== @strstr($text,'ヵ月') || FALSE !== @strstr($text,'か月') ){
+                                        $string = explode('ヶ月',$text);
+                                        (int)$text = $string[0];
+                                    }
+                                    
+                                    if( is_numeric($text) ){
+                                        $result[$dir_name][$file_name][] = $text;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    $csv .= implode(',',$result[$dir_name][$file_name])."\n";
+var_dump($csv);
+die();
+                }else{
+                    $error[] = $file;
+                }
+            }
+        }
+//echo $csv;
+        $this->_make_file('/usr/local/apache2/htdocs/hareco/xbrl0501.csv',$csv);
+    }
+
+    function _list_files($dir){
+        $files = array();
+        $list = scandir($dir);
+        foreach($list as $file){
+            if($file == '.' || $file == '..'){
+                continue;
+            } else if (is_file($dir . $file)){
+                $pathinfo = pathinfo($dir . $file);
+                if($pathinfo['extension'] == 'xbrl' && FALSE !== strstr($dir,'PublicDoc')){
+/*
+array(11) {
+  [0]=>
+  string(0) ""
+  [1]=>
+  string(3) "usr"
+  [2]=>
+  string(5) "local"
+  [3]=>
+  string(7) "apache2"
+  [4]=>
+  string(6) "htdocs"
+  [5]=>
+  string(6) "hareco"
+  [6]=>
+  string(4) "xbrl"
+  [7]=>
+  string(8) "S1000Z7Y"
+  [8]=>
+  string(4) "XBRL"
+  [9]=>
+  string(9) "PublicDoc"
+  [10]=>
+  string(0) ""
+}
+*/
+                    $dirs = explode('/',$dir);
+                    //$files[$dirs[7]][] = $dir . $file;
+                    $files[$dirs[7]][$file] = $dir . $file;
+                }
+            } else if( is_dir($dir . $file) ) {
+                $files = array_merge($files, $this->_list_files($dir . $file . '/'));
+            }
+        }
+        return $files;
+    }
 
     public function sitemap()
     {
