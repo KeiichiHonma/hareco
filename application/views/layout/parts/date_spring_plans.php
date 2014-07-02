@@ -1,3 +1,4 @@
+<?php $this->load->view('layout/parts/adsense'); ?>
         <div class="guide">
             <div class="leisure">
         <?php if(!empty($hotel_plans)) : ?>
@@ -94,4 +95,3 @@
 
             </div>
         </div>
-<?php $this->load->view('layout/parts/adsense'); ?>

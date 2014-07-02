@@ -1,3 +1,4 @@
+<?php $this->load->view('layout/parts/adsense'); ?>
 <?php //エリアなので複数の温泉地が来る可能性がある ?>
     <?php if(!empty($springs)) : ?>
         <div class="guide">
