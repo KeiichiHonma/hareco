@@ -1,4 +1,4 @@
-        <div style="text-align:center;margin:5px 0px;">
+        <div style="text-align:center;margin:10px 0px;">
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- レスポンシブ2 -->
 <ins class="adsbygoogle"
