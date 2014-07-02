@@ -77,6 +77,7 @@ contents
                 海外への旅行に行くときに、概算でも良いので晴れるのかどうかは個人的にも知りたい。
             </p>
         </div>
+<?php $this->load->view('layout/parts/adsense'); ?>
     </div>
 </div>
 <?php $this->load->view('layout/footer/footer'); ?>

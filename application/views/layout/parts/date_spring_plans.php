@@ -94,3 +94,4 @@
 
             </div>
         </div>
+<?php $this->load->view('layout/parts/adsense'); ?>

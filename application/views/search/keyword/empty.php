@@ -14,6 +14,7 @@ contents
         <div class="guide">
 <?php $this->load->view('layout/common/leisure_guide'); ?>
         </div>
+<?php $this->load->view('layout/parts/adsense'); ?>
     </div>
 </div>
 <?php $this->load->view('layout/footer/footer'); ?>

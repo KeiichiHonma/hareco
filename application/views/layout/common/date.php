@@ -285,6 +285,7 @@ contents
                 </div>
             </div>
         </div>
+<?php $this->load->view('layout/parts/adsense'); ?>
 <?php if(!empty($springs)) : ?>
 <?php $this->load->view('layout/parts/date_area_plans'); ?>
 <?php else: ?>
@@ -326,5 +327,6 @@ contents
                 <?php endforeach; ?>
             </table>
         </div>
+<?php $this->load->view('layout/parts/adsense2'); ?>
     </div>
 </div>

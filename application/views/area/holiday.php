@@ -45,8 +45,8 @@ contents
                     </div>
             <?php $i++; ?>
             <?php endforeach; ?>
-
         </div>
+<?php $this->load->view('layout/parts/adsense'); ?>
     </div>
 </div>
 <?php $this->load->view('layout/footer/footer'); ?>

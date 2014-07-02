@@ -111,6 +111,8 @@ contents
             </table>
         </div>
 <?php $this->load->view('layout/common/recommend_futures'); ?>
+<?php $this->load->view('layout/parts/adsense'); ?>
     </div>
+
 </div>
 <?php $this->load->view('layout/footer/footer'); ?>

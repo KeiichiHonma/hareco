@@ -1,3 +1,4 @@
+<?php $this->load->view('layout/parts/adsense'); ?>
     <div class="guide">
         <div class="leisure">
         <?php if(!empty($s_area_hotels)) : ?>
