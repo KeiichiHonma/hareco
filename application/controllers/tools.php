@@ -15,7 +15,7 @@ class Tools extends CI_Controller {
         $this->load->database();
 
     }
-    public function xbrl()
+    public function xbrl($number)
     {
 /*
         $xml = simplexml_load_file("/usr/local/apache2/htdocs/hareco/xbrl/S1000Z7Y/XBRL/PublicDoc/jpsps070000-asr-001_G03898-001_2014-01-20_01_2014-04-18.xbrl");
@@ -25,7 +25,7 @@ class Tools extends CI_Controller {
 */
         $csv = '';
         require_once('application/libraries/simple_html_dom.php');
-        $xbrls = $this->_list_files('/usr/local/apache2/htdocs/hareco/xbrl2/');
+        $xbrls = $this->_list_files('/usr/local/apache2/htdocs/hareco/xbrl/');
         foreach ($xbrls as $dir_name =>  $files){
 
             foreach ($files as $file_name => $file){
@@ -37,9 +37,32 @@ class Tools extends CI_Controller {
                 if(isset($obj['jpdei_cor']) && isset($obj['jpcrp_cor'])){
                     //社名
                     $text1 =  (string)$obj['jpdei_cor'][0]->FilerNameInJapaneseDEI;
-                    $text2 = str_replace(array('株式会社'),array(''),$text1);
-                    $company_name = trim($text2);
-                    $result[$dir_name][$file_name][] = $company_name;
+                    $text2 = str_replace(array('株式会社　'),array(''),$text1);
+                    $text3 = str_replace(array('株式会社 '),array(''),$text2);
+                    $text4 = str_replace(array('株式会社'),array(''),$text3);
+                    $company_name = trim($text4);
+
+        $queryParameter = array();
+
+        $queryString = "SELECT *,tab_job_company._id AS id,tab_job_company.col_code AS code
+                                    FROM tab_job_company
+                                    LEFT JOIN tab_job_cname ON tab_job_company._id = tab_job_cname.col_cid
+                                    WHERE ";
+        $queryString .= "(";
+        $queryString .= "tab_job_company.col_name = ? OR ";
+        $queryString .= "tab_job_cname.col_cname = ?";
+        $queryString .= ")";
+        $queryParameter[] = "{$company_name}";
+        $queryParameter[] = "{$company_name}";
+        $query = $this->CI->db->query($queryString, $queryParameter);
+        if ($query->num_rows() != 0) $q_result = $query->result();
+        if(!empty($q_result)){
+            $result[$dir_name][$file_name][] = $q_result[0]->code;
+        }else{
+            $result[$dir_name][$file_name][] = mb_convert_encoding($company_name,"SJIS-win","UTF-8");
+        }
+                    
+                    
                     
                     //提出日
                     $text1 =  (string)$obj['jpcrp_cor'][0]->FilingDateCoverPage;
@@ -155,15 +178,13 @@ class Tools extends CI_Controller {
                         }
                     }
                     $csv .= implode(',',$result[$dir_name][$file_name])."\n";
-var_dump($csv);
-die();
                 }else{
                     $error[] = $file;
                 }
             }
         }
 //echo $csv;
-        $this->_make_file('/usr/local/apache2/htdocs/hareco/xbrl0501.csv',$csv);
+        $this->_make_file('/usr/local/apache2/htdocs/hareco/tenmono_csv/xbrl'.$number.'.csv',$csv);
     }
 
     function _list_files($dir){
